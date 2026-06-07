@@ -1,0 +1,33 @@
+# IDE / Editors
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Dependencies / build output
+node_modules/
+dist/
+build/
+out/
+target/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Misc
+.cache/
+tmp/
