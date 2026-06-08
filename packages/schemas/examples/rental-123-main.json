@@ -1,0 +1,196 @@
+{
+  "id": "result_123_main_4b_rental_2026_06_01",
+  "subject": {
+    "id": "subject_123_main_4b",
+    "kind": "rental",
+    "displayName": "123 Main St, Apt 4B",
+    "description": "123 Main St, Apt 4B as a rental"
+  },
+  "generatedAt": "2026-06-01T12:30:00Z",
+  "sourceDocuments": [
+    {
+      "id": "src_apartments_1",
+      "url": "https://www.apartments.com/123-main-st/reviews",
+      "platform": "apartments.com",
+      "author": null,
+      "capturedAt": "2026-05-25T08:00:00Z",
+      "publishedAt": "2026-03-08T00:00:00Z"
+    },
+    {
+      "id": "src_reddit_2",
+      "url": "https://www.reddit.com/r/AskNYC/comments/xyz789/123_main_st",
+      "platform": "reddit",
+      "author": "current_tenant_4f",
+      "capturedAt": "2026-05-25T08:10:00Z",
+      "publishedAt": "2026-04-19T20:00:00Z"
+    },
+    {
+      "id": "src_yelp_1",
+      "url": "https://www.yelp.com/biz/123-main-management-co",
+      "platform": "yelp",
+      "author": null,
+      "capturedAt": "2026-05-25T08:15:00Z",
+      "publishedAt": "2026-01-30T00:00:00Z"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_maint_1",
+      "sourceDocumentId": "src_apartments_1",
+      "excerpt": "Maintenance tickets take 2-3 weeks even for active leaks.",
+      "position": { "start": 12, "end": 64 }
+    },
+    {
+      "id": "ev_maint_2",
+      "sourceDocumentId": "src_yelp_1",
+      "excerpt": "Management drags out repairs. Three follow-ups for a broken radiator.",
+      "position": { "start": 0, "end": 70 }
+    },
+    {
+      "id": "ev_loc_1",
+      "sourceDocumentId": "src_reddit_2",
+      "excerpt": "Half a block from the L train and walkable to everything.",
+      "position": { "start": 88, "end": 145 }
+    },
+    {
+      "id": "ev_noise_1",
+      "sourceDocumentId": "src_apartments_1",
+      "excerpt": "Street noise is loud at night but the back-facing units are quiet.",
+      "position": { "start": 180, "end": 246 }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_slow_repairs",
+      "topic": "Maintenance",
+      "sentiment": "negative",
+      "interpretation": "Tenants describe slow response from building management on repairs.",
+      "evidenceIds": ["ev_maint_1", "ev_maint_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 }
+      }
+    },
+    {
+      "id": "sig_walkable_location",
+      "topic": "Location",
+      "sentiment": "positive",
+      "interpretation": "Strong walkability and transit access reported.",
+      "evidenceIds": ["ev_loc_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 }
+      }
+    },
+    {
+      "id": "sig_noise_unit_dependent",
+      "topic": "Noise",
+      "sentiment": "mixed",
+      "interpretation": "Noise varies materially by unit orientation.",
+      "evidenceIds": ["ev_noise_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.5 }
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_maintenance",
+      "topic": "Maintenance",
+      "sentiment": "negative",
+      "signalIds": ["sig_slow_repairs"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": {
+          "sourceCount": 0.5,
+          "sourceDiversity": 0.6,
+          "sourceFreshness": 0.75,
+          "signalConsistency": 0.9
+        }
+      }
+    },
+    {
+      "id": "theme_location",
+      "topic": "Location",
+      "sentiment": "positive",
+      "signalIds": ["sig_walkable_location"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": {
+          "sourceCount": 0.3,
+          "sourceDiversity": 0.3,
+          "sourceFreshness": 0.8,
+          "signalConsistency": 0.9
+        }
+      }
+    },
+    {
+      "id": "theme_noise",
+      "topic": "Noise",
+      "sentiment": "mixed",
+      "signalIds": ["sig_noise_unit_dependent"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": {
+          "sourceCount": 0.3,
+          "sourceDiversity": 0.3,
+          "sourceFreshness": 0.75,
+          "signalConsistency": 0.4
+        }
+      }
+    }
+  ],
+  "inference": {
+    "patterns": [
+      {
+        "description": "Maintenance responsiveness is the dominant negative thread; location is the dominant positive thread.",
+        "themeIds": ["theme_maintenance", "theme_location"]
+      }
+    ],
+    "consensus": [
+      {
+        "description": "Reviewers consistently report slow maintenance response.",
+        "themeIds": ["theme_maintenance"]
+      }
+    ],
+    "disagreement": [
+      {
+        "description": "Noise impressions diverge depending on which unit a reviewer occupies.",
+        "themeIds": ["theme_noise"]
+      }
+    ],
+    "communitySentimentSummary": "Public discussion frames 123 Main St as well located but operationally slow on building maintenance, with noise that depends on unit.",
+    "maySuggest": [
+      "Reviewers commonly describe maintenance delays.",
+      "Reviewers commonly describe the location favorably."
+    ],
+    "mayNotSuggest": [
+      "Does not assert any specific unit will have noise issues.",
+      "Does not rank this building against other buildings.",
+      "Does not recommend whether to sign a lease."
+    ],
+    "limitations": [
+      "Noise theme is supported by a single piece of evidence.",
+      "Material spans only three platforms and ~4 months."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "medium",
+    "inputs": {
+      "sourceCount": 0.4,
+      "sourceDiversity": 0.5,
+      "sourceFreshness": 0.75,
+      "signalConsistency": 0.75,
+      "themeSupportAggregate": 0.55,
+      "topicBreadth": 0.5
+    }
+  }
+}
