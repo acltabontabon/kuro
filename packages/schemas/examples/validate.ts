@@ -5,7 +5,11 @@ import { KuroResult } from "../src/index.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 
-const POSITIVE_EXAMPLES = ["employer-acme.json", "rental-123-main.json"];
+const POSITIVE_EXAMPLES = [
+  "employer-acme.json",
+  "rental-123-main.json",
+  "insufficient-data.json",
+];
 
 let failures = 0;
 
@@ -51,11 +55,11 @@ for (const name of POSITIVE_EXAMPLES) {
   expectOk(name);
 }
 
-// Negative tests: each one breaks exactly one traceability invariant.
 const base = load("employer-acme.json") as Record<string, unknown>;
+const insufficient = load("insufficient-data.json") as Record<string, unknown>;
 
-function clone(): any {
-  return JSON.parse(JSON.stringify(base));
+function clone(src: Record<string, unknown> = base): any {
+  return JSON.parse(JSON.stringify(src));
 }
 
 {
@@ -102,14 +106,51 @@ function clone(): any {
 
 {
   const bad = clone();
-  bad.sourceDocuments = [];
-  expectFailWithPath("sourceDocuments must be non-empty", bad, "sourceDocuments");
-}
-
-{
-  const bad = clone();
   bad.inference.maySuggest[0].themeIds = ["theme_does_not_exist"];
   expectFailWithPath("Inference.maySuggest -> missing themeId", bad, "maySuggest");
+}
+
+// outcome === "ok" must have non-empty themes/signals/evidence/sourceDocuments
+{
+  const bad = clone();
+  bad.themes = [];
+  expectFailWithPath("outcome=ok with empty themes rejected", bad, "themes");
+}
+{
+  const bad = clone();
+  bad.sourceDocuments = [];
+  expectFailWithPath("outcome=ok with empty sourceDocuments rejected", bad, "sourceDocuments");
+}
+
+// outcome === "insufficient_data" must have low/unknown confidence and non-empty limitations
+{
+  const bad = clone(insufficient);
+  bad.confidence.rating = "high";
+  expectFailWithPath(
+    "outcome=insufficient_data with confidence.rating=high rejected",
+    bad,
+    "confidence.rating",
+  );
+}
+{
+  const bad = clone(insufficient);
+  bad.inference.limitations = [];
+  expectFailWithPath(
+    "outcome=insufficient_data with empty inference.limitations rejected",
+    bad,
+    "inference.limitations",
+  );
+}
+
+// Theme-level may/mayNotSuggest validates as ThemeClaim — extra `themeIds` rejected by .strict()
+{
+  const bad = clone();
+  bad.themes[0].maySuggest[0] = { description: "test", themeIds: ["theme_management"] };
+  expectFailWithPath(
+    "Theme.maySuggest rejects InferenceClaim-shaped entry (extra themeIds)",
+    bad,
+    "themes.0.maySuggest",
+  );
 }
 
 if (failures > 0) {

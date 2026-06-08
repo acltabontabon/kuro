@@ -97,12 +97,19 @@ KURO does not treat Source Documents as authoritative; it treats them as express
 **Conceptual requirements.**
 
 - A topic - what the Signal is about (e.g. management stability, commute, noise levels).
-- A sentiment - the polarity of the opinion the Signal expresses (positive, negative, or mixed). Sentiment is an attribute of a Signal; it is not how Signals are organized.
+- A sentiment - the polarity of the opinion the Signal expresses (positive, negative, neutral, or mixed). Sentiment is an attribute of a Signal; it is not how Signals are organized.
+- A claim - a short interpreted statement of what the Signal says about the Subject. The claim is KURO's interpretation of the underlying Evidence, not a verbatim excerpt.
 - At least one supporting piece of Evidence.
 - A source reference (carried via the Evidence), used downstream for diversity and freshness reasoning.
 - A Signal-level confidence.
 
-**Sentiment guidance.** A Signal should usually express one dominant sentiment. If a single Evidence excerpt contains separable positive and negative opinions (for example: "great pay but terrible management"), KURO should produce **separate Signals**, not one Mixed Signal. Mixed sentiment at the Signal level is reserved for opinions that are genuinely ambivalent and cannot be fairly split (for example: "I have complicated feelings about leaving"). Mixed sentiment at the **Theme** level remains first-class and expected.
+**Sentiment guidance.** A Signal should usually express one dominant sentiment. If a single Evidence excerpt contains separable positive and negative opinions (for example: "great pay but terrible management"), KURO should produce **separate Signals**, not one Mixed Signal. The four sentiment values are distinct and not interchangeable:
+
+- `positive` and `negative` carry the obvious polarity.
+- `neutral` is reserved for **informational, factual, or non-emotional** observations - e.g. "the office is on the 14th floor" or "the building uses on-site management." Neutral is not a polite alias for "I don't know"; it means the Signal expresses no evaluative content.
+- `mixed` is reserved for opinions that carry **genuine internal tension** and cannot be fairly split into separate Signals (for example: "I have complicated feelings about leaving").
+
+Forcing a neutral observation into `mixed` (or vice versa) is incorrect: `neutral` describes absence of polarity, `mixed` describes presence of competing polarity. Mixed sentiment at the **Theme** level remains first-class and expected.
 
 **Relationship to neighbors.** A Signal is interpreted from Evidence and is grouped with other related Signals to form a Theme.
 
@@ -118,8 +125,14 @@ KURO does not treat Source Documents as authoritative; it treats them as express
 
 - A topic name (e.g. Work-Life Balance, Compensation, Building Maintenance).
 - The set of Signals that belong to the Theme.
-- An aggregate sentiment for the Theme - Positive, Negative, or Mixed - derived from the sentiments of its Signals. Mixed is a first-class value at the Theme level, not an error state.
+- An aggregate sentiment for the Theme - Positive, Negative, Neutral, or Mixed - derived from the sentiments of its Signals. Mixed is a first-class value at the Theme level, not an error state. Neutral is reserved for themes that aggregate purely informational Signals (see Signal sentiment guidance); it is not interchangeable with Mixed.
 - A Theme-level confidence.
+- A theme-scoped **interpretation layer**, expressed as three structured fields:
+  - **maySuggest** - short claims describing what this Theme *may* suggest about the Subject, given its Signals.
+  - **mayNotSuggest** - short claims explicitly disclaiming what this Theme should *not* be read to suggest.
+  - **limitations** - caveats specific to this Theme (e.g. low source diversity, single supporting Signal, stale Evidence).
+
+  A theme-scoped claim does not carry `themeIds` - the parent Theme is the traceability boundary. A separate prose `interpretation` field is intentionally **not** part of the model: the structured trio above already covers the same ground, and shipping both invites duplication.
 
 **Relationship to neighbors.** A Theme is composed of Signals. A KURO Result is composed of Themes (together with a KURO Inference derived from them).
 
@@ -161,10 +174,26 @@ A KURO Result is composed of **two parts**: the set of Themes, and the KURO Infe
 **Conceptual requirements.**
 
 - The Subject of the query.
+- An **outcome** - either `ok` (KURO formed a meaningful inference) or `insufficient_data` (KURO could not). See "Insufficient data" below.
+- A **summary** - a short, plain-language overview of what KURO *observed*. The summary stays close to the source-backed Signals; it describes, it does not synthesize.
 - The set of Themes.
 - The KURO Inference derived from those Themes.
+- A **source summary** - an aggregated description of the evidence base. At minimum it answers: how many Source Documents were considered, what source types / platforms were represented, whether any sources were excluded and why, the freshness window of what was read, and any narrow / stale / low-diversity notes that bear on how to read the Result.
 - A Result-level confidence.
+- A **final KURO** - a short closing synthesis expressed in may / may-not framing. Unlike `summary`, this *is* synthesis: it is what KURO cautiously infers from the Themes and Inference. The final KURO must **not** become advice (no "you should apply / avoid / sign / decline"); it summarizes what the Result may and may not suggest.
 - Traceability - every Theme links to its Signals; every Signal links to its Evidence; every piece of Evidence links to its Source Document. A Result that breaks this chain at any point is not a valid Result.
+
+**`summary` vs `finalKuro`.** These are distinct on purpose: `summary` is descriptive ("here is what was observed"); `finalKuro` is interpretive but bounded ("here is what may and may not be inferred"). Collapsing them would erase the line between source-backed observation and KURO synthesis, which is exactly the line KURO's posture depends on.
+
+**Insufficient data.** A valid KURO Result may report `outcome: insufficient_data` when there is not enough usable community material to support an inference. In that branch:
+
+- Themes, Signals, and Evidence may be empty.
+- Source Documents may be empty **only** if no usable document was found or read. If KURO did read documents but they were insufficient (stale, duplicate, irrelevant, spammy, low-diversity), those documents stay in the Result and the reason is explained via the source summary's exclusions and diversity notes and via the Inference's limitations.
+- The Inference's limitations must be non-empty and must explain why KURO cannot infer responsibly.
+- The Result-level confidence rating must be `low` or `unknown` (see Confidence).
+- The final KURO must say clearly that KURO cannot form a meaningful community inference from the available material.
+
+Insufficient data is a successful Result, not a transport error. The request succeeded; the analytical outcome is "not enough to say."
 
 **Relationship to neighbors.** The Result is the terminal node. It is what KURO shows the user.
 
@@ -181,6 +210,13 @@ A KURO Result is composed of **two parts**: the set of Themes, and the KURO Infe
 - **Result confidence.** How well-supported the overall picture is. Driven by the Theme confidences and the breadth of topics covered relative to what one would expect for the Subject.
 
 Each level composes from the level below it. A Result composed of a single high-confidence Theme is not a high-confidence Result, because breadth is a separate input.
+
+**Confidence ratings.** At every level, the qualitative rating is one of `low`, `medium`, `high`, or `unknown`. The distinction between `low` and `unknown` matters:
+
+- Use `unknown` when there is no usable evidence to score against - KURO cannot responsibly assign even a low rating.
+- Use `low` when there *is* some evidence but it is weak, narrow, stale, or contradictory.
+
+For an insufficient-data Result, prefer `unknown` if KURO could not extract any usable Evidence at all, and `low` if KURO did extract some but it was not enough to sustain an inference.
 
 ## 5. Decision: Why Not Positive/Negative as the Primary Structure
 

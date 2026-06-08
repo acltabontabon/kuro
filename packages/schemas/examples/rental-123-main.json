@@ -7,6 +7,8 @@
     "description": "123 Main St, Apt 4B as a rental"
   },
   "generatedAt": "2026-06-01T12:30:00Z",
+  "outcome": "ok",
+  "summary": "Community reports describe 123 Main St as well located but slow on building maintenance, with noise that varies by unit orientation.",
   "sourceDocuments": [
     {
       "id": "src_apartments_1",
@@ -64,7 +66,7 @@
       "id": "sig_slow_repairs",
       "topic": "Maintenance",
       "sentiment": "negative",
-      "interpretation": "Tenants describe slow response from building management on repairs.",
+      "claim": "Tenants describe slow response from building management on repairs.",
       "evidenceIds": ["ev_maint_1", "ev_maint_2"],
       "confidence": {
         "level": "signal",
@@ -76,7 +78,7 @@
       "id": "sig_walkable_location",
       "topic": "Location",
       "sentiment": "positive",
-      "interpretation": "Strong walkability and transit access reported.",
+      "claim": "Strong walkability and transit access reported.",
       "evidenceIds": ["ev_loc_1"],
       "confidence": {
         "level": "signal",
@@ -88,7 +90,7 @@
       "id": "sig_noise_unit_dependent",
       "topic": "Noise",
       "sentiment": "mixed",
-      "interpretation": "Noise varies materially by unit orientation.",
+      "claim": "Noise varies materially by unit orientation.",
       "evidenceIds": ["ev_noise_1"],
       "confidence": {
         "level": "signal",
@@ -112,7 +114,16 @@
           "sourceFreshness": 0.75,
           "signalConsistency": 0.9
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "Building management has a pattern of slow turnaround on repairs across multiple tenants." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific repair request will be delayed." }
+      ],
+      "limitations": [
+        "Two sources; both are general-audience review platforms, not a structured tenant survey."
+      ]
     },
     {
       "id": "theme_location",
@@ -128,7 +139,16 @@
           "sourceFreshness": 0.8,
           "signalConsistency": 0.9
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "The building is described as well-located relative to transit and walkable amenities." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not characterize neighborhood safety or noise from this signal alone." }
+      ],
+      "limitations": [
+        "Supported by a single source."
+      ]
     },
     {
       "id": "theme_noise",
@@ -144,7 +164,16 @@
           "sourceFreshness": 0.75,
           "signalConsistency": 0.4
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "Unit orientation may meaningfully change the noise experience for the same building." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific unit will or will not be noisy." }
+      ],
+      "limitations": [
+        "Single piece of evidence; the front-vs-back distinction is not corroborated."
+      ]
     }
   ],
   "inference": {
@@ -196,6 +225,22 @@
       "Material spans only three platforms and ~4 months."
     ]
   },
+  "sourceSummary": {
+    "documentCount": 3,
+    "platforms": [
+      { "platform": "apartments.com", "count": 1 },
+      { "platform": "reddit", "count": 1 },
+      { "platform": "yelp", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-01-30T00:00:00Z",
+      "newestPublishedAt": "2026-04-19T20:00:00Z"
+    },
+    "diversityNotes": [
+      "Three distinct platforms over ~4 months; narrow temporal window."
+    ]
+  },
   "confidence": {
     "level": "result",
     "rating": "medium",
@@ -207,5 +252,6 @@
       "themeSupportAggregate": 0.55,
       "topicBreadth": 0.5
     }
-  }
+  },
+  "finalKuro": "From the available community discussion, 123 Main St may suggest a building with strong location and walkability and a pattern of slow maintenance response, with noise that may vary by unit orientation. It may not suggest how a specific unit, lease term, or repair request will play out, and it is not a recommendation to sign or decline a lease."
 }

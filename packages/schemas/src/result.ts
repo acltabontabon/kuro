@@ -7,17 +7,25 @@ import { Signal } from "./signal.js";
 import { Theme } from "./theme.js";
 import { KuroInference } from "./inference.js";
 import { ResultConfidence } from "./confidence.js";
+import { SourceSummary } from "./sourceSummary.js";
+
+export const ResultOutcome = z.enum(["ok", "insufficient_data"]);
+export type ResultOutcome = z.infer<typeof ResultOutcome>;
 
 export const KuroResult = z.object({
   id: Id,
   subject: Subject,
   generatedAt: IsoDateTime,
-  sourceDocuments: z.array(SourceDocument).min(1),
-  evidence: z.array(Evidence).min(1),
-  signals: z.array(Signal).min(1),
-  themes: z.array(Theme).min(1),
+  outcome: ResultOutcome,
+  summary: z.string().min(1),
+  sourceDocuments: z.array(SourceDocument),
+  evidence: z.array(Evidence),
+  signals: z.array(Signal),
+  themes: z.array(Theme),
   inference: KuroInference,
+  sourceSummary: SourceSummary,
   confidence: ResultConfidence,
+  finalKuro: z.string().min(1),
 }).superRefine((r, ctx) => {
   const reportDupes = (key: "sourceDocuments" | "evidence" | "signals" | "themes") => {
     const seen = new Map<string, number>();
@@ -98,5 +106,39 @@ export const KuroResult = z.object({
   checkInferenceClaims("disagreements");
   checkInferenceClaims("maySuggest");
   checkInferenceClaims("mayNotSuggest");
+
+  if (r.outcome === "ok") {
+    (
+      [
+        ["sourceDocuments", r.sourceDocuments.length],
+        ["evidence", r.evidence.length],
+        ["signals", r.signals.length],
+        ["themes", r.themes.length],
+      ] as const
+    ).forEach(([key, len]) => {
+      if (len === 0) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key],
+          message: `outcome "ok" requires at least one ${key} entry`,
+        });
+      }
+    });
+  } else {
+    if (r.confidence.rating !== "low" && r.confidence.rating !== "unknown") {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["confidence", "rating"],
+        message: `outcome "insufficient_data" requires confidence.rating of "low" or "unknown", got "${r.confidence.rating}"`,
+      });
+    }
+    if (r.inference.limitations.length === 0) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["inference", "limitations"],
+        message: `outcome "insufficient_data" requires at least one inference.limitations entry`,
+      });
+    }
+  }
 });
 export type KuroResult = z.infer<typeof KuroResult>;

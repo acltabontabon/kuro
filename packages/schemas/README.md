@@ -11,10 +11,14 @@ This package is **not** the database DDL (tracked separately) and **not** the pe
 ## What's structurally enforced
 
 - **Topic-first organization.** A `KuroResult` only holds `themes: Theme[]`. There are no `positiveSignals` / `negativeSignals` arrays anywhere. Sentiment is an attribute of `Signal` and `Theme`, never an organizing partition.
-- **`mixed` is a first-class `Sentiment`** at both `Signal` and `Theme` levels. Per the glossary, at the `Signal` level it is reserved for genuinely ambivalent opinions; separable positive/negative content should yield separate `Signal`s.
-- **`KuroInference` may / may not.** The schema only exposes fields for what the glossary says an Inference *may* claim — `patterns`, `consensus`, `disagreements`, `communitySentimentSummary` — plus `maySuggest`, `mayNotSuggest`, and `limitations` to make the constraint first-class on the value. `maySuggest` and `mayNotSuggest` are themselves grounded — each entry carries `themeIds`, so even a "may not" claim is tied back to the themes it is disclaiming over. There is no `verdict`, `recommendation`, `prediction`, `truthClaim`, `ranking`, or `decision` field. Do not add one without updating the glossary first.
-- **Confidence describes support, not truth.** The numeric field is named `supportScore` (optional) and pairs with a qualitative `rating` of `low | medium | high | unknown` (required). Every `Confidence` carries the four canonical glossary inputs (`sourceCount`, `sourceDiversity`, `sourceFreshness`, `signalConsistency`) and adds level-specific inputs on top.
-- **Traceability.** A `KuroResult` embeds its own `sourceDocuments`, `evidence`, `signals`, and `themes` (each non-empty, no duplicate ids), and a `superRefine` rejects any document where:
+- **Four-value `Sentiment`** — `positive | negative | neutral | mixed`, first-class at both `Signal` and `Theme`. `neutral` is for informational/non-emotional observations; `mixed` is for genuine internal tension. They are not interchangeable. Per the glossary, at the `Signal` level `mixed` is reserved for opinions that cannot be fairly split into separate `Signal`s.
+- **Theme-level interpretation layer.** Every `Theme` carries `maySuggest: ThemeClaim[]`, `mayNotSuggest: ThemeClaim[]`, and `limitations: string[]`. `ThemeClaim` is a small `{ description }` schema and is `.strict()` — extra fields like `themeIds` are rejected, because the parent theme is the traceability boundary. There is intentionally no separate prose `interpretation` field; the structured trio covers it.
+- **`KuroInference` may / may not.** The schema only exposes fields for what the glossary says an Inference *may* claim — `patterns`, `consensus`, `disagreements`, `communitySentimentSummary` — plus `maySuggest`, `mayNotSuggest`, and `limitations` to make the constraint first-class on the value. Cross-theme `InferenceClaim`s carry `themeIds`, so even a "may not" claim is tied back to the themes it is disclaiming over. There is no `verdict`, `recommendation`, `prediction`, `truthClaim`, `ranking`, or `decision` field. Do not add one without updating the glossary first.
+- **`summary` vs `finalKuro`.** `KuroResult.summary` is a descriptive overview of what KURO *observed* (stays close to source-backed Signals). `KuroResult.finalKuro` is a cautious closing **synthesis** using may / may-not framing; it must not become advice.
+- **`sourceSummary`.** Aggregated evidence-base description: `documentCount`, per-platform counts, exclusions (`{ reason, count }`), a `freshness` window (`{ oldestPublishedAt, newestPublishedAt }` or `null` when no publish dates are available), and `diversityNotes`. Gives the UI/API a single place to render "what was read."
+- **Confidence describes support, not truth.** The numeric field is named `supportScore` (optional) and pairs with a qualitative `rating` of `low | medium | high | unknown` (required). Every `Confidence` carries the four canonical glossary inputs (`sourceCount`, `sourceDiversity`, `sourceFreshness`, `signalConsistency`) and adds level-specific inputs on top. For insufficient-data Results, prefer `unknown` when no usable evidence exists at all and `low` when some evidence exists but is weak, narrow, stale, or contradictory.
+- **Insufficient-data outcome.** `KuroResult.outcome` is `"ok" | "insufficient_data"`. When `outcome === "ok"`, `sourceDocuments` / `evidence` / `signals` / `themes` must each be non-empty. When `outcome === "insufficient_data"`, they may be empty, but `confidence.rating` must be `low` or `unknown` and `inference.limitations` must be non-empty. Insufficient data is a successful Result, never a transport error.
+- **Traceability.** A `KuroResult` embeds its own `sourceDocuments`, `evidence`, `signals`, and `themes` (no duplicate ids), and a `superRefine` rejects any document where:
   - a `Signal.evidenceIds` references missing evidence,
   - an `Evidence.sourceDocumentId` references a missing source,
   - a `Theme.signalIds` references missing signals, or
@@ -24,8 +28,9 @@ A `KuroResult` that breaks the chain at any point will not parse.
 
 ## Examples
 
-- [`examples/employer-acme.json`](examples/employer-acme.json) — Acme Corp as an employer.
-- [`examples/rental-123-main.json`](examples/rental-123-main.json) — 123 Main St, Apt 4B as a rental.
+- [`examples/employer-acme.json`](examples/employer-acme.json) — Acme Corp as an employer (`outcome: ok`).
+- [`examples/rental-123-main.json`](examples/rental-123-main.json) — 123 Main St, Apt 4B as a rental (`outcome: ok`).
+- [`examples/insufficient-data.json`](examples/insufficient-data.json) — `outcome: insufficient_data` with read-but-excluded sources, empty themes/signals/evidence, `confidence.rating: unknown`, and non-empty `inference.limitations`.
 
 ## Validate
 
@@ -35,4 +40,4 @@ pnpm --filter @kuro/schemas typecheck
 pnpm --filter @kuro/schemas validate
 ```
 
-`validate` parses both example files with `KuroResult` and runs a small set of negative tests that intentionally break each traceability invariant to confirm the refinements fire.
+`validate` parses all example files with `KuroResult` and runs a set of negative tests covering each traceability invariant, the `outcome`-conditional rules (empty themes on `ok`, high-rated confidence on `insufficient_data`, empty `inference.limitations` on `insufficient_data`), and `ThemeClaim` strictness.
