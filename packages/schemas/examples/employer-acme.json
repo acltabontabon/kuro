@@ -1,0 +1,219 @@
+{
+  "id": "result_acme_employer_2026_06_01",
+  "subject": {
+    "id": "subject_acme_employer",
+    "kind": "employer",
+    "displayName": "Acme Corp",
+    "description": "Acme Corp as an employer"
+  },
+  "generatedAt": "2026-06-01T12:00:00Z",
+  "sourceDocuments": [
+    {
+      "id": "src_reddit_1",
+      "url": "https://www.reddit.com/r/jobs/comments/abc123/two_years_at_acme",
+      "platform": "reddit",
+      "author": "throwaway_acme_42",
+      "capturedAt": "2026-05-20T09:00:00Z",
+      "publishedAt": "2025-11-04T18:22:00Z",
+      "contentHash": "sha256:0a1b2c3d"
+    },
+    {
+      "id": "src_glassdoor_1",
+      "url": "https://www.glassdoor.com/Reviews/acme-corp-RVW9001.htm",
+      "platform": "glassdoor",
+      "author": null,
+      "capturedAt": "2026-05-20T09:05:00Z",
+      "publishedAt": "2026-02-12T00:00:00Z",
+      "contentHash": "sha256:9f8e7d6c"
+    },
+    {
+      "id": "src_blind_1",
+      "url": "https://www.teamblind.com/post/acme-pay-review-xyz",
+      "platform": "blind",
+      "author": null,
+      "capturedAt": "2026-05-20T09:10:00Z",
+      "publishedAt": "2026-04-01T15:30:00Z"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_mgmt_1",
+      "sourceDocumentId": "src_reddit_1",
+      "excerpt": "Management changed three times in my first year and each reorg killed morale.",
+      "position": { "start": 120, "end": 199 }
+    },
+    {
+      "id": "ev_mgmt_2",
+      "sourceDocumentId": "src_glassdoor_1",
+      "excerpt": "Constant leadership turnover. Hard to plan anything beyond a quarter.",
+      "position": { "start": 44, "end": 113 }
+    },
+    {
+      "id": "ev_pay_1",
+      "sourceDocumentId": "src_blind_1",
+      "excerpt": "Comp is genuinely top of band for the level. They will match offers.",
+      "position": { "start": 10, "end": 78 }
+    },
+    {
+      "id": "ev_pay_2",
+      "sourceDocumentId": "src_glassdoor_1",
+      "excerpt": "Salary and bonus were the best part of the job.",
+      "position": { "start": 220, "end": 267 }
+    },
+    {
+      "id": "ev_wlb_1",
+      "sourceDocumentId": "src_reddit_1",
+      "excerpt": "Flexible WFH but expect to be online late during launches.",
+      "position": { "start": 400, "end": 458 }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_mgmt_turnover",
+      "topic": "Management Stability",
+      "sentiment": "negative",
+      "interpretation": "Reviewers describe frequent leadership turnover disrupting work.",
+      "evidenceIds": ["ev_mgmt_1", "ev_mgmt_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.85 }
+      }
+    },
+    {
+      "id": "sig_pay_topband",
+      "topic": "Compensation",
+      "sentiment": "positive",
+      "interpretation": "Compensation is reported as competitive at the top of band.",
+      "evidenceIds": ["ev_pay_1", "ev_pay_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.9 }
+      }
+    },
+    {
+      "id": "sig_wlb_flex_but_crunch",
+      "topic": "Work-Life Balance",
+      "sentiment": "mixed",
+      "interpretation": "Flexible day-to-day, but expectation of late hours during launches.",
+      "evidenceIds": ["ev_wlb_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.4 }
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_management",
+      "topic": "Management Stability",
+      "sentiment": "negative",
+      "signalIds": ["sig_mgmt_turnover"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.6,
+          "sourceFreshness": 0.7,
+          "signalConsistency": 0.9
+        }
+      }
+    },
+    {
+      "id": "theme_compensation",
+      "topic": "Compensation",
+      "sentiment": "positive",
+      "signalIds": ["sig_pay_topband"],
+      "confidence": {
+        "level": "theme",
+        "rating": "high",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.7,
+          "sourceFreshness": 0.8,
+          "signalConsistency": 0.95
+        }
+      }
+    },
+    {
+      "id": "theme_wlb",
+      "topic": "Work-Life Balance",
+      "sentiment": "mixed",
+      "signalIds": ["sig_wlb_flex_but_crunch"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": {
+          "sourceCount": 1,
+          "sourceDiversity": 0.3,
+          "sourceFreshness": 0.7,
+          "signalConsistency": 0.5
+        }
+      }
+    }
+  ],
+  "inference": {
+    "patterns": [
+      {
+        "description": "Compensation is consistently praised across platforms; management stability is consistently criticized.",
+        "themeIds": ["theme_compensation", "theme_management"]
+      }
+    ],
+    "consensus": [
+      {
+        "description": "Reviewers agree that pay is competitive.",
+        "themeIds": ["theme_compensation"]
+      }
+    ],
+    "disagreements": [
+      {
+        "description": "Accounts of work-life balance vary between flexibility and launch-period crunch.",
+        "themeIds": ["theme_wlb"]
+      }
+    ],
+    "communitySentimentSummary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance.",
+    "maySuggest": [
+      {
+        "description": "Reviewers repeatedly flag management turnover as disruptive.",
+        "themeIds": ["theme_management"]
+      },
+      {
+        "description": "Reviewers describe compensation as a strong point.",
+        "themeIds": ["theme_compensation"]
+      }
+    ],
+    "mayNotSuggest": [
+      {
+        "description": "Does not predict whether Acme will reorganize again.",
+        "themeIds": ["theme_management"]
+      },
+      {
+        "description": "Does not claim Acme is a better or worse employer than its peers.",
+        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+      },
+      {
+        "description": "Does not recommend whether to accept or decline an offer.",
+        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+      }
+    ],
+    "limitations": [
+      "Underlying material draws from three platforms over a ~6 month window.",
+      "Work-life balance signal rests on a single source."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "medium",
+    "inputs": {
+      "sourceCount": 3,
+      "sourceDiversity": 0.6,
+      "sourceFreshness": 0.7,
+      "signalConsistency": 0.8,
+      "themeSupportAggregate": 0.65,
+      "topicBreadth": 0.5
+    }
+  }
+}
