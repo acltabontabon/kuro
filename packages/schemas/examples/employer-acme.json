@@ -7,6 +7,8 @@
     "description": "Acme Corp as an employer"
   },
   "generatedAt": "2026-06-01T12:00:00Z",
+  "outcome": "ok",
+  "summary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance during launches.",
   "sourceDocuments": [
     {
       "id": "src_reddit_1",
@@ -72,7 +74,7 @@
       "id": "sig_mgmt_turnover",
       "topic": "Management Stability",
       "sentiment": "negative",
-      "interpretation": "Reviewers describe frequent leadership turnover disrupting work.",
+      "claim": "Reviewers describe frequent leadership turnover disrupting work.",
       "evidenceIds": ["ev_mgmt_1", "ev_mgmt_2"],
       "confidence": {
         "level": "signal",
@@ -84,7 +86,7 @@
       "id": "sig_pay_topband",
       "topic": "Compensation",
       "sentiment": "positive",
-      "interpretation": "Compensation is reported as competitive at the top of band.",
+      "claim": "Compensation is reported as competitive at the top of band.",
       "evidenceIds": ["ev_pay_1", "ev_pay_2"],
       "confidence": {
         "level": "signal",
@@ -96,7 +98,7 @@
       "id": "sig_wlb_flex_but_crunch",
       "topic": "Work-Life Balance",
       "sentiment": "mixed",
-      "interpretation": "Flexible day-to-day, but expectation of late hours during launches.",
+      "claim": "Flexible day-to-day, but expectation of late hours during launches.",
       "evidenceIds": ["ev_wlb_1"],
       "confidence": {
         "level": "signal",
@@ -120,7 +122,17 @@
           "sourceFreshness": 0.7,
           "signalConsistency": 0.9
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "Frequent leadership turnover has been a recurring lived experience for reviewers." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not predict whether Acme will reorganize again." },
+        { "description": "Does not claim current management is ineffective in absolute terms." }
+      ],
+      "limitations": [
+        "Two sources, both retrospective; no current-quarter signal."
+      ]
     },
     {
       "id": "theme_compensation",
@@ -136,7 +148,17 @@
           "sourceFreshness": 0.8,
           "signalConsistency": 0.95
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "Reviewers consistently describe compensation as a strong point." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific salary band or offer outcome for a given role." },
+        { "description": "Does not claim Acme out-pays its peers in absolute terms." }
+      ],
+      "limitations": [
+        "Both sources are platforms where above-average pay is over-represented."
+      ]
     },
     {
       "id": "theme_wlb",
@@ -152,7 +174,16 @@
           "sourceFreshness": 0.7,
           "signalConsistency": 0.5
         }
-      }
+      },
+      "maySuggest": [
+        { "description": "Day-to-day flexibility coexists with launch-period crunch in at least some teams." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert that launch crunch applies to every team or every role." }
+      ],
+      "limitations": [
+        "Supported by a single source; not generalizable across the company."
+      ]
     }
   ],
   "inference": {
@@ -204,6 +235,22 @@
       "Work-life balance signal rests on a single source."
     ]
   },
+  "sourceSummary": {
+    "documentCount": 3,
+    "platforms": [
+      { "platform": "reddit", "count": 1 },
+      { "platform": "glassdoor", "count": 1 },
+      { "platform": "blind", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2025-11-04T18:22:00Z",
+      "newestPublishedAt": "2026-04-01T15:30:00Z"
+    },
+    "diversityNotes": [
+      "Three distinct platforms, each contributing one document; coverage is broad but shallow."
+    ]
+  },
   "confidence": {
     "level": "result",
     "rating": "medium",
@@ -215,5 +262,6 @@
       "themeSupportAggregate": 0.65,
       "topicBreadth": 0.5
     }
-  }
+  },
+  "finalKuro": "From the available community discussion, Acme may suggest a pattern of competitive pay alongside recurring concerns about leadership stability and uneven work-life balance during launches. It may not suggest how those patterns would apply to any specific role, team, or future quarter, and it is not a recommendation to accept or decline an offer."
 }

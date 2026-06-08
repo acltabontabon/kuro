@@ -6,4 +6,5 @@ export * from "./confidence.js";
 export * from "./signal.js";
 export * from "./theme.js";
 export * from "./inference.js";
+export * from "./sourceSummary.js";
 export * from "./result.js";

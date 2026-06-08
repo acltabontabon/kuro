@@ -1,0 +1,74 @@
+{
+  "id": "result_obscure_employer_2026_06_01",
+  "subject": {
+    "id": "subject_obscure_employer",
+    "kind": "employer",
+    "displayName": "Obscure Holdings LLC",
+    "description": "A small private holding company with little public discussion."
+  },
+  "generatedAt": "2026-06-01T13:00:00Z",
+  "outcome": "insufficient_data",
+  "summary": "KURO read a small number of public posts that mentioned Obscure Holdings LLC, but none carried first-hand experiences usable as evidence.",
+  "sourceDocuments": [
+    {
+      "id": "src_blog_1",
+      "url": "https://example-careers-blog.test/posts/obscure-holdings-overview",
+      "platform": "blog",
+      "author": null,
+      "capturedAt": "2026-05-30T10:00:00Z",
+      "publishedAt": "2022-08-14T00:00:00Z"
+    },
+    {
+      "id": "src_directory_1",
+      "url": "https://example-company-directory.test/companies/obscure-holdings",
+      "platform": "directory",
+      "author": null,
+      "capturedAt": "2026-05-30T10:05:00Z",
+      "publishedAt": null
+    }
+  ],
+  "evidence": [],
+  "signals": [],
+  "themes": [],
+  "inference": {
+    "patterns": [],
+    "consensus": [],
+    "disagreements": [],
+    "communitySentimentSummary": "No usable first-hand community signal was found for this subject.",
+    "maySuggest": [],
+    "mayNotSuggest": [],
+    "limitations": [
+      "Only two documents were located; one is a stale (2022) overview and the other is a company directory listing with no first-hand experience.",
+      "No reviews, forum threads, or first-hand accounts were available within the search window."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 2,
+    "platforms": [
+      { "platform": "blog", "count": 1 },
+      { "platform": "directory", "count": 1 }
+    ],
+    "exclusions": [
+      { "reason": "stale", "count": 1 },
+      { "reason": "no first-hand experience", "count": 1 }
+    ],
+    "freshness": null,
+    "diversityNotes": [
+      "Both documents are non-experiential; no employee or candidate accounts were found.",
+      "Coverage is too narrow to support any theme."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "unknown",
+    "inputs": {
+      "sourceCount": 2,
+      "sourceDiversity": 0.2,
+      "sourceFreshness": 0.1,
+      "signalConsistency": 0,
+      "themeSupportAggregate": 0,
+      "topicBreadth": 0
+    }
+  },
+  "finalKuro": "KURO cannot form a meaningful community inference about Obscure Holdings LLC from the available material: the only documents located were a stale overview and a directory listing, neither of which carries first-hand experience."
+}
