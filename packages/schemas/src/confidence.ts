@@ -2,7 +2,7 @@ import { z } from "zod";
 import { ConfidenceRating, SupportScore } from "./primitives.js";
 
 const BaseInputs = z.object({
-  sourceCount: SupportScore.optional(),
+  sourceCount: z.number().int().min(0).optional(),
   sourceDiversity: SupportScore.optional(),
   sourceFreshness: SupportScore.optional(),
   signalConsistency: SupportScore.optional(),

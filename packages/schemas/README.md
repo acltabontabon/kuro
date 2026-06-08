@@ -12,13 +12,13 @@ This package is **not** the database DDL (tracked separately) and **not** the pe
 
 - **Topic-first organization.** A `KuroResult` only holds `themes: Theme[]`. There are no `positiveSignals` / `negativeSignals` arrays anywhere. Sentiment is an attribute of `Signal` and `Theme`, never an organizing partition.
 - **`mixed` is a first-class `Sentiment`** at both `Signal` and `Theme` levels. Per the glossary, at the `Signal` level it is reserved for genuinely ambivalent opinions; separable positive/negative content should yield separate `Signal`s.
-- **`KuroInference` may / may not.** The schema only exposes fields for what the glossary says an Inference *may* claim — `patterns`, `consensus`, `disagreement`, `communitySentimentSummary` — plus `maySuggest`, `mayNotSuggest`, and `limitations` to make the constraint first-class on the value. There is no `verdict`, `recommendation`, `prediction`, `truthClaim`, `ranking`, or `decision` field. Do not add one without updating the glossary first.
+- **`KuroInference` may / may not.** The schema only exposes fields for what the glossary says an Inference *may* claim — `patterns`, `consensus`, `disagreements`, `communitySentimentSummary` — plus `maySuggest`, `mayNotSuggest`, and `limitations` to make the constraint first-class on the value. `maySuggest` and `mayNotSuggest` are themselves grounded — each entry carries `themeIds`, so even a "may not" claim is tied back to the themes it is disclaiming over. There is no `verdict`, `recommendation`, `prediction`, `truthClaim`, `ranking`, or `decision` field. Do not add one without updating the glossary first.
 - **Confidence describes support, not truth.** The numeric field is named `supportScore` (optional) and pairs with a qualitative `rating` of `low | medium | high | unknown` (required). Every `Confidence` carries the four canonical glossary inputs (`sourceCount`, `sourceDiversity`, `sourceFreshness`, `signalConsistency`) and adds level-specific inputs on top.
-- **Traceability.** A `KuroResult` embeds its own `sourceDocuments`, `evidence`, `signals`, and `themes`, and a `superRefine` rejects any document where:
+- **Traceability.** A `KuroResult` embeds its own `sourceDocuments`, `evidence`, `signals`, and `themes` (each non-empty, no duplicate ids), and a `superRefine` rejects any document where:
   - a `Signal.evidenceIds` references missing evidence,
   - an `Evidence.sourceDocumentId` references a missing source,
   - a `Theme.signalIds` references missing signals, or
-  - an `Inference.{patterns,consensus,disagreement}[].themeIds` references missing themes.
+  - an `Inference.{patterns,consensus,disagreements,maySuggest,mayNotSuggest}[].themeIds` references missing themes.
 
 A `KuroResult` that breaks the chain at any point will not parse.
 

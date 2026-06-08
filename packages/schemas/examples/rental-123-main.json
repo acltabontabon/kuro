@@ -107,7 +107,7 @@
         "level": "theme",
         "rating": "medium",
         "inputs": {
-          "sourceCount": 0.5,
+          "sourceCount": 2,
           "sourceDiversity": 0.6,
           "sourceFreshness": 0.75,
           "signalConsistency": 0.9
@@ -123,7 +123,7 @@
         "level": "theme",
         "rating": "medium",
         "inputs": {
-          "sourceCount": 0.3,
+          "sourceCount": 1,
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.8,
           "signalConsistency": 0.9
@@ -139,7 +139,7 @@
         "level": "theme",
         "rating": "low",
         "inputs": {
-          "sourceCount": 0.3,
+          "sourceCount": 1,
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.75,
           "signalConsistency": 0.4
@@ -160,7 +160,7 @@
         "themeIds": ["theme_maintenance"]
       }
     ],
-    "disagreement": [
+    "disagreements": [
       {
         "description": "Noise impressions diverge depending on which unit a reviewer occupies.",
         "themeIds": ["theme_noise"]
@@ -168,13 +168,28 @@
     ],
     "communitySentimentSummary": "Public discussion frames 123 Main St as well located but operationally slow on building maintenance, with noise that depends on unit.",
     "maySuggest": [
-      "Reviewers commonly describe maintenance delays.",
-      "Reviewers commonly describe the location favorably."
+      {
+        "description": "Reviewers commonly describe maintenance delays.",
+        "themeIds": ["theme_maintenance"]
+      },
+      {
+        "description": "Reviewers commonly describe the location favorably.",
+        "themeIds": ["theme_location"]
+      }
     ],
     "mayNotSuggest": [
-      "Does not assert any specific unit will have noise issues.",
-      "Does not rank this building against other buildings.",
-      "Does not recommend whether to sign a lease."
+      {
+        "description": "Does not assert any specific unit will have noise issues.",
+        "themeIds": ["theme_noise"]
+      },
+      {
+        "description": "Does not rank this building against other buildings.",
+        "themeIds": ["theme_maintenance", "theme_location", "theme_noise"]
+      },
+      {
+        "description": "Does not recommend whether to sign a lease.",
+        "themeIds": ["theme_maintenance", "theme_location", "theme_noise"]
+      }
     ],
     "limitations": [
       "Noise theme is supported by a single piece of evidence.",
@@ -185,7 +200,7 @@
     "level": "result",
     "rating": "medium",
     "inputs": {
-      "sourceCount": 0.4,
+      "sourceCount": 3,
       "sourceDiversity": 0.5,
       "sourceFreshness": 0.75,
       "signalConsistency": 0.75,

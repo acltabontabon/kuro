@@ -115,7 +115,7 @@
         "level": "theme",
         "rating": "medium",
         "inputs": {
-          "sourceCount": 0.5,
+          "sourceCount": 2,
           "sourceDiversity": 0.6,
           "sourceFreshness": 0.7,
           "signalConsistency": 0.9
@@ -131,7 +131,7 @@
         "level": "theme",
         "rating": "high",
         "inputs": {
-          "sourceCount": 0.6,
+          "sourceCount": 2,
           "sourceDiversity": 0.7,
           "sourceFreshness": 0.8,
           "signalConsistency": 0.95
@@ -147,7 +147,7 @@
         "level": "theme",
         "rating": "low",
         "inputs": {
-          "sourceCount": 0.3,
+          "sourceCount": 1,
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.7,
           "signalConsistency": 0.5
@@ -168,7 +168,7 @@
         "themeIds": ["theme_compensation"]
       }
     ],
-    "disagreement": [
+    "disagreements": [
       {
         "description": "Accounts of work-life balance vary between flexibility and launch-period crunch.",
         "themeIds": ["theme_wlb"]
@@ -176,13 +176,28 @@
     ],
     "communitySentimentSummary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance.",
     "maySuggest": [
-      "Reviewers repeatedly flag management turnover as disruptive.",
-      "Reviewers describe compensation as a strong point."
+      {
+        "description": "Reviewers repeatedly flag management turnover as disruptive.",
+        "themeIds": ["theme_management"]
+      },
+      {
+        "description": "Reviewers describe compensation as a strong point.",
+        "themeIds": ["theme_compensation"]
+      }
     ],
     "mayNotSuggest": [
-      "Does not predict whether Acme will reorganize again.",
-      "Does not claim Acme is a better or worse employer than its peers.",
-      "Does not recommend whether to accept or decline an offer."
+      {
+        "description": "Does not predict whether Acme will reorganize again.",
+        "themeIds": ["theme_management"]
+      },
+      {
+        "description": "Does not claim Acme is a better or worse employer than its peers.",
+        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+      },
+      {
+        "description": "Does not recommend whether to accept or decline an offer.",
+        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+      }
     ],
     "limitations": [
       "Underlying material draws from three platforms over a ~6 month window.",
@@ -193,7 +208,7 @@
     "level": "result",
     "rating": "medium",
     "inputs": {
-      "sourceCount": 0.5,
+      "sourceCount": 3,
       "sourceDiversity": 0.6,
       "sourceFreshness": 0.7,
       "signalConsistency": 0.8,

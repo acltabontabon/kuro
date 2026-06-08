@@ -88,6 +88,30 @@ function clone(): any {
   expectFailWithPath("Theme.signalIds must be non-empty", bad, "signalIds");
 }
 
+{
+  const bad = clone();
+  bad.signals.push({ ...bad.signals[0] });
+  expectFailWithPath("Duplicate signal id rejected", bad, "signals");
+}
+
+{
+  const bad = clone();
+  bad.themes.push({ ...bad.themes[0] });
+  expectFailWithPath("Duplicate theme id rejected", bad, "themes");
+}
+
+{
+  const bad = clone();
+  bad.sourceDocuments = [];
+  expectFailWithPath("sourceDocuments must be non-empty", bad, "sourceDocuments");
+}
+
+{
+  const bad = clone();
+  bad.inference.maySuggest[0].themeIds = ["theme_does_not_exist"];
+  expectFailWithPath("Inference.maySuggest -> missing themeId", bad, "maySuggest");
+}
+
 if (failures > 0) {
   console.error(`\n${failures} check(s) failed.`);
   process.exit(1);

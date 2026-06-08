@@ -12,13 +12,33 @@ export const KuroResult = z.object({
   id: Id,
   subject: Subject,
   generatedAt: IsoDateTime,
-  sourceDocuments: z.array(SourceDocument),
-  evidence: z.array(Evidence),
-  signals: z.array(Signal),
+  sourceDocuments: z.array(SourceDocument).min(1),
+  evidence: z.array(Evidence).min(1),
+  signals: z.array(Signal).min(1),
   themes: z.array(Theme).min(1),
   inference: KuroInference,
   confidence: ResultConfidence,
 }).superRefine((r, ctx) => {
+  const reportDupes = (key: "sourceDocuments" | "evidence" | "signals" | "themes") => {
+    const seen = new Map<string, number>();
+    (r[key] as { id: string }[]).forEach((item, i) => {
+      const prior = seen.get(item.id);
+      if (prior !== undefined) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: [key, i, "id"],
+          message: `Duplicate ${key} id "${item.id}" (also at index ${prior})`,
+        });
+      } else {
+        seen.set(item.id, i);
+      }
+    });
+  };
+  reportDupes("sourceDocuments");
+  reportDupes("evidence");
+  reportDupes("signals");
+  reportDupes("themes");
+
   const sourceIds = new Set(r.sourceDocuments.map((s) => s.id));
   const evidenceIds = new Set(r.evidence.map((e) => e.id));
   const signalIds = new Set(r.signals.map((s) => s.id));
@@ -58,7 +78,9 @@ export const KuroResult = z.object({
     });
   });
 
-  const checkInferenceClaims = (key: "patterns" | "consensus" | "disagreement") => {
+  const checkInferenceClaims = (
+    key: "patterns" | "consensus" | "disagreements" | "maySuggest" | "mayNotSuggest",
+  ) => {
     r.inference[key].forEach((claim, i) => {
       claim.themeIds.forEach((tid, j) => {
         if (!themeIds.has(tid)) {
@@ -73,6 +95,8 @@ export const KuroResult = z.object({
   };
   checkInferenceClaims("patterns");
   checkInferenceClaims("consensus");
-  checkInferenceClaims("disagreement");
+  checkInferenceClaims("disagreements");
+  checkInferenceClaims("maySuggest");
+  checkInferenceClaims("mayNotSuggest");
 });
 export type KuroResult = z.infer<typeof KuroResult>;
