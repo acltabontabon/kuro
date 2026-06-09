@@ -35,6 +35,42 @@
       "publishedAt": "2026-01-30T00:00:00Z"
     }
   ],
+  "sourceAttributions": [
+    {
+      "id": "att_apartments_1",
+      "sourceDocumentId": "src_apartments_1",
+      "sourceType": "review_site",
+      "url": "https://www.apartments.com/123-main-st/reviews",
+      "title": "123 Main St - Reviews",
+      "publishedAt": "2026-03-08T00:00:00Z",
+      "fetchedAt": "2026-05-25T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_reddit_2",
+      "sourceDocumentId": "src_reddit_2",
+      "sourceType": "forum",
+      "url": "https://www.reddit.com/r/AskNYC/comments/xyz789/123_main_st",
+      "title": "123 Main St — anyone live here?",
+      "authorHandle": "current_tenant_4f",
+      "publishedAt": "2026-04-19T20:00:00Z",
+      "fetchedAt": "2026-05-25T08:10:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community"
+    },
+    {
+      "id": "att_yelp_1",
+      "sourceDocumentId": "src_yelp_1",
+      "sourceType": "review_site",
+      "url": "https://www.yelp.com/biz/123-main-management-co",
+      "title": "123 Main Management Co",
+      "publishedAt": "2026-01-30T00:00:00Z",
+      "fetchedAt": "2026-05-25T08:15:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    }
+  ],
   "evidence": [
     {
       "id": "ev_maint_1",
@@ -257,6 +293,14 @@
       { "platform": "apartments.com", "count": 1 },
       { "platform": "reddit", "count": 1 },
       { "platform": "yelp", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 2 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 2 },
+      { "trustTier": "community", "count": 1 }
     ],
     "exclusions": [],
     "freshness": {

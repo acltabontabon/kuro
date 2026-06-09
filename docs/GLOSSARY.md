@@ -44,6 +44,8 @@ KURO Result
 
 Each level is derived from the level above it. Each level retains a reference to the level above it, so any item in a KURO Result can be traced back through Inference -> Theme -> Signal -> Evidence -> Source Document.
 
+A **Source Attribution** attaches to each Source Document 1:1 and describes *where it came from* — distinct from Evidence (what was quoted), Confidence (how strongly it supports), and the Source Document itself (what was read). See its entry in the Glossary.
+
 **Traceability rule.** A KURO output that cannot be traced back to Evidence is not a valid KURO output. This applies at every level: a Signal without Evidence is not a Signal, a Theme without supporting Signals is not a Theme, and a KURO Inference that cannot be grounded in its Themes is not a KURO Inference.
 
 **Subject** sits outside this derivation chain. It is the entity the query is about and is supplied by the user; it anchors relevance at every level of the chain. See its entry in the Glossary.
@@ -75,6 +77,54 @@ KURO does not treat Source Documents as authoritative; it treats them as express
 **Relationship to neighbors.** A Source Document is the upstream root. Zero, one, or many pieces of Evidence may be extracted from a single Source Document. **A Source Document may produce zero Evidence** if it turns out to be irrelevant to the Subject, duplicative of another source, spammy or promotional, too ambiguous to interpret fairly, or outside the scope of the query.
 
 **Example.** A Reddit post titled "Two years at Acme Corp - honest review" captured from r/jobs on a given date.
+
+---
+
+### Source Attribution
+
+**Definition.** A structured record describing the origin of a Source Document: its publishing-surface type, location, collection context, and a coarse reliability hint. Attribution answers "where did this material come from?" — it does not interpret the material, quote it, or weigh it.
+
+**Conceptual requirements.** An attribution carries: a reference to the Source Document it describes (1:1), a coarse `sourceType` (forum, review site, blog, etc.), the URL KURO fetched when one exists, the timestamp at which KURO obtained the material (`fetchedAt`, always required), the source-declared publish time when reliably extractable (`publishedAt`, never inferred), a coarse `trustTier`, and an optional public `authorHandle`. When no URL exists (user paste, file upload, API import), attribution records the access context via `accessedVia` instead. Attribution also carries an optional bounded `metadata` record for non-PII collection hints and an optional `redactions` array describing — by *category*, never by raw value — what was removed.
+
+**Relationship to neighbors.** Attribution attaches to a Source Document 1:1 and stays separate from Evidence and Confidence. Themes and Signals reach attribution only transitively, through `Evidence → Source Document → Source Attribution`. Attribution does not replace Evidence: a Signal that cannot cite Evidence is invalid even when its source is well-attributed.
+
+**Example.** A Glassdoor review of Acme Corp captured on 2026-05-20, with `sourceType: review_site`, `trustTier: secondary`, fetched directly from the public review URL.
+
+For the full Source Attribution rules — enums, validation rules, redaction semantics, the trust-tier boundary, and worked examples — see [SOURCE_ATTRIBUTION.md](./SOURCE_ATTRIBUTION.md).
+
+---
+
+### Trust Tier
+
+**Definition.** A coarse, explicit reliability/context hint attached to a Source Attribution — one of `primary`, `secondary`, `community`, `low_context`, or `unknown`.
+
+**What trust tier is not.** Trust tier is **not** a probability of correctness, **not** a truth label, and **not** a substitute for Evidence or Confidence. It is a provenance hint about the kind of surface the material came from, used for UI rendering and as a debugging label. Any rendering of trust tier must be paired with language that frames it as a reliability hint, never as a truth claim.
+
+**`unknown` requires a rationale.** A coarse "I don't know" must always be reasoned: the attribution must carry a non-empty `trustRationale` explaining why provenance could not be safely classified.
+
+---
+
+### Canonical URL
+
+**Definition.** A normalized form of a Source Attribution's `url` — redirects resolved, tracking parameters stripped (`utm_*`, `fbclid`, `gclid`, `ref`, `mc_cid`, `mc_eid`), host lowercased — used for deduplication and stable references.
+
+**When to omit.** Canonical URL is optional. When safe normalization is not possible, omit it rather than emitting a half-normalized form. Canonical URLs that still carry known tracking parameters are rejected at validation.
+
+---
+
+### Access Context
+
+**Definition.** The mechanism by which KURO obtained source material when no meaningful URL exists — recorded on Source Attribution as `accessedVia` and taking one of `direct_fetch`, `user_paste`, `file_upload`, `api_import`, or `other`. Required when the attribution's `url` is absent.
+
+**Why it exists.** Not all material has a stable public URL. A user-pasted excerpt, a locally uploaded transcript, or content imported via a partner API still needs an auditable provenance record. Access context captures how it arrived without inventing a URL.
+
+---
+
+### Redaction
+
+**Definition.** A recorded removal of a field whose raw value must not be stored or rendered (private identifiers, emails, real names, hidden platform metadata). A Redaction Record preserves the *category* of what was removed (and optionally why), but **never** the raw value itself.
+
+**Why it exists.** Auditability — KURO can answer "did you intentionally drop a field?" — without holding the value that was dropped. The schema enforces this: a Redaction Record's strict shape rejects a `value` key.
 
 ---
 
