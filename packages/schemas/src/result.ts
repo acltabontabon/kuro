@@ -140,5 +140,16 @@ export const KuroResult = z.object({
       });
     }
   }
+
+  if (r.confidence.rating === "high") {
+    const supporting = r.themes.filter((t) => t.confidence.rating !== "low").length;
+    if (supporting < 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["confidence", "rating"],
+        message: `Result rating "high" requires at least 3 themes with confidence rating "medium" or "high"; found ${supporting}.`,
+      });
+    }
+  }
 });
 export type KuroResult = z.infer<typeof KuroResult>;

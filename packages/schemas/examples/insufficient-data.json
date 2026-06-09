@@ -68,7 +68,11 @@
       "signalConsistency": 0,
       "themeSupportAggregate": 0,
       "topicBreadth": 0
-    }
+    },
+    "reasons": [
+      { "driver": "sourceCount", "effect": "lowers", "note": "0 usable Source Documents after filtering — both candidates were excluded." },
+      { "driver": "sourceFreshness", "effect": "lowers", "note": "The one dated document is from 2022, outside the 24-month freshness window." }
+    ]
   },
   "finalKuro": "KURO cannot form a meaningful community inference about Obscure Holdings LLC from the available material: the only documents located were a stale overview and a directory listing, neither of which carries first-hand experience."
 }
