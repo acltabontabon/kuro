@@ -2,6 +2,8 @@
 
 This document pins the MVP rules for KURO's confidence model concretely enough for implementers and reviewers to apply without further interpretation. The definitions live in [GLOSSARY.md §Confidence](./GLOSSARY.md#confidence); this file is the rulebook.
 
+Confidence applies within whatever [Decision Category](./DECISION_CATEGORIES.md) the Result declares; category bounds scope and interpretation, but does not change how confidence is computed or what it means.
+
 KURO confidence describes **strength of support**, not truth-probability. A `high` confidence Theme means "the Signals supporting this Theme are numerous, diverse, recent, and consistent." It does **not** mean "this claim about the Subject is objectively true."
 
 ## 1. What confidence does NOT mean

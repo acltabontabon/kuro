@@ -3,13 +3,15 @@ import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { KuroResult } from "../src/index.js";
 
+// @ts-ignore
 const here = dirname(fileURLToPath(import.meta.url));
 
 const POSITIVE_EXAMPLES = [
   "employer-acme.json",
   "rental-123-main.json",
   "insufficient-data.json",
-  "mixed-sentiment-high.json",
+  "result.employment.json",
+  "result.rental.json",
 ];
 
 let failures = 0;
@@ -568,6 +570,37 @@ function clone(src: Record<string, unknown> = base): any {
     bad,
     "sourceAttributions.0.metadata",
   );
+}
+
+// DecisionCategory — fixture with unsupported category is rejected at the category path.
+{
+  const bad = load("result.invalid-category.json");
+  expectFailWithPath("result.invalid-category.json (banking) rejected", bad, "category");
+}
+
+// DecisionCategory — every documented unsupported value is rejected.
+const UNSUPPORTED_CATEGORIES = [
+  "banking",
+  "healthcare",
+  "insurance",
+  "schools",
+  "consumer_products",
+  "legal_eligibility",
+  "creditworthiness",
+  "medical_suitability",
+  "financial_advice",
+];
+for (const cat of UNSUPPORTED_CATEGORIES) {
+  const bad = clone();
+  bad.category = cat;
+  expectFailWithPath(`category="${cat}" rejected`, bad, "category");
+}
+
+// DecisionCategory — missing category is rejected.
+{
+  const bad = clone();
+  delete bad.category;
+  expectFailWithPath("missing category rejected", bad, "category");
 }
 
 if (failures > 0) {

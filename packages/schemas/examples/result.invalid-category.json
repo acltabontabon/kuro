@@ -1,0 +1,153 @@
+{
+  "id": "result_invalid_category_minimal",
+  "subject": {
+    "id": "subject_invalid_category_minimal",
+    "kind": "rental",
+    "displayName": "12 Oak St, Apt 2",
+    "description": "12 Oak St, Apt 2 as a rental"
+  },
+  "category": "banking",
+  "generatedAt": "2026-06-01T12:30:00Z",
+  "outcome": "ok",
+  "summary": "A single tenant report mentions slow maintenance responses at 12 Oak St.",
+  "sourceDocuments": [
+    {
+      "id": "src_rmin_1",
+      "url": "https://www.apartments.com/12-oak-st/reviews",
+      "platform": "apartments.com",
+      "author": null,
+      "capturedAt": "2026-05-25T08:00:00Z",
+      "publishedAt": "2026-03-20T00:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_rmin_1",
+      "sourceDocumentId": "src_rmin_1",
+      "sourceType": "review_site",
+      "url": "https://www.apartments.com/12-oak-st/reviews",
+      "title": "12 Oak St - Reviews",
+      "publishedAt": "2026-03-20T00:00:00Z",
+      "fetchedAt": "2026-05-25T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_rmin_maint_1",
+      "sourceDocumentId": "src_rmin_1",
+      "snippet": "Repair requests sit untouched for weeks before anyone responds.",
+      "locator": { "kind": "charRange", "start": 0, "end": 64 },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-25T08:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_rmin_maint",
+      "topic": "Maintenance",
+      "sentiment": "negative",
+      "claim": "A tenant reports multi-week delays on repair requests.",
+      "evidenceIds": ["ev_rmin_maint_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "The excerpt directly states multi-week delays." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_rmin_maint",
+      "topic": "Maintenance",
+      "sentiment": "negative",
+      "signalIds": ["sig_rmin_maint"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": {
+          "sourceCount": 1,
+          "sourceDiversity": 0.3,
+          "sourceFreshness": 0.75,
+          "signalConsistency": 0.8
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Single source." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Maintenance turnaround may run long for at least some tenants." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific repair request will be delayed." }
+      ],
+      "limitations": [
+        "Supported by a single source."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [],
+    "consensus": [],
+    "disagreements": [],
+    "communitySentimentSummary": "Limited community discussion describes slow maintenance response at 12 Oak St.",
+    "maySuggest": [
+      {
+        "description": "Reviewers may describe maintenance delays at this building.",
+        "themeIds": ["theme_rmin_maint"]
+      }
+    ],
+    "mayNotSuggest": [
+      {
+        "description": "Does not recommend whether to sign or decline a lease.",
+        "themeIds": ["theme_rmin_maint"]
+      }
+    ],
+    "limitations": [
+      "Result rests on a single review-site source."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 1,
+    "platforms": [
+      { "platform": "apartments.com", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-03-20T00:00:00Z",
+      "newestPublishedAt": "2026-03-20T00:00:00Z"
+    },
+    "diversityNotes": [
+      "Single source; narrow coverage."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "low",
+    "inputs": {
+      "sourceCount": 1,
+      "sourceDiversity": 0.2,
+      "sourceFreshness": 0.75,
+      "signalConsistency": 0.8,
+      "themeSupportAggregate": 0.3,
+      "topicBreadth": 0.2
+    },
+    "reasons": [
+      { "driver": "sourceCount", "effect": "lowers", "note": "Single source supports the Result." }
+    ]
+  },
+  "finalKuro": "From the available community discussion, 12 Oak St may suggest a pattern of slow maintenance response. It may not suggest how any specific repair request will be handled, and it is not a recommendation about a lease."
+}
