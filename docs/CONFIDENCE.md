@@ -45,6 +45,8 @@ These are the inputs that move a rating. Each driver is described qualitatively 
 - **Language ambiguity.** Hedging, sarcasm, conditional phrasing reduce confidence.
 - **Directness of support.** Does the Evidence directly state the claim, or is the claim inferred from context?
 
+Evidence carries its own quality hints — `sourceTrust`, duplicate markers, reviewer notes, and the synthesized-vs-verbatim distinction — that feed these Signal-level drivers. The hints are the source of truth for *what* the support is; the drivers above are the source of truth for *how strong* it is. See [EVIDENCE.md](./EVIDENCE.md) for the hint definitions and the rule that synthesized Evidence must justify the lack of a verbatim anchor.
+
 **Theme-level drivers**
 
 - **Source count.** How many Signals support the Theme.

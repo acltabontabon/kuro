@@ -211,6 +211,143 @@ function clone(src: Record<string, unknown> = base): any {
   expectFailWithPath("Theme confidence.rating=unknown rejected", bad, "themes.0.confidence.rating");
 }
 
+// Evidence model — Signal must cite at least one Evidence (no Evidence, no Signal).
+{
+  const bad = clone();
+  bad.signals[0].evidenceIds = [];
+  expectFailWithPath("Signal with empty evidenceIds rejected", bad, "signals.0.evidenceIds");
+}
+
+// Evidence model — synthesized extraction without originalSnippet or qualityHints.notes.
+{
+  const bad = clone();
+  bad.evidence[0].extraction = {
+    method: "synthesized",
+    extractedAt: "2026-05-20T09:00:00Z",
+    extractor: "kuro-extractor@0.1.0",
+  };
+  delete bad.evidence[0].originalSnippet;
+  delete bad.evidence[0].qualityHints;
+  expectFailWithPath(
+    "Synthesized evidence without originalSnippet or notes rejected",
+    bad,
+    "evidence.0.originalSnippet",
+  );
+}
+
+// Evidence model — synthesized with originalSnippet OK (positive coverage).
+{
+  const ok = clone();
+  ok.evidence[0].extraction = {
+    method: "synthesized",
+    extractedAt: "2026-05-20T09:00:00Z",
+    extractor: "kuro-extractor@0.1.0",
+  };
+  ok.evidence[0].originalSnippet = "Management changed three times in my first year and each reorg killed morale.";
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  Synthesized evidence with originalSnippet should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    Synthesized evidence with originalSnippet");
+  }
+}
+
+// Evidence model — synthesized with qualityHints.notes (no originalSnippet) OK (positive coverage).
+{
+  const ok = clone();
+  ok.evidence[0].extraction = {
+    method: "synthesized",
+    extractedAt: "2026-05-20T09:00:00Z",
+    extractor: "kuro-extractor@0.1.0",
+  };
+  delete ok.evidence[0].originalSnippet;
+  ok.evidence[0].qualityHints = { notes: "Paraphrased from a paywalled transcript; verbatim text not retrievable." };
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  Synthesized evidence with qualityHints.notes should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    Synthesized evidence with qualityHints.notes");
+  }
+}
+
+// Evidence model — duplicate (sourceDocumentId, locator) without isDuplicateOf marker rejected.
+{
+  const bad = clone();
+  const dup = JSON.parse(JSON.stringify(bad.evidence[0]));
+  dup.id = "ev_dup_1";
+  bad.evidence.push(dup);
+  expectFailWithPath(
+    "Duplicate evidence (sourceDocumentId, locator) rejected without isDuplicateOf",
+    bad,
+    "evidence",
+  );
+}
+
+// Evidence model — duplicate evidence marked with qualityHints.isDuplicateOf is allowed.
+{
+  const ok = clone();
+  const dup = JSON.parse(JSON.stringify(ok.evidence[0]));
+  dup.id = "ev_dup_ok";
+  dup.qualityHints = { ...(dup.qualityHints ?? {}), isDuplicateOf: ok.evidence[0].id };
+  ok.evidence.push(dup);
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  Duplicate evidence marked with isDuplicateOf should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    Duplicate evidence marked with isDuplicateOf");
+  }
+}
+
+// Evidence model — qualityHints.isDuplicateOf pointing at unknown id rejected.
+{
+  const bad = clone();
+  bad.evidence[0].qualityHints = { isDuplicateOf: "ev_does_not_exist" };
+  expectFailWithPath(
+    "qualityHints.isDuplicateOf pointing at unknown evidence rejected",
+    bad,
+    "evidence.0.qualityHints.isDuplicateOf",
+  );
+}
+
+// Evidence model — Locator discriminated union: anchor variant parses.
+{
+  const ok = clone();
+  ok.evidence[0].locator = { kind: "anchor", value: "p-paragraph-3" };
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  Anchor locator should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    Anchor locator");
+  }
+}
+
+// Evidence model — Locator charRange with end < start rejected.
+{
+  const bad = clone();
+  bad.evidence[0].locator = { kind: "charRange", start: 200, end: 100 };
+  expectFailWithPath(
+    "charRange locator with end < start rejected",
+    bad,
+    "evidence.0.locator",
+  );
+}
+
 if (failures > 0) {
   console.error(`\n${failures} check(s) failed.`);
   process.exit(1);

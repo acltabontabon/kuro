@@ -80,13 +80,15 @@ KURO does not treat Source Documents as authoritative; it treats them as express
 
 ### Evidence
 
-**Definition.** A specific excerpt or snippet from a Source Document that supports a Signal. Evidence is the citable link between an interpreted Signal and the raw content it came from.
+**Definition.** A traceable, addressable extract from a single Source Document that *could* be used to support one or more Signals. Evidence is raw or minimally-normalized material plus the provenance needed to locate it again in the original source. Evidence does **not** carry interpretation, stance, sentiment, or conclusions — those live on the Signal.
 
-**Conceptual requirements.** Evidence carries the verbatim excerpt, a reference to the parent Source Document, enough positional information for the excerpt to be located again, and any minimal surrounding context needed to read the excerpt fairly.
+**Conceptual requirements.** Evidence carries the extracted snippet KURO will quote, a reference to the parent Source Document, a **locator** that pinpoints the extract within that document, and extraction provenance (when it was extracted, by what extractor, and whether the snippet is verbatim, normalized, or synthesized). When extraction is synthesized (paraphrased rather than lifted), Evidence must either preserve the verbatim original alongside the snippet or carry an explicit note explaining why no verbatim anchor exists. Optional **quality hints** — source trust, duplicate markers, reviewer notes — describe the strength of the support; they are *inputs* to downstream confidence scoring, never confidence itself.
 
-**Relationship to neighbors.** Evidence is extracted from a Source Document. One or more pieces of Evidence support each Signal. Evidence is what KURO shows the user when asked "why do you say that?"
+**Relationship to neighbors.** Evidence is extracted from a Source Document (1:N). One or more pieces of Evidence support each Signal, and a single Evidence record may support multiple Signals (N:M); Signals reference Evidence by id rather than embedding it, so the Evidence registry lives at the Result level. **A Signal whose evidence reference list is empty is not a Signal and is rejected.** Evidence is what KURO shows the user when asked "why do you say that?"
 
-**Example.** The sentence "Management changed three times in my first year and each reorg killed morale" lifted from the Reddit post above.
+**Example.** The sentence "Management changed three times in my first year and each reorg killed morale" lifted verbatim from the Reddit post above, addressed by a character range, extracted by `kuro-extractor@0.1.0` on 2026-05-20.
+
+For the full Evidence rules — locator kinds, quality hints, edge-case handling, and non-goals — see [EVIDENCE.md](./EVIDENCE.md).
 
 ---
 
@@ -99,7 +101,7 @@ KURO does not treat Source Documents as authoritative; it treats them as express
 - A topic - what the Signal is about (e.g. management stability, commute, noise levels).
 - A sentiment - the polarity of the opinion the Signal expresses (positive, negative, neutral, or mixed). Sentiment is an attribute of a Signal; it is not how Signals are organized.
 - A claim - a short interpreted statement of what the Signal says about the Subject. The claim is KURO's interpretation of the underlying Evidence, not a verbatim excerpt.
-- At least one supporting piece of Evidence.
+- At least one supporting piece of Evidence. A Signal whose evidence reference list is empty is not a Signal and is rejected at validation. See [EVIDENCE.md](./EVIDENCE.md).
 - A source reference (carried via the Evidence), used downstream for diversity and freshness reasoning.
 - A Signal-level confidence.
 

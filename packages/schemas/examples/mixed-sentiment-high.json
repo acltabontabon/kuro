@@ -17,17 +17,17 @@
     { "id": "src_reddit_a", "url": "https://www.reddit.com/r/foodscene/comments/abc/kuro-cafe-review", "platform": "reddit", "author": "local_foodie_22", "capturedAt": "2026-05-25T08:04:00Z", "publishedAt": "2026-05-18T00:00:00Z" }
   ],
   "evidence": [
-    { "id": "ev_food_pos_1", "sourceDocumentId": "src_yelp_a", "excerpt": "The breakfast burrito is the best I've had in the neighborhood.", "position": { "start": 10, "end": 75 } },
-    { "id": "ev_food_pos_2", "sourceDocumentId": "src_google_a", "excerpt": "Solid menu, especially the toasts and the seasonal salads.", "position": { "start": 0, "end": 60 } },
-    { "id": "ev_food_pos_3", "sourceDocumentId": "src_reddit_a", "excerpt": "Their savory plates are genuinely good, not just brunch theatre.", "position": { "start": 12, "end": 78 } },
-    { "id": "ev_food_neg_1", "sourceDocumentId": "src_google_b", "excerpt": "Food is overpriced for what you get. Small portions.", "position": { "start": 0, "end": 55 } },
-    { "id": "ev_food_neg_2", "sourceDocumentId": "src_tripadvisor_a", "excerpt": "Menu felt thin and the dishes I tried were forgettable.", "position": { "start": 0, "end": 60 } },
-    { "id": "ev_coffee_1", "sourceDocumentId": "src_yelp_a", "excerpt": "The espresso program is the real reason to come here.", "position": { "start": 110, "end": 170 } },
-    { "id": "ev_coffee_2", "sourceDocumentId": "src_google_a", "excerpt": "Excellent coffee, friendly baristas.", "position": { "start": 120, "end": 158 } },
-    { "id": "ev_atmo_1", "sourceDocumentId": "src_tripadvisor_a", "excerpt": "Warm, quiet enough to work, and the music is well chosen.", "position": { "start": 120, "end": 180 } },
-    { "id": "ev_atmo_2", "sourceDocumentId": "src_reddit_a", "excerpt": "Great room to spend a couple of hours in.", "position": { "start": 80, "end": 122 } },
-    { "id": "ev_service_1", "sourceDocumentId": "src_google_b", "excerpt": "Service at peak hours is consistently slow.", "position": { "start": 100, "end": 145 } },
-    { "id": "ev_service_2", "sourceDocumentId": "src_yelp_a", "excerpt": "Long waits on weekends even with a reservation.", "position": { "start": 200, "end": 248 } }
+    { "id": "ev_food_pos_1", "sourceDocumentId": "src_yelp_a", "snippet": "The breakfast burrito is the best I've had in the neighborhood.", "locator": { "kind": "charRange", "start": 10, "end": 75 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_food_pos_2", "sourceDocumentId": "src_google_a", "snippet": "Solid menu, especially the toasts and the seasonal salads.", "locator": { "kind": "charRange", "start": 0, "end": 60 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:01:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_food_pos_3", "sourceDocumentId": "src_reddit_a", "snippet": "Their savory plates are genuinely good, not just brunch theatre.", "locator": { "kind": "charRange", "start": 12, "end": 78 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:04:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_food_neg_1", "sourceDocumentId": "src_google_b", "snippet": "Food is overpriced for what you get. Small portions.", "locator": { "kind": "charRange", "start": 0, "end": 55 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:02:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_food_neg_2", "sourceDocumentId": "src_tripadvisor_a", "snippet": "Menu felt thin and the dishes I tried were forgettable.", "locator": { "kind": "charRange", "start": 0, "end": 60 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:03:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_coffee_1", "sourceDocumentId": "src_yelp_a", "snippet": "The espresso program is the real reason to come here.", "locator": { "kind": "charRange", "start": 110, "end": 170 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_coffee_2", "sourceDocumentId": "src_google_a", "snippet": "Excellent coffee, friendly baristas.", "locator": { "kind": "charRange", "start": 120, "end": 158 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:01:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_atmo_1", "sourceDocumentId": "src_tripadvisor_a", "snippet": "Warm, quiet enough to work, and the music is well chosen.", "locator": { "kind": "charRange", "start": 120, "end": 180 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:03:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_atmo_2", "sourceDocumentId": "src_reddit_a", "snippet": "Great room to spend a couple of hours in.", "locator": { "kind": "charRange", "start": 80, "end": 122 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:04:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_service_1", "sourceDocumentId": "src_google_b", "snippet": "Service at peak hours is consistently slow.", "locator": { "kind": "charRange", "start": 100, "end": 145 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:02:00Z", "extractor": "kuro-extractor@0.1.0" } },
+    { "id": "ev_service_2", "sourceDocumentId": "src_yelp_a", "snippet": "Long waits on weekends even with a reservation.", "locator": { "kind": "charRange", "start": 200, "end": 248 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" } }
   ],
   "signals": [
     {

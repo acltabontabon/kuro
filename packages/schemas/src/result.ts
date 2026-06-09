@@ -74,6 +74,52 @@ export const KuroResult = z.object({
     });
   });
 
+  const locatorKey = (sourceDocumentId: string, locator: { kind: string } & Record<string, unknown>) => {
+    switch (locator.kind) {
+      case "charRange":
+        return `${sourceDocumentId}|charRange|${locator.start}|${locator.end}`;
+      case "lineRange":
+        return `${sourceDocumentId}|lineRange|${locator.startLine}|${locator.endLine}`;
+      case "anchor":
+        return `${sourceDocumentId}|anchor|${locator.value}`;
+      default:
+        return `${sourceDocumentId}|${locator.kind}|${JSON.stringify(locator)}`;
+    }
+  };
+  const seenLocators = new Map<string, number>();
+  r.evidence.forEach((e, i) => {
+    const key = locatorKey(e.sourceDocumentId, e.locator as { kind: string } & Record<string, unknown>);
+    const prior = seenLocators.get(key);
+    const isMarkedDuplicate = typeof e.qualityHints?.isDuplicateOf === "string";
+    if (prior !== undefined && !isMarkedDuplicate) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["evidence", i, "locator"],
+        message: `Evidence ${e.id} duplicates the locator of evidence at index ${prior} on sourceDocument ${e.sourceDocumentId}; mark one with qualityHints.isDuplicateOf to retain both.`,
+      });
+    } else if (prior === undefined) {
+      seenLocators.set(key, i);
+    }
+  });
+
+  r.evidence.forEach((e, i) => {
+    const dupId = e.qualityHints?.isDuplicateOf;
+    if (dupId !== undefined && !evidenceIds.has(dupId)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["evidence", i, "qualityHints", "isDuplicateOf"],
+        message: `Evidence ${e.id} qualityHints.isDuplicateOf references unknown evidenceId ${dupId}`,
+      });
+    }
+    if (dupId !== undefined && dupId === e.id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["evidence", i, "qualityHints", "isDuplicateOf"],
+        message: `Evidence ${e.id} qualityHints.isDuplicateOf cannot reference itself`,
+      });
+    }
+  });
+
   r.themes.forEach((t, i) => {
     t.signalIds.forEach((sid, j) => {
       if (!signalIds.has(sid)) {
