@@ -39,26 +39,30 @@
     {
       "id": "ev_maint_1",
       "sourceDocumentId": "src_apartments_1",
-      "excerpt": "Maintenance tickets take 2-3 weeks even for active leaks.",
-      "position": { "start": 12, "end": 64 }
+      "snippet": "Maintenance tickets take 2-3 weeks even for active leaks.",
+      "locator": { "kind": "charRange", "start": 12, "end": 64 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_maint_2",
       "sourceDocumentId": "src_yelp_1",
-      "excerpt": "Management drags out repairs. Three follow-ups for a broken radiator.",
-      "position": { "start": 0, "end": 70 }
+      "snippet": "Management drags out repairs. Three follow-ups for a broken radiator.",
+      "locator": { "kind": "charRange", "start": 0, "end": 70 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:15:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_loc_1",
       "sourceDocumentId": "src_reddit_2",
-      "excerpt": "Half a block from the L train and walkable to everything.",
-      "position": { "start": 88, "end": 145 }
+      "snippet": "Half a block from the L train and walkable to everything.",
+      "locator": { "kind": "charRange", "start": 88, "end": 145 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:10:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_noise_1",
       "sourceDocumentId": "src_apartments_1",
-      "excerpt": "Street noise is loud at night but the back-facing units are quiet.",
-      "position": { "start": 180, "end": 246 }
+      "snippet": "Street noise is loud at night but the back-facing units are quiet.",
+      "locator": { "kind": "charRange", "start": 180, "end": 246 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
     }
   ],
   "signals": [

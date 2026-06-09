@@ -41,32 +41,38 @@
     {
       "id": "ev_mgmt_1",
       "sourceDocumentId": "src_reddit_1",
-      "excerpt": "Management changed three times in my first year and each reorg killed morale.",
-      "position": { "start": 120, "end": 199 }
+      "snippet": "Management changed three times in my first year and each reorg killed morale.",
+      "locator": { "kind": "charRange", "start": 120, "end": 199 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:00:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_mgmt_2",
       "sourceDocumentId": "src_glassdoor_1",
-      "excerpt": "Constant leadership turnover. Hard to plan anything beyond a quarter.",
-      "position": { "start": 44, "end": 113 }
+      "snippet": "Constant leadership turnover. Hard to plan anything beyond a quarter.",
+      "locator": { "kind": "charRange", "start": 44, "end": 113 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:05:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_pay_1",
       "sourceDocumentId": "src_blind_1",
-      "excerpt": "Comp is genuinely top of band for the level. They will match offers.",
-      "position": { "start": 10, "end": 78 }
+      "snippet": "Comp is genuinely top of band for the level. They will match offers.",
+      "locator": { "kind": "charRange", "start": 10, "end": 78 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:10:00Z", "extractor": "kuro-extractor@0.1.0" }
     },
     {
       "id": "ev_pay_2",
       "sourceDocumentId": "src_glassdoor_1",
-      "excerpt": "Salary and bonus were the best part of the job.",
-      "position": { "start": 220, "end": 267 }
+      "snippet": "Salary and bonus were the best part of the job.",
+      "locator": { "kind": "charRange", "start": 220, "end": 267 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:05:00Z", "extractor": "kuro-extractor@0.1.0" },
+      "qualityHints": { "sourceTrust": "medium" }
     },
     {
       "id": "ev_wlb_1",
       "sourceDocumentId": "src_reddit_1",
-      "excerpt": "Flexible WFH but expect to be online late during launches.",
-      "position": { "start": 400, "end": 458 }
+      "snippet": "Flexible WFH but expect to be online late during launches.",
+      "locator": { "kind": "charRange", "start": 400, "end": 458 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:00:00Z", "extractor": "kuro-extractor@0.1.0" }
     }
   ],
   "signals": [
