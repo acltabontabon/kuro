@@ -1,0 +1,283 @@
+{
+  "id": "result_kuro_cafe_2026_06_01",
+  "subject": {
+    "id": "subject_kuro_cafe",
+    "kind": "service",
+    "displayName": "Kuro Cafe",
+    "description": "Kuro Cafe as a place to eat and work."
+  },
+  "generatedAt": "2026-06-01T14:00:00Z",
+  "outcome": "ok",
+  "summary": "Wide public discussion describes Kuro Cafe as well loved for coffee and atmosphere, with persistently divided opinions on its food menu and confirmed slow service during peak hours.",
+  "sourceDocuments": [
+    { "id": "src_yelp_a", "url": "https://www.yelp.com/biz/kuro-cafe-1", "platform": "yelp", "author": null, "capturedAt": "2026-05-25T08:00:00Z", "publishedAt": "2026-03-12T00:00:00Z" },
+    { "id": "src_google_a", "url": "https://www.google.com/maps/place/kuro-cafe/reviews-a", "platform": "google", "author": null, "capturedAt": "2026-05-25T08:01:00Z", "publishedAt": "2026-04-02T00:00:00Z" },
+    { "id": "src_google_b", "url": "https://www.google.com/maps/place/kuro-cafe/reviews-b", "platform": "google", "author": null, "capturedAt": "2026-05-25T08:02:00Z", "publishedAt": "2026-04-30T00:00:00Z" },
+    { "id": "src_tripadvisor_a", "url": "https://www.tripadvisor.com/Restaurant_Review-kuro-cafe", "platform": "tripadvisor", "author": null, "capturedAt": "2026-05-25T08:03:00Z", "publishedAt": "2026-05-10T00:00:00Z" },
+    { "id": "src_reddit_a", "url": "https://www.reddit.com/r/foodscene/comments/abc/kuro-cafe-review", "platform": "reddit", "author": "local_foodie_22", "capturedAt": "2026-05-25T08:04:00Z", "publishedAt": "2026-05-18T00:00:00Z" }
+  ],
+  "evidence": [
+    { "id": "ev_food_pos_1", "sourceDocumentId": "src_yelp_a", "excerpt": "The breakfast burrito is the best I've had in the neighborhood.", "position": { "start": 10, "end": 75 } },
+    { "id": "ev_food_pos_2", "sourceDocumentId": "src_google_a", "excerpt": "Solid menu, especially the toasts and the seasonal salads.", "position": { "start": 0, "end": 60 } },
+    { "id": "ev_food_pos_3", "sourceDocumentId": "src_reddit_a", "excerpt": "Their savory plates are genuinely good, not just brunch theatre.", "position": { "start": 12, "end": 78 } },
+    { "id": "ev_food_neg_1", "sourceDocumentId": "src_google_b", "excerpt": "Food is overpriced for what you get. Small portions.", "position": { "start": 0, "end": 55 } },
+    { "id": "ev_food_neg_2", "sourceDocumentId": "src_tripadvisor_a", "excerpt": "Menu felt thin and the dishes I tried were forgettable.", "position": { "start": 0, "end": 60 } },
+    { "id": "ev_coffee_1", "sourceDocumentId": "src_yelp_a", "excerpt": "The espresso program is the real reason to come here.", "position": { "start": 110, "end": 170 } },
+    { "id": "ev_coffee_2", "sourceDocumentId": "src_google_a", "excerpt": "Excellent coffee, friendly baristas.", "position": { "start": 120, "end": 158 } },
+    { "id": "ev_atmo_1", "sourceDocumentId": "src_tripadvisor_a", "excerpt": "Warm, quiet enough to work, and the music is well chosen.", "position": { "start": 120, "end": 180 } },
+    { "id": "ev_atmo_2", "sourceDocumentId": "src_reddit_a", "excerpt": "Great room to spend a couple of hours in.", "position": { "start": 80, "end": 122 } },
+    { "id": "ev_service_1", "sourceDocumentId": "src_google_b", "excerpt": "Service at peak hours is consistently slow.", "position": { "start": 100, "end": 145 } },
+    { "id": "ev_service_2", "sourceDocumentId": "src_yelp_a", "excerpt": "Long waits on weekends even with a reservation.", "position": { "start": 200, "end": 248 } }
+  ],
+  "signals": [
+    {
+      "id": "sig_food_loved",
+      "topic": "Food",
+      "sentiment": "positive",
+      "claim": "Many reviewers describe the food, especially savory items, as a strength.",
+      "evidenceIds": ["ev_food_pos_1", "ev_food_pos_2", "ev_food_pos_3"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Multiple reviewers name specific dishes as standouts." }
+        ]
+      }
+    },
+    {
+      "id": "sig_food_disliked",
+      "topic": "Food",
+      "sentiment": "negative",
+      "claim": "Other reviewers find the menu thin and overpriced relative to portion.",
+      "evidenceIds": ["ev_food_neg_1", "ev_food_neg_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.85 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly criticize value and breadth of the menu." }
+        ]
+      }
+    },
+    {
+      "id": "sig_coffee_strong",
+      "topic": "Coffee",
+      "sentiment": "positive",
+      "claim": "Coffee program is consistently praised.",
+      "evidenceIds": ["ev_coffee_1", "ev_coffee_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "clarity", "effect": "raises", "note": "Both excerpts call out coffee in unambiguous terms." }
+        ]
+      }
+    },
+    {
+      "id": "sig_atmosphere_positive",
+      "topic": "Atmosphere",
+      "sentiment": "positive",
+      "claim": "Atmosphere is described as warm and work-friendly.",
+      "evidenceIds": ["ev_atmo_1", "ev_atmo_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.8 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts describe the room positively." }
+        ]
+      }
+    },
+    {
+      "id": "sig_service_slow",
+      "topic": "Service",
+      "sentiment": "negative",
+      "claim": "Service is reported as slow during peak hours.",
+      "evidenceIds": ["ev_service_1", "ev_service_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly name slow service at peak times." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_food",
+      "topic": "Food",
+      "sentiment": "mixed",
+      "signalIds": ["sig_food_loved", "sig_food_disliked"],
+      "confidence": {
+        "level": "theme",
+        "rating": "high",
+        "inputs": {
+          "sourceCount": 5,
+          "sourceDiversity": 0.7,
+          "sourceFreshness": 0.9,
+          "signalConsistency": 0.85
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "raises", "note": "5 Signals across 4 distinct platforms." },
+          { "driver": "signalConsistency", "effect": "raises", "note": "Each side internally agrees on its claims; the split is sentiment, not facts." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Opinions about the food are genuinely divided rather than uniformly positive or negative." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not predict whether a specific dish will satisfy a given diner." }
+      ],
+      "limitations": [
+        "The food Theme is mixed by design; sentiment polarity does not reduce its confidence here."
+      ]
+    },
+    {
+      "id": "theme_coffee",
+      "topic": "Coffee",
+      "sentiment": "positive",
+      "signalIds": ["sig_coffee_strong"],
+      "confidence": {
+        "level": "theme",
+        "rating": "high",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.6,
+          "sourceFreshness": 0.9,
+          "signalConsistency": 0.95
+        },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both reviewers praise coffee unambiguously." },
+          { "driver": "sourceFreshness", "effect": "raises", "note": "Both sources are within the last two months." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Reviewers consistently describe coffee as a strong point of the cafe." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific drink will match a given visitor's preference." }
+      ],
+      "limitations": [
+        "Two sources is enough for a Theme but is the floor, not a broad consensus."
+      ]
+    },
+    {
+      "id": "theme_atmosphere",
+      "topic": "Atmosphere",
+      "sentiment": "positive",
+      "signalIds": ["sig_atmosphere_positive"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.5,
+          "sourceFreshness": 0.9,
+          "signalConsistency": 0.9
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 supporting excerpts." },
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both reviewers describe the room positively." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "The room is repeatedly described as warm and conducive to working." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert the cafe will be quiet at a given time of day." }
+      ],
+      "limitations": [
+        "Two-source basis; atmosphere impressions can shift quickly with renovations or new music programming."
+      ]
+    },
+    {
+      "id": "theme_service",
+      "topic": "Service",
+      "sentiment": "negative",
+      "signalIds": ["sig_service_slow"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.6,
+          "sourceFreshness": 0.9,
+          "signalConsistency": 0.9
+        },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both reviewers describe slow service at peak hours." },
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 supporting excerpts." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Service is slow during busy periods according to multiple reviewers." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not predict service times during off-peak hours." }
+      ],
+      "limitations": [
+        "Both excerpts focus on peak hours; off-peak service is not covered by the Evidence."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [
+      { "description": "Coffee and atmosphere are consistently praised; food is genuinely divisive; service slows down at peak hours.", "themeIds": ["theme_coffee", "theme_atmosphere", "theme_food", "theme_service"] }
+    ],
+    "consensus": [
+      { "description": "Reviewers across platforms agree the coffee is good.", "themeIds": ["theme_coffee"] }
+    ],
+    "disagreements": [
+      { "description": "Reviewers disagree about food quality and value; both sides are well represented.", "themeIds": ["theme_food"] }
+    ],
+    "communitySentimentSummary": "Kuro Cafe is well loved for coffee and atmosphere, with mixed opinions on food and confirmed slow service at peak.",
+    "maySuggest": [
+      { "description": "The cafe may be a draw for coffee and a working room; reactions to its food are split.", "themeIds": ["theme_coffee", "theme_atmosphere", "theme_food"] }
+    ],
+    "mayNotSuggest": [
+      { "description": "Does not recommend whether to visit or not.", "themeIds": ["theme_food", "theme_coffee", "theme_atmosphere", "theme_service"] }
+    ],
+    "limitations": [
+      "Material spans roughly three months of recent activity; longer-term trends are not assessed."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 5,
+    "platforms": [
+      { "platform": "yelp", "count": 1 },
+      { "platform": "google", "count": 2 },
+      { "platform": "tripadvisor", "count": 1 },
+      { "platform": "reddit", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-03-12T00:00:00Z",
+      "newestPublishedAt": "2026-05-18T00:00:00Z"
+    },
+    "diversityNotes": [
+      "Four distinct platforms; all sources within the last three months."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "high",
+    "inputs": {
+      "sourceCount": 5,
+      "sourceDiversity": 0.75,
+      "sourceFreshness": 0.9,
+      "signalConsistency": 0.85,
+      "themeSupportAggregate": 0.8,
+      "topicBreadth": 0.8
+    },
+    "reasons": [
+      { "driver": "topicBreadth", "effect": "raises", "note": "Four Themes at medium-or-above confidence covering the expected axes for a cafe." },
+      { "driver": "themeSupportAggregate", "effect": "raises", "note": "Theme confidences are uniformly medium or high." },
+      { "driver": "signalConsistency", "effect": "raises", "note": "Mixed sentiment on food does not lower confidence — each side internally agrees on its claims." }
+    ]
+  },
+  "finalKuro": "From the available public discussion, Kuro Cafe may suggest a coffee and atmosphere strength alongside a divisive food menu and slow service during busy hours. It may not suggest whether any given visit will land on the positive or negative side of the food debate, and it is not a recommendation to visit or avoid the cafe."
+}

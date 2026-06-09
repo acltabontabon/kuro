@@ -201,22 +201,26 @@ Insufficient data is a successful Result, not a transport error. The request suc
 
 ### Confidence
 
-**Definition.** A measure of how well-supported a pattern is by the available material. Confidence describes the support, never the truth, of what is being shown.
+**Definition.** A measure of how well-supported a pattern is by the available material. Confidence describes the **strength of support**, never the truth, of what is being shown. A `high` confidence Theme means "the Signals supporting this Theme are numerous, diverse, recent, and consistent"; it does not mean "this claim about the Subject is objectively true."
 
 **Confidence applies at three levels:**
 
 - **Signal confidence.** How confidently KURO can say the interpretation matches the Evidence. Driven by: clarity of the excerpt, ambiguity of the language, and how directly the Evidence supports the interpreted opinion.
-- **Theme confidence.** How well-supported a Theme is by its Signals. Driven by: source count (how many Signals support the Theme), source diversity (how many distinct Source Documents and platforms), source freshness (how recent the underlying Source Documents are), and signal consistency (how much the Signals agree on sentiment and detail).
+- **Theme confidence.** How well-supported a Theme is by its Signals. Driven by: source count (how many Signals support the Theme), source diversity (how many distinct Source Documents and platforms), source freshness (how recent the underlying Source Documents are), and **signal consistency** — how much the Signals agree on the **claim content** (what is being said about the Subject), *not* on sentiment polarity. A Theme with `sentiment: "mixed"` where each side internally agrees on its claims is consistent for confidence purposes; consistency only drops when Signals disagree on facts or interpretations.
 - **Result confidence.** How well-supported the overall picture is. Driven by the Theme confidences and the breadth of topics covered relative to what one would expect for the Subject.
 
 Each level composes from the level below it. A Result composed of a single high-confidence Theme is not a high-confidence Result, because breadth is a separate input.
 
-**Confidence ratings.** At every level, the qualitative rating is one of `low`, `medium`, `high`, or `unknown`. The distinction between `low` and `unknown` matters:
+**Confidence ratings.** The qualitative rating is one of `low`, `medium`, or `high` at the Signal and Theme levels. The Result level adds a fourth value, `unknown`. `unknown` is **Result-level only** — Signals and Themes that cannot be rated should not be emitted at all (a Signal exists only because Evidence supports it; a Theme exists only because at least one Signal supports it).
 
-- Use `unknown` when there is no usable evidence to score against - KURO cannot responsibly assign even a low rating.
+The distinction between `low` and `unknown` at the Result level matters:
+
+- Use `unknown` when there is no usable evidence to score against — KURO cannot responsibly assign even a low rating.
 - Use `low` when there *is* some evidence but it is weak, narrow, stale, or contradictory.
 
 For an insufficient-data Result, prefer `unknown` if KURO could not extract any usable Evidence at all, and `low` if KURO did extract some but it was not enough to sustain an inference.
+
+For the MVP rules — bands, drivers, situation handling, freshness window, breadth cap, and the `reasons` contract — see [CONFIDENCE.md](./CONFIDENCE.md).
 
 ## 5. Decision: Why Not Positive/Negative as the Primary Structure
 

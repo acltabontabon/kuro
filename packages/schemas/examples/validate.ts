@@ -9,6 +9,7 @@ const POSITIVE_EXAMPLES = [
   "employer-acme.json",
   "rental-123-main.json",
   "insufficient-data.json",
+  "mixed-sentiment-high.json",
 ];
 
 let failures = 0;
@@ -151,6 +152,63 @@ function clone(src: Record<string, unknown> = base): any {
     bad,
     "themes.0.maySuggest",
   );
+}
+
+// `unknown` Result rating is valid on outcome=insufficient_data (positive coverage)
+{
+  const ok = clone(insufficient);
+  ok.confidence.rating = "unknown";
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  outcome=insufficient_data with confidence.rating=unknown should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    outcome=insufficient_data with confidence.rating=unknown");
+  }
+}
+
+// Breadth cap: Result rating=high with <3 themes at medium+ is rejected
+{
+  const bad = clone();
+  bad.confidence.rating = "high";
+  // employer-acme has 3 themes: medium, high, low → only 2 at medium+; rating=high must fail.
+  expectFailWithPath(
+    "Result rating=high with <3 themes at medium+ rejected (breadth cap)",
+    bad,
+    "confidence.rating",
+  );
+}
+
+// reasons is required (min 1) at Signal, Theme, Result levels
+{
+  const bad = clone();
+  bad.signals[0].confidence.reasons = [];
+  expectFailWithPath("Signal confidence.reasons cannot be empty", bad, "signals.0.confidence.reasons");
+}
+{
+  const bad = clone();
+  bad.themes[0].confidence.reasons = [];
+  expectFailWithPath("Theme confidence.reasons cannot be empty", bad, "themes.0.confidence.reasons");
+}
+{
+  const bad = clone();
+  bad.confidence.reasons = [];
+  expectFailWithPath("Result confidence.reasons cannot be empty", bad, "confidence.reasons");
+}
+
+// `unknown` is unrepresentable at Signal and Theme level
+{
+  const bad = clone();
+  bad.signals[0].confidence.rating = "unknown";
+  expectFailWithPath("Signal confidence.rating=unknown rejected", bad, "signals.0.confidence.rating");
+}
+{
+  const bad = clone();
+  bad.themes[0].confidence.rating = "unknown";
+  expectFailWithPath("Theme confidence.rating=unknown rejected", bad, "themes.0.confidence.rating");
 }
 
 if (failures > 0) {

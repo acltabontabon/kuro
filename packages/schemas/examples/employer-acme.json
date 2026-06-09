@@ -79,7 +79,11 @@
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.85 }
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.85 },
+        "reasons": [
+          { "driver": "clarity", "effect": "raises", "note": "Both excerpts describe leadership turnover in plain, unhedged language." },
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Reviewers state the claim directly rather than imply it." }
+        ]
       }
     },
     {
@@ -91,7 +95,10 @@
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.9 }
+        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly assert that pay is top-of-band." }
+        ]
       }
     },
     {
@@ -103,7 +110,10 @@
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.4 }
+        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.4 },
+        "reasons": [
+          { "driver": "languageAmbiguity", "effect": "lowers", "note": "Hedged phrasing about \"expect to be online\" leaves the obligation open to interpretation." }
+        ]
       }
     }
   ],
@@ -121,7 +131,11 @@
           "sourceDiversity": 0.6,
           "sourceFreshness": 0.7,
           "signalConsistency": 0.9
-        }
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 supporting Signals." },
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both Signals describe the same pattern of turnover." }
+        ]
       },
       "maySuggest": [
         { "description": "Frequent leadership turnover has been a recurring lived experience for reviewers." }
@@ -147,7 +161,11 @@
           "sourceDiversity": 0.7,
           "sourceFreshness": 0.8,
           "signalConsistency": 0.95
-        }
+        },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Signals on both Blind and Glassdoor agree pay is top-of-band." },
+          { "driver": "sourceFreshness", "effect": "raises", "note": "Both sources are within the last 4 months." }
+        ]
       },
       "maySuggest": [
         { "description": "Reviewers consistently describe compensation as a strong point." }
@@ -173,7 +191,11 @@
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.7,
           "signalConsistency": 0.5
-        }
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only 1 supporting Signal." },
+          { "driver": "sourceDiversity", "effect": "lowers", "note": "Single Reddit thread; not generalizable." }
+        ]
       },
       "maySuggest": [
         { "description": "Day-to-day flexibility coexists with launch-period crunch in at least some teams." }
@@ -261,7 +283,11 @@
       "signalConsistency": 0.8,
       "themeSupportAggregate": 0.65,
       "topicBreadth": 0.5
-    }
+    },
+    "reasons": [
+      { "driver": "topicBreadth", "effect": "lowers", "note": "Three Themes is enough breadth, but only two are above low confidence." },
+      { "driver": "themeSupportAggregate", "effect": "neutral", "note": "Theme confidences split across high, medium, and low." }
+    ]
   },
   "finalKuro": "From the available community discussion, Acme may suggest a pattern of competitive pay alongside recurring concerns about leadership stability and uneven work-life balance during launches. It may not suggest how those patterns would apply to any specific role, team, or future quarter, and it is not a recommendation to accept or decline an offer."
 }

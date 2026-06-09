@@ -71,7 +71,10 @@
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 }
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly describe delays of weeks." }
+        ]
       }
     },
     {
@@ -83,7 +86,11 @@
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 }
+        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Excerpt directly names transit proximity." },
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only one Evidence excerpt supports the Signal." }
+        ]
       }
     },
     {
@@ -95,7 +102,10 @@
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.5 }
+        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.5 },
+        "reasons": [
+          { "driver": "languageAmbiguity", "effect": "lowers", "note": "Excerpt qualifies the claim by unit orientation, which is partly subjective." }
+        ]
       }
     }
   ],
@@ -113,7 +123,11 @@
           "sourceDiversity": 0.6,
           "sourceFreshness": 0.75,
           "signalConsistency": 0.9
-        }
+        },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both sources describe multi-week repair delays." },
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 sources backing the Theme." }
+        ]
       },
       "maySuggest": [
         { "description": "Building management has a pattern of slow turnaround on repairs across multiple tenants." }
@@ -138,7 +152,11 @@
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.8,
           "signalConsistency": 0.9
-        }
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Single Signal backing the Theme." },
+          { "driver": "sourceFreshness", "effect": "raises", "note": "Underlying source is recent." }
+        ]
       },
       "maySuggest": [
         { "description": "The building is described as well-located relative to transit and walkable amenities." }
@@ -163,7 +181,11 @@
           "sourceDiversity": 0.3,
           "sourceFreshness": 0.75,
           "signalConsistency": 0.4
-        }
+        },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only a single piece of Evidence." },
+          { "driver": "sourceDiversity", "effect": "lowers", "note": "One platform, one excerpt." }
+        ]
       },
       "maySuggest": [
         { "description": "Unit orientation may meaningfully change the noise experience for the same building." }
@@ -251,7 +273,11 @@
       "signalConsistency": 0.75,
       "themeSupportAggregate": 0.55,
       "topicBreadth": 0.5
-    }
+    },
+    "reasons": [
+      { "driver": "topicBreadth", "effect": "neutral", "note": "Three Themes cover the expected axes for a rental, but only two are above low confidence." },
+      { "driver": "themeSupportAggregate", "effect": "lowers", "note": "Aggregate Theme support sits between low and medium." }
+    ]
   },
   "finalKuro": "From the available community discussion, 123 Main St may suggest a building with strong location and walkability and a pattern of slow maintenance response, with noise that may vary by unit orientation. It may not suggest how a specific unit, lease term, or repair request will play out, and it is not a recommendation to sign or decline a lease."
 }
