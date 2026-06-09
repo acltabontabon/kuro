@@ -8,7 +8,7 @@
   },
   "category": "employment_intelligence",
   "generatedAt": "2026-06-01T13:00:00Z",
-  "outcome": "insufficient_data",
+  "dataSufficiency": "insufficient",
   "summary": "KURO read a small number of public posts that mentioned Obscure Holdings LLC, but none carried first-hand experiences usable as evidence.",
   "sourceDocuments": [
     {
@@ -50,21 +50,6 @@
       "trustRationale": "Directory listing is unsigned and unsourced; provenance cannot be safely classified."
     }
   ],
-  "evidence": [],
-  "signals": [],
-  "themes": [],
-  "inference": {
-    "patterns": [],
-    "consensus": [],
-    "disagreements": [],
-    "communitySentimentSummary": "No usable first-hand community signal was found for this subject.",
-    "maySuggest": [],
-    "mayNotSuggest": [],
-    "limitations": [
-      "Only two documents were located; one is a stale (2022) overview and the other is a company directory listing with no first-hand experience.",
-      "No reviews, forum threads, or first-hand accounts were available within the search window."
-    ]
-  },
   "sourceSummary": {
     "documentCount": 2,
     "platforms": [
@@ -89,6 +74,36 @@
       "Coverage is too narrow to support any theme."
     ]
   },
+  "sourceCoverage": [
+    {
+      "sourceDocumentId": "src_blog_1",
+      "assessment": "stale",
+      "note": "Overview is from 2022, outside the 24-month freshness window."
+    },
+    {
+      "sourceDocumentId": "src_directory_1",
+      "assessment": "not_about_subject",
+      "note": "Generic company directory listing; no first-hand experience."
+    }
+  ],
+  "insufficientDataReason": {
+    "kind": "no_usable_evidence",
+    "explanation": "Two documents were located but neither carried first-hand experience usable as Evidence."
+  },
+  "suggestedNextSources": [
+    {
+      "sourceType": "Glassdoor employee reviews for Obscure Holdings LLC",
+      "rationale": "First-hand current-employee accounts would unblock a workplace theme."
+    },
+    {
+      "sourceType": "Blind posts referencing Obscure Holdings LLC in finance/holding-company channels",
+      "rationale": "Anonymous practitioner reports would corroborate or contrast leadership and compensation observations."
+    }
+  ],
+  "limitations": [
+    "Only two documents were located; one is a stale (2022) overview and the other is a company directory listing with no first-hand experience.",
+    "No reviews, forum threads, or first-hand accounts were available within the search window."
+  ],
   "confidence": {
     "level": "result",
     "rating": "unknown",
@@ -101,8 +116,16 @@
       "topicBreadth": 0
     },
     "reasons": [
-      { "driver": "sourceCount", "effect": "lowers", "note": "0 usable Source Documents after filtering — both candidates were excluded." },
-      { "driver": "sourceFreshness", "effect": "lowers", "note": "The one dated document is from 2022, outside the 24-month freshness window." }
+      {
+        "driver": "sourceCount",
+        "effect": "lowers",
+        "note": "0 usable Source Documents after filtering — both candidates were excluded."
+      },
+      {
+        "driver": "sourceFreshness",
+        "effect": "lowers",
+        "note": "The one dated document is from 2022, outside the 24-month freshness window."
+      }
     ]
   },
   "finalKuro": "KURO cannot form a meaningful community inference about Obscure Holdings LLC from the available material: the only documents located were a stale overview and a directory listing, neither of which carries first-hand experience."

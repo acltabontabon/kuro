@@ -11,7 +11,7 @@ KURO confidence describes **strength of support**, not truth-probability. A `hig
 - It is **not** a probability that the claim is true in the world.
 - It is **not** a recommendation strength. KURO does not recommend.
 - It is **not** a sentiment score. A negative Theme can be high-confidence; a positive Theme can be low-confidence.
-- It is **not** an "is there enough data" flag. That is the separate `outcome: insufficient_data` branch on the Result.
+- It is **not** an "is there enough data" flag. That is the separate `dataSufficiency` discriminator on the Result (`sufficient` / `partial` / `insufficient` / `unsupported_category` — see [INSUFFICIENT_DATA.md](./INSUFFICIENT_DATA.md)).
 - It is **not** a quality score for the Subject.
 
 ## 2. Bands
@@ -23,7 +23,16 @@ Qualitative bands are the primary, user-facing representation.
 | `high` | ✓ | ✓ | ✓ | Multiple diverse, recent, internally-consistent Signals. Broad support. |
 | `medium` | ✓ | ✓ | ✓ | Some support, but limited on at least one axis (narrow source set, partial agreement, mixed freshness). |
 | `low` | ✓ | ✓ | ✓ | Weak support — few sources, low diversity, stale, contradictory, or thinly interpreted. |
-| `unknown` | ✗ | ✗ | ✓ | **Result-level only.** Used when `outcome: insufficient_data` and there is no usable evidence to score against. |
+| `unknown` | ✗ | ✗ | ✓ | **Result-level only.** Used when `dataSufficiency: insufficient` and there is no usable evidence to score against. |
+
+**Caps by `dataSufficiency`.**
+
+| dataSufficiency | Allowed Result confidence ratings |
+|---|---|
+| `sufficient` | `low`, `medium`, `high` (subject to the breadth cap below) |
+| `partial` | `low`, `medium` only — `high` and `unknown` forbidden |
+| `insufficient` | `low`, `unknown` only — `medium` and `high` forbidden |
+| `unsupported_category` | n/a — confidence is not carried on a scope refusal |
 
 `unknown` is **unrepresentable** at Signal and Theme by construction: a Signal exists only because Evidence supports it, and a Theme exists only because at least one Signal supports it. The schema enforces this via separate rating enums per level (`SubResultConfidenceRating` for Signal and Theme, `ResultConfidenceRating` for Result).
 
@@ -73,7 +82,7 @@ Sources within a rolling **24-month window** contribute normally. Sources older 
 
 - Result `high` requires **≥ 3 Themes** with confidence rating ≥ `medium`, **and** Theme support aggregate ≥ `medium`.
 - With **1–2 Themes** total, the Result is capped at `medium` regardless of individual Theme confidence. A single high-confidence Theme is not a high-confidence Result.
-- With **0 supporting Themes**, the Result is `low` or `unknown`, and `outcome` must be `insufficient_data`.
+- With **0 supporting Themes**, the Result is `low` or `unknown`, and `dataSufficiency` must be `insufficient` (or `partial` if there is some narrow signal worth surfacing without a Theme).
 
 The ≥ 3 Themes at medium+ rule is schema-enforced in [`packages/schemas/src/result.ts`](../packages/schemas/src/result.ts) `superRefine`. Future work may refine "what topics one would expect for the Subject kind"; until then, breadth = Theme count at medium+ confidence.
 
@@ -96,7 +105,7 @@ The schema permits an optional `supportScore` (0–1) at every level. Keep it **
 
 **Weak evidence.** Few sources, single platform, stale dates, or thin interpretation → `low`. The reason must appear in `reasons`.
 
-**Insufficient data.** Distinct from `low`. When KURO cannot extract enough usable Evidence to responsibly infer anything, the **Result outcome** flips to `insufficient_data` and confidence is `low` or `unknown` (already enforced by `result.ts` `superRefine`). Insufficient data is a property of the Result, not a confidence band.
+**Insufficient data.** Distinct from `low`. When KURO cannot extract enough usable Evidence to responsibly infer anything, the **Result's `dataSufficiency`** is `insufficient` and confidence is `low` or `unknown` (enforced by `result.ts` `superRefine`). Insufficient data is a status of the Result, not a confidence band; see [INSUFFICIENT_DATA.md](./INSUFFICIENT_DATA.md).
 
 ## 7. The `reasons` contract
 

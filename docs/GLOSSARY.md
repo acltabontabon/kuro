@@ -228,7 +228,7 @@ A KURO Result is composed of **two parts**: the set of Themes, and the KURO Infe
 **Conceptual requirements.**
 
 - The Subject of the query.
-- An **outcome** - either `ok` (KURO formed a meaningful inference) or `insufficient_data` (KURO could not). See "Insufficient data" below.
+- A **data sufficiency status** — exactly one of `sufficient`, `partial`, `insufficient`, or `unsupported_category`. The status is a first-class property of the Result and controls which other fields are legal on it. See "Result Status" and "Insufficient data" below, and [INSUFFICIENT_DATA.md](./INSUFFICIENT_DATA.md).
 - A **summary** - a short, plain-language overview of what KURO *observed*. The summary stays close to the source-backed Signals; it describes, it does not synthesize.
 - The set of Themes.
 - The KURO Inference derived from those Themes.
@@ -239,17 +239,77 @@ A KURO Result is composed of **two parts**: the set of Themes, and the KURO Infe
 
 **`summary` vs `finalKuro`.** These are distinct on purpose: `summary` is descriptive ("here is what was observed"); `finalKuro` is interpretive but bounded ("here is what may and may not be inferred"). Collapsing them would erase the line between source-backed observation and KURO synthesis, which is exactly the line KURO's posture depends on.
 
-**Insufficient data.** A valid KURO Result may report `outcome: insufficient_data` when there is not enough usable community material to support an inference. In that branch:
+**Insufficient data.** A valid KURO Result may report `dataSufficiency: insufficient` when there is not enough usable community material to support an inference. In that branch:
 
-- Themes, Signals, and Evidence may be empty.
-- Source Documents may be empty **only** if no usable document was found or read. If KURO did read documents but they were insufficient (stale, duplicate, irrelevant, spammy, low-diversity), those documents stay in the Result and the reason is explained via the source summary's exclusions and diversity notes and via the Inference's limitations.
-- The Inference's limitations must be non-empty and must explain why KURO cannot infer responsibly.
+- Themes, Signals, Evidence, and Inference are **forbidden** — the schema does not even carry these fields on the `insufficient` arm of the result union.
+- Source Documents may be empty when no usable document was found or read; when KURO did read documents but they were insufficient (stale, duplicate, irrelevant, spammy, low-diversity), those documents stay in the Result and the reason is explained via `sourceCoverage` per document and the optional `sourceSummary` exclusions/diversity notes.
+- An `insufficientDataReason` (`{kind, explanation}`) is required, distinguishing `no_sources_found`, `no_usable_evidence`, `subject_unidentifiable`, `out_of_window`, and `other`.
+- `suggestedNextSources` is required and must list concrete source types (e.g. "Glassdoor reviews for Acme Corp"), never generic advice.
 - The Result-level confidence rating must be `low` or `unknown` (see Confidence).
 - The final KURO must say clearly that KURO cannot form a meaningful community inference from the available material.
 
-Insufficient data is a successful Result, not a transport error. The request succeeded; the analytical outcome is "not enough to say."
+A valid KURO Result may also report `dataSufficiency: partial` when there is some usable evidence but coverage is narrow — see "Result Status" below. And it may report `dataSufficiency: unsupported_category` when the request is out of MVP scope; this is a scope refusal, not an evidence assessment, and carries no signals, themes, or inference at all.
+
+Insufficient data, partial, and unsupported-category are all successful Results, not transport errors. The request succeeded; the analytical outcome is "not enough to say," "only narrow observations supported," or "out of scope."
 
 **Relationship to neighbors.** The Result is the terminal node. It is what KURO shows the user.
+
+---
+
+### Result Status
+
+**Definition.** The classification of a KURO Result's analytical outcome. Every Result declares exactly one of: `sufficient`, `partial`, `insufficient`, or `unsupported_category`. The status is the discriminator of the Result's shape: which other fields are legal depends on it.
+
+**Why this exists.** Insufficient data must be a first-class result state, not a disclaimer appended to a normal-looking output. Without a discriminator, callers and surfaces cannot tell a thinly-supported "low confidence finding" from a Result that has no support at all, and they cannot tell either of those from a scope refusal.
+
+**The four values.**
+
+- `sufficient` — usable Evidence supports a normal cautious KURO Result with themes and an inference.
+- `partial` — some usable Evidence exists but coverage is narrow; only direct, supported observations are returned, and `evidenceGaps` names what is missing.
+- `insufficient` — no meaningful inference can be supported; no themes/signals/inference are returned.
+- `unsupported_category` — the request is outside MVP scope; this is a scope refusal, not an evidence assessment.
+
+For the full rules per status — required fields, forbidden output, confidence caps, wording guidance, and worked examples — see [INSUFFICIENT_DATA.md](./INSUFFICIENT_DATA.md).
+
+---
+
+### Data Sufficiency
+
+**Definition.** The Result-level field carrying the `Result Status` value. Spelled `dataSufficiency` in the schema. Acts as the discriminator of the Result's shape.
+
+**What it is not.** Data sufficiency is **not** a confidence score and **not** a recommendation. A `sufficient` Result may still have `low` confidence; a `partial` Result is not "almost sufficient" — it is its own first-class shape with its own required fields.
+
+---
+
+### Insufficient Data Reason
+
+**Definition.** A structured explanation of *why* a Result is `insufficient`. Required on every `insufficient` Result. Carries a `kind` (one of `no_sources_found`, `no_usable_evidence`, `subject_unidentifiable`, `out_of_window`, `other`) and a free-text `explanation`.
+
+**Why structured.** A free-text reason alone forces callers to parse prose to decide whether to retry, broaden the search, or surface a different message. The `kind` gives a stable, machine-checkable handle; the `explanation` carries the human-readable detail.
+
+---
+
+### Evidence Gaps
+
+**Definition.** A required non-empty list on every `partial` Result. Each entry names a `topic` for which usable Evidence was not available and a `note` describing what would be needed to close the gap.
+
+**Why required on `partial`.** A `partial` Result is honest about being narrow. Naming the missing topics is what makes the narrowness visible to the caller and to the end user; it is the discipline that prevents `partial` from drifting into "almost sufficient."
+
+---
+
+### Suggested Next Sources
+
+**Definition.** A required non-empty list on every `insufficient` Result, and an optional list on `partial` Results. Each entry names a concrete source type and a rationale.
+
+**Concrete, not generic.** "Glassdoor employee reviews for Acme Corp" is concrete; "search more" is not. Concrete suggestions tell the caller what would unblock the inference; generic advice does not, and the schema enforces a minimum length on `sourceType` to discourage it.
+
+---
+
+### Source Coverage
+
+**Definition.** A per-Source-Document assessment used on `insufficient` Results when Source Documents were retrieved but found unusable. Each entry references a `sourceDocumentId`, an `assessment` (e.g. `spam`, `duplicate`, `inaccessible`, `unrelated`, `too_vague`, `not_about_subject`, `stale`, `promotional`, `other`), and an optional `note`.
+
+**Relationship to neighbors.** Source Coverage is distinct from `SourceSummary` (which aggregates) and from `Source Attribution` (which records provenance). Source Coverage answers "why was this specific document not usable?"
 
 ---
 

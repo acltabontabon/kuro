@@ -1,0 +1,149 @@
+{
+  "id": "result_45_pine_rental_2026_06_04",
+  "subject": {
+    "id": "subject_45_pine_rental",
+    "kind": "rental",
+    "displayName": "45 Pine St",
+    "description": "A small low-rise rental building with minimal online discussion."
+  },
+  "category": "rental_intelligence",
+  "generatedAt": "2026-06-04T15:00:00Z",
+  "dataSufficiency": "insufficient",
+  "summary": "KURO retrieved three Source Documents naming 45 Pine St but none carried first-hand tenant experience usable as Evidence.",
+  "sourceDocuments": [
+    {
+      "id": "src_listing_1",
+      "url": "https://example-listings.test/45-pine-st",
+      "platform": "listing",
+      "author": null,
+      "capturedAt": "2026-05-29T11:00:00Z",
+      "publishedAt": "2026-05-01T00:00:00Z"
+    },
+    {
+      "id": "src_ad_1",
+      "url": "https://example-rental-aggregator.test/promo/45-pine",
+      "platform": "aggregator",
+      "author": null,
+      "capturedAt": "2026-05-29T11:05:00Z",
+      "publishedAt": "2026-05-10T00:00:00Z"
+    },
+    {
+      "id": "src_neighborhood_1",
+      "url": "https://example-neighborhood-forum.test/threads/east-side-coffee",
+      "platform": "forum",
+      "author": null,
+      "capturedAt": "2026-05-29T11:10:00Z",
+      "publishedAt": "2026-04-20T00:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_listing_1",
+      "sourceDocumentId": "src_listing_1",
+      "sourceType": "company_site",
+      "url": "https://example-listings.test/45-pine-st",
+      "fetchedAt": "2026-05-29T11:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "low_context"
+    },
+    {
+      "id": "att_ad_1",
+      "sourceDocumentId": "src_ad_1",
+      "sourceType": "company_site",
+      "url": "https://example-rental-aggregator.test/promo/45-pine",
+      "fetchedAt": "2026-05-29T11:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "low_context"
+    },
+    {
+      "id": "att_neighborhood_1",
+      "sourceDocumentId": "src_neighborhood_1",
+      "sourceType": "forum",
+      "url": "https://example-neighborhood-forum.test/threads/east-side-coffee",
+      "fetchedAt": "2026-05-29T11:10:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community"
+    }
+  ],
+  "sourceSummary": {
+    "documentCount": 3,
+    "platforms": [
+      { "platform": "listing", "count": 1 },
+      { "platform": "aggregator", "count": 1 },
+      { "platform": "forum", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "company_site", "count": 2 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "low_context", "count": 2 },
+      { "trustTier": "community", "count": 1 }
+    ],
+    "exclusions": [
+      { "reason": "promotional listing", "count": 2 },
+      { "reason": "not about subject", "count": 1 }
+    ],
+    "freshness": {
+      "oldestPublishedAt": "2026-04-20T00:00:00Z",
+      "newestPublishedAt": "2026-05-10T00:00:00Z"
+    },
+    "diversityNotes": [
+      "All three documents mention the address but none recount tenant experience."
+    ]
+  },
+  "sourceCoverage": [
+    {
+      "sourceDocumentId": "src_listing_1",
+      "assessment": "promotional",
+      "note": "Landlord listing page; no resident testimony."
+    },
+    {
+      "sourceDocumentId": "src_ad_1",
+      "assessment": "promotional",
+      "note": "Aggregator marketing copy."
+    },
+    {
+      "sourceDocumentId": "src_neighborhood_1",
+      "assessment": "not_about_subject",
+      "note": "Forum thread is about a nearby coffee shop and only mentions the address in passing."
+    }
+  ],
+  "insufficientDataReason": {
+    "kind": "no_usable_evidence",
+    "explanation": "Three documents were located but each was either promotional or not about the subject."
+  },
+  "suggestedNextSources": [
+    {
+      "sourceType": "Verified tenant reviews on a building-review platform",
+      "rationale": "First-hand resident accounts would unblock maintenance, noise, and management themes."
+    },
+    {
+      "sourceType": "Local subreddit threads naming 45 Pine St",
+      "rationale": "Neighborhood-specific community posts often surface concrete tenant experience."
+    }
+  ],
+  "limitations": [
+    "All retrieved material was promotional or off-subject; no first-hand tenant testimony was located."
+  ],
+  "confidence": {
+    "level": "result",
+    "rating": "unknown",
+    "inputs": {
+      "sourceCount": 3,
+      "sourceDiversity": 0.4,
+      "sourceFreshness": 0.6,
+      "signalConsistency": 0,
+      "themeSupportAggregate": 0,
+      "topicBreadth": 0
+    },
+    "reasons": [
+      {
+        "driver": "sourceCount",
+        "effect": "lowers",
+        "note": "Three documents retrieved but zero usable after assessment."
+      }
+    ]
+  },
+  "finalKuro": "KURO cannot form a meaningful community inference about 45 Pine St from the available material: the retrieved documents were promotional copy or unrelated forum posts, not first-hand tenant accounts."
+}

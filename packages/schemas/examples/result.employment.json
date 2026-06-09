@@ -8,7 +8,7 @@
   },
   "category": "employment_intelligence",
   "generatedAt": "2026-06-01T12:00:00Z",
-  "outcome": "ok",
+  "dataSufficiency": "sufficient",
   "summary": "A single community report describes long hours during launches at Minimal Co.",
   "sourceDocuments": [
     {
@@ -39,7 +39,11 @@
       "id": "ev_min_wlb_1",
       "sourceDocumentId": "src_min_1",
       "snippet": "Launch weeks routinely run 12-hour days for the engineering team.",
-      "locator": { "kind": "charRange", "start": 0, "end": 64 },
+      "locator": {
+        "kind": "charRange",
+        "start": 0,
+        "end": 64
+      },
       "extraction": {
         "method": "verbatim",
         "extractedAt": "2026-05-20T09:00:00Z",
@@ -53,13 +57,22 @@
       "topic": "Work-Life Balance",
       "sentiment": "negative",
       "claim": "A reviewer reports long hours during launches.",
-      "evidenceIds": ["ev_min_wlb_1"],
+      "evidenceIds": [
+        "ev_min_wlb_1"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 },
+        "inputs": {
+          "clarity": 0.8,
+          "directnessOfSupport": 0.85
+        },
         "reasons": [
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "The excerpt directly describes launch-week hours." }
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "The excerpt directly describes launch-week hours."
+          }
         ]
       }
     }
@@ -69,7 +82,9 @@
       "id": "theme_min_wlb",
       "topic": "Work-Life Balance",
       "sentiment": "negative",
-      "signalIds": ["sig_min_wlb"],
+      "signalIds": [
+        "sig_min_wlb"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "low",
@@ -80,14 +95,22 @@
           "signalConsistency": 0.8
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Single source." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Single source."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Launch periods may stretch working hours for some teams." }
+        {
+          "description": "Launch periods may stretch working hours for some teams."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert that long hours are universal at Minimal Co." }
+        {
+          "description": "Does not assert that long hours are universal at Minimal Co."
+        }
       ],
       "limitations": [
         "Supported by a single source."
@@ -102,13 +125,17 @@
     "maySuggest": [
       {
         "description": "Reviewers may describe launch periods as long-hour stretches.",
-        "themeIds": ["theme_min_wlb"]
+        "themeIds": [
+          "theme_min_wlb"
+        ]
       }
     ],
     "mayNotSuggest": [
       {
         "description": "Does not recommend whether to accept or decline an offer.",
-        "themeIds": ["theme_min_wlb"]
+        "themeIds": [
+          "theme_min_wlb"
+        ]
       }
     ],
     "limitations": [
@@ -118,13 +145,22 @@
   "sourceSummary": {
     "documentCount": 1,
     "platforms": [
-      { "platform": "reddit", "count": 1 }
+      {
+        "platform": "reddit",
+        "count": 1
+      }
     ],
     "sourceTypes": [
-      { "sourceType": "forum", "count": 1 }
+      {
+        "sourceType": "forum",
+        "count": 1
+      }
     ],
     "trustTiers": [
-      { "trustTier": "community", "count": 1 }
+      {
+        "trustTier": "community",
+        "count": 1
+      }
     ],
     "exclusions": [],
     "freshness": {
@@ -147,7 +183,11 @@
       "topicBreadth": 0.2
     },
     "reasons": [
-      { "driver": "sourceCount", "effect": "lowers", "note": "Single source supports the Result." }
+      {
+        "driver": "sourceCount",
+        "effect": "lowers",
+        "note": "Single source supports the Result."
+      }
     ]
   },
   "finalKuro": "From the available community discussion, Minimal Co may suggest occasional launch-week crunch. It may not suggest how those hours apply to any specific role or team, and it is not a recommendation about employment."

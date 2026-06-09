@@ -8,7 +8,7 @@
   },
   "category": "rental_intelligence",
   "generatedAt": "2026-06-01T12:30:00Z",
-  "outcome": "ok",
+  "dataSufficiency": "sufficient",
   "summary": "A single tenant report mentions slow maintenance responses at 12 Oak St.",
   "sourceDocuments": [
     {
@@ -38,7 +38,11 @@
       "id": "ev_rmin_maint_1",
       "sourceDocumentId": "src_rmin_1",
       "snippet": "Repair requests sit untouched for weeks before anyone responds.",
-      "locator": { "kind": "charRange", "start": 0, "end": 64 },
+      "locator": {
+        "kind": "charRange",
+        "start": 0,
+        "end": 64
+      },
       "extraction": {
         "method": "verbatim",
         "extractedAt": "2026-05-25T08:00:00Z",
@@ -52,13 +56,22 @@
       "topic": "Maintenance",
       "sentiment": "negative",
       "claim": "A tenant reports multi-week delays on repair requests.",
-      "evidenceIds": ["ev_rmin_maint_1"],
+      "evidenceIds": [
+        "ev_rmin_maint_1"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 },
+        "inputs": {
+          "clarity": 0.8,
+          "directnessOfSupport": 0.85
+        },
         "reasons": [
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "The excerpt directly states multi-week delays." }
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "The excerpt directly states multi-week delays."
+          }
         ]
       }
     }
@@ -68,7 +81,9 @@
       "id": "theme_rmin_maint",
       "topic": "Maintenance",
       "sentiment": "negative",
-      "signalIds": ["sig_rmin_maint"],
+      "signalIds": [
+        "sig_rmin_maint"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "low",
@@ -79,14 +94,22 @@
           "signalConsistency": 0.8
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Single source." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Single source."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Maintenance turnaround may run long for at least some tenants." }
+        {
+          "description": "Maintenance turnaround may run long for at least some tenants."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert any specific repair request will be delayed." }
+        {
+          "description": "Does not assert any specific repair request will be delayed."
+        }
       ],
       "limitations": [
         "Supported by a single source."
@@ -101,13 +124,17 @@
     "maySuggest": [
       {
         "description": "Reviewers may describe maintenance delays at this building.",
-        "themeIds": ["theme_rmin_maint"]
+        "themeIds": [
+          "theme_rmin_maint"
+        ]
       }
     ],
     "mayNotSuggest": [
       {
         "description": "Does not recommend whether to sign or decline a lease.",
-        "themeIds": ["theme_rmin_maint"]
+        "themeIds": [
+          "theme_rmin_maint"
+        ]
       }
     ],
     "limitations": [
@@ -117,13 +144,22 @@
   "sourceSummary": {
     "documentCount": 1,
     "platforms": [
-      { "platform": "apartments.com", "count": 1 }
+      {
+        "platform": "apartments.com",
+        "count": 1
+      }
     ],
     "sourceTypes": [
-      { "sourceType": "review_site", "count": 1 }
+      {
+        "sourceType": "review_site",
+        "count": 1
+      }
     ],
     "trustTiers": [
-      { "trustTier": "secondary", "count": 1 }
+      {
+        "trustTier": "secondary",
+        "count": 1
+      }
     ],
     "exclusions": [],
     "freshness": {
@@ -146,7 +182,11 @@
       "topicBreadth": 0.2
     },
     "reasons": [
-      { "driver": "sourceCount", "effect": "lowers", "note": "Single source supports the Result." }
+      {
+        "driver": "sourceCount",
+        "effect": "lowers",
+        "note": "Single source supports the Result."
+      }
     ]
   },
   "finalKuro": "From the available community discussion, 12 Oak St may suggest a pattern of slow maintenance response. It may not suggest how any specific repair request will be handled, and it is not a recommendation about a lease."

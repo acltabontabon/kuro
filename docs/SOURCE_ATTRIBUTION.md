@@ -42,7 +42,7 @@ Signals and Themes reach attribution **transitively** through `Evidence → Sour
 
 Cardinality:
 
-- Source Document → Source Attribution: **1:1**. Every SourceDocument is described by exactly one SourceAttribution when `outcome: "ok"`. (The schema enforces both directions: an attribution must point at a known SourceDocument id, and no two attributions may share one.)
+- Source Document → Source Attribution: **1:1**. Every SourceDocument is described by exactly one SourceAttribution when `dataSufficiency` is `sufficient` or `partial`. (The schema enforces both directions: an attribution must point at a known SourceDocument id, and no two attributions may share one.)
 - Source Attribution → Evidence: **0:N** indirectly, through the SourceDocument. Attribution carries no Evidence link of its own.
 
 ## 4. Fields
@@ -110,7 +110,7 @@ These rules are encoded in the schema, not only here.
 8. **`metadata` is bounded.** Maximum 20 keys; values must be string, number, boolean, or null. No nested objects, no arrays, no raw page body, no scraped HTML, no full comments, no private payloads. `metadata` is for short, non-PII collection hints (HTTP status, content type, language hint).
 9. **Redactions never carry the raw value.** `RedactionRecord` is `.strict()` and a key named `value` fails validation. The schema preserves the *category* of what was removed; it never preserves the value.
 10. **Attribution is 1:1 per SourceDocument.** Two attributions referencing the same `sourceDocumentId` are rejected.
-11. **`outcome: "ok"` requires attribution for every SourceDocument.** When the Result claims to have read material, every read document must carry an attribution record.
+11. **`sufficient` and `partial` Results require attribution for every SourceDocument.** When the Result claims to have read material, every read document must carry an attribution record. On `insufficient` Results that retrieved any documents, attributions for those documents are likewise expected.
 12. **Attribution never replaces Evidence.** Signals still require Evidence spans rooted in a SourceDocument. A Signal cannot cite attribution.
 13. **Trust tier never feeds the Result truth claim.** It is a UI hint and a debugging label, not an input to "is this true."
 
