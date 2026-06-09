@@ -10,6 +10,10 @@ const POSITIVE_EXAMPLES = [
   "employer-acme.json",
   "rental-123-main.json",
   "insufficient-data.json",
+  "employment-no-sources.json",
+  "employment-partial.json",
+  "rental-unusable-sources.json",
+  "result.invalid-category.json",
   "result.employment.json",
   "result.rental.json",
 ];
@@ -54,137 +58,341 @@ function expectFailWithPath(label: string, data: unknown, pathFragment: string) 
   }
 }
 
+function expectFail(label: string, data: unknown) {
+  const r = KuroResult.safeParse(data);
+  if (r.success) {
+    failures++;
+    console.error(`FAIL  ${label}: expected validation failure but it parsed`);
+  } else {
+    console.log(`OK    ${label} (rejected as expected)`);
+  }
+}
+
 for (const name of POSITIVE_EXAMPLES) {
   expectOk(name);
 }
 
 const base = load("employer-acme.json") as Record<string, unknown>;
+const partial = load("employment-partial.json") as Record<string, unknown>;
 const insufficient = load("insufficient-data.json") as Record<string, unknown>;
+const unusable = load("rental-unusable-sources.json") as Record<string, unknown>;
+const refusal = load("result.invalid-category.json") as Record<string, unknown>;
+const noSources = load("employment-no-sources.json") as Record<string, unknown>;
 
 function clone(src: Record<string, unknown> = base): any {
   return JSON.parse(JSON.stringify(src));
 }
+
+// ============================================================
+//   Referential / graph checks (sufficient + partial arms)
+// ============================================================
 
 {
   const bad = clone();
   bad.signals[0].evidenceIds[0] = "ev_does_not_exist";
   expectFailWithPath("Signal -> missing evidenceId", bad, "evidenceIds");
 }
-
 {
   const bad = clone();
   bad.evidence[0].sourceDocumentId = "src_does_not_exist";
   expectFailWithPath("Evidence -> missing sourceDocumentId", bad, "sourceDocumentId");
 }
-
 {
   const bad = clone();
   bad.themes[0].signalIds = ["sig_does_not_exist"];
   expectFailWithPath("Theme -> missing signalId", bad, "signalIds");
 }
-
 {
   const bad = clone();
   bad.inference.patterns[0].themeIds = ["theme_does_not_exist"];
   expectFailWithPath("Inference -> missing themeId", bad, "themeIds");
 }
-
 {
   const bad = clone();
   bad.themes[0].signalIds = [];
   expectFailWithPath("Theme.signalIds must be non-empty", bad, "signalIds");
 }
-
 {
   const bad = clone();
   bad.signals.push({ ...bad.signals[0] });
   expectFailWithPath("Duplicate signal id rejected", bad, "signals");
 }
-
 {
   const bad = clone();
   bad.themes.push({ ...bad.themes[0] });
   expectFailWithPath("Duplicate theme id rejected", bad, "themes");
 }
-
 {
   const bad = clone();
   bad.inference.maySuggest[0].themeIds = ["theme_does_not_exist"];
   expectFailWithPath("Inference.maySuggest -> missing themeId", bad, "maySuggest");
 }
 
-// outcome === "ok" must have non-empty themes/signals/evidence/sourceDocuments
+// ============================================================
+//   `sufficient` arm — required-shape checks
+// ============================================================
+
 {
   const bad = clone();
   bad.themes = [];
-  expectFailWithPath("outcome=ok with empty themes rejected", bad, "themes");
+  expectFailWithPath("sufficient with empty themes rejected", bad, "themes");
 }
 {
   const bad = clone();
   bad.sourceDocuments = [];
-  expectFailWithPath("outcome=ok with empty sourceDocuments rejected", bad, "sourceDocuments");
+  expectFailWithPath("sufficient with empty sourceDocuments rejected", bad, "sourceDocuments");
+}
+{
+  const bad = clone();
+  bad.confidence.rating = "unknown";
+  expectFailWithPath("sufficient with confidence.rating=unknown rejected", bad, "confidence.rating");
+}
+{
+  const bad = clone();
+  bad.confidence.rating = "high";
+  // employer-acme has only 2 themes at medium+ (high, medium, low) — must fail breadth cap.
+  expectFailWithPath(
+    "sufficient with rating=high and <3 themes at medium+ rejected (breadth cap)",
+    bad,
+    "confidence.rating",
+  );
 }
 
-// outcome === "insufficient_data" must have low/unknown confidence and non-empty limitations
+// ============================================================
+//   `partial` arm — required new fields and caps
+// ============================================================
+
+{
+  const bad = clone(partial);
+  bad.evidenceGaps = [];
+  expectFailWithPath("partial with empty evidenceGaps rejected", bad, "evidenceGaps");
+}
+{
+  const bad = clone(partial);
+  delete bad.evidenceGaps;
+  expectFailWithPath("partial without evidenceGaps rejected", bad, "evidenceGaps");
+}
+{
+  const bad = clone(partial);
+  bad.confidence.rating = "high";
+  expectFailWithPath("partial with confidence.rating=high rejected", bad, "confidence.rating");
+}
+{
+  const bad = clone(partial);
+  bad.confidence.rating = "unknown";
+  expectFailWithPath("partial with confidence.rating=unknown rejected", bad, "confidence.rating");
+}
+{
+  const bad = clone(partial);
+  bad.inference.limitations = [];
+  expectFailWithPath(
+    "partial with empty inference.limitations rejected",
+    bad,
+    "inference.limitations",
+  );
+}
+
+// ============================================================
+//   `insufficient` arm — forbidden output / required fields
+// ============================================================
+
 {
   const bad = clone(insufficient);
   bad.confidence.rating = "high";
   expectFailWithPath(
-    "outcome=insufficient_data with confidence.rating=high rejected",
+    "insufficient with confidence.rating=high rejected",
     bad,
     "confidence.rating",
   );
 }
 {
   const bad = clone(insufficient);
-  bad.inference.limitations = [];
+  bad.confidence.rating = "medium";
   expectFailWithPath(
-    "outcome=insufficient_data with empty inference.limitations rejected",
+    "insufficient with confidence.rating=medium rejected",
     bad,
-    "inference.limitations",
+    "confidence.rating",
+  );
+}
+{
+  const bad = clone(insufficient);
+  bad.suggestedNextSources = [];
+  expectFailWithPath(
+    "insufficient with empty suggestedNextSources rejected",
+    bad,
+    "suggestedNextSources",
+  );
+}
+{
+  const bad = clone(insufficient);
+  delete bad.suggestedNextSources;
+  expectFailWithPath(
+    "insufficient without suggestedNextSources rejected",
+    bad,
+    "suggestedNextSources",
+  );
+}
+{
+  const bad = clone(insufficient);
+  delete bad.insufficientDataReason;
+  expectFailWithPath(
+    "insufficient without insufficientDataReason rejected",
+    bad,
+    "insufficientDataReason",
+  );
+}
+{
+  const bad = clone(insufficient);
+  bad.themes = [{ id: "theme_x", topic: "x", sentiment: "neutral", signalIds: ["sig_x"], confidence: { level: "theme", rating: "low", inputs: {}, reasons: [{ driver: "sourceCount", effect: "lowers", note: "n/a" }] }, maySuggest: [], mayNotSuggest: [], limitations: [] }];
+  expectFail(
+    "insufficient with themes field rejected (discriminated union / strict)",
+    bad,
+  );
+}
+{
+  const bad = clone(insufficient);
+  bad.signals = [{ id: "sig_x", topic: "x", sentiment: "neutral", claim: "x", evidenceIds: ["ev_x"], confidence: { level: "signal", rating: "low", inputs: {}, reasons: [{ driver: "clarity", effect: "lowers", note: "n/a" }] } }];
+  expectFail(
+    "insufficient with signals field rejected (discriminated union / strict)",
+    bad,
+  );
+}
+{
+  const bad = clone(noSources);
+  // Reason kind "no_sources_found" with non-empty sourceDocuments is inconsistent.
+  bad.sourceDocuments = [
+    {
+      id: "src_x",
+      url: "https://example.test/x",
+      platform: "blog",
+      author: null,
+      capturedAt: "2026-05-01T00:00:00Z",
+      publishedAt: null,
+    },
+  ];
+  bad.sourceAttributions = [
+    {
+      id: "att_x",
+      sourceDocumentId: "src_x",
+      sourceType: "blog",
+      url: "https://example.test/x",
+      fetchedAt: "2026-05-01T00:00:00Z",
+      accessedVia: "direct_fetch",
+      trustTier: "low_context",
+    },
+  ];
+  expectFailWithPath(
+    "insufficient kind=no_sources_found with non-empty sourceDocuments rejected",
+    bad,
+    "insufficientDataReason.kind",
+  );
+}
+{
+  const bad = clone(unusable);
+  bad.sourceCoverage[0].sourceDocumentId = "src_does_not_exist";
+  expectFailWithPath(
+    "sourceCoverage referencing unknown sourceDocumentId rejected",
+    bad,
+    "sourceCoverage.0.sourceDocumentId",
   );
 }
 
-// Theme-level may/mayNotSuggest validates as ThemeClaim — extra `themeIds` rejected by .strict()
+// ============================================================
+//   `unsupported_category` arm — scope refusal
+// ============================================================
+
+{
+  const bad = clone(refusal);
+  bad.requestedCategory = "employment_intelligence";
+  expectFailWithPath(
+    "unsupported_category with a *supported* requestedCategory rejected",
+    bad,
+    "requestedCategory",
+  );
+}
+{
+  const bad = clone(refusal);
+  bad.supportedCategories = ["employment_intelligence"];
+  expectFailWithPath(
+    "unsupported_category with incomplete supportedCategories rejected",
+    bad,
+    "supportedCategories",
+  );
+}
+{
+  const bad = clone(refusal);
+  bad.signals = [];
+  expectFail(
+    "unsupported_category carrying any evidence-shaped key rejected (strict)",
+    bad,
+  );
+}
+{
+  const bad = clone(refusal);
+  bad.themes = [];
+  expectFail(
+    "unsupported_category carrying themes key rejected (strict)",
+    bad,
+  );
+}
+{
+  const bad = clone(refusal);
+  bad.evidence = [];
+  expectFail(
+    "unsupported_category carrying evidence key rejected (strict)",
+    bad,
+  );
+}
+
+// ============================================================
+//   Unsupported category enum (subject-level) — kept for parity
+// ============================================================
+
+const UNSUPPORTED_CATEGORIES = [
+  "banking",
+  "healthcare",
+  "insurance",
+  "schools",
+  "consumer_products",
+  "legal_eligibility",
+  "creditworthiness",
+  "medical_suitability",
+  "financial_advice",
+];
+for (const cat of UNSUPPORTED_CATEGORIES) {
+  const bad = clone();
+  bad.category = cat;
+  expectFailWithPath(`sufficient with category="${cat}" rejected`, bad, "category");
+}
 {
   const bad = clone();
-  bad.themes[0].maySuggest[0] = { description: "test", themeIds: ["theme_management"] };
-  expectFailWithPath(
-    "Theme.maySuggest rejects InferenceClaim-shaped entry (extra themeIds)",
-    bad,
-    "themes.0.maySuggest",
-  );
+  delete bad.category;
+  expectFailWithPath("sufficient missing category rejected", bad, "category");
 }
 
-// `unknown` Result rating is valid on outcome=insufficient_data (positive coverage)
+// ============================================================
+//   Positive coverage — unknown rating on insufficient parses
+// ============================================================
+
 {
   const ok = clone(insufficient);
   ok.confidence.rating = "unknown";
   const r = KuroResult.safeParse(ok);
   if (!r.success) {
     failures++;
-    console.error("FAIL  outcome=insufficient_data with confidence.rating=unknown should parse, got:");
+    console.error("FAIL  insufficient with confidence.rating=unknown should parse, got:");
     for (const issue of r.error.issues) {
       console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
     }
   } else {
-    console.log("OK    outcome=insufficient_data with confidence.rating=unknown");
+    console.log("OK    insufficient with confidence.rating=unknown");
   }
 }
 
-// Breadth cap: Result rating=high with <3 themes at medium+ is rejected
-{
-  const bad = clone();
-  bad.confidence.rating = "high";
-  // employer-acme has 3 themes: medium, high, low → only 2 at medium+; rating=high must fail.
-  expectFailWithPath(
-    "Result rating=high with <3 themes at medium+ rejected (breadth cap)",
-    bad,
-    "confidence.rating",
-  );
-}
+// ============================================================
+//   Evidence model checks (sufficient arm) — preserved from prior coverage
+// ============================================================
 
-// reasons is required (min 1) at Signal, Theme, Result levels
 {
   const bad = clone();
   bad.signals[0].confidence.reasons = [];
@@ -200,8 +408,6 @@ function clone(src: Record<string, unknown> = base): any {
   bad.confidence.reasons = [];
   expectFailWithPath("Result confidence.reasons cannot be empty", bad, "confidence.reasons");
 }
-
-// `unknown` is unrepresentable at Signal and Theme level
 {
   const bad = clone();
   bad.signals[0].confidence.rating = "unknown";
@@ -212,15 +418,11 @@ function clone(src: Record<string, unknown> = base): any {
   bad.themes[0].confidence.rating = "unknown";
   expectFailWithPath("Theme confidence.rating=unknown rejected", bad, "themes.0.confidence.rating");
 }
-
-// Evidence model — Signal must cite at least one Evidence (no Evidence, no Signal).
 {
   const bad = clone();
   bad.signals[0].evidenceIds = [];
   expectFailWithPath("Signal with empty evidenceIds rejected", bad, "signals.0.evidenceIds");
 }
-
-// Evidence model — synthesized extraction without originalSnippet or qualityHints.notes.
 {
   const bad = clone();
   bad.evidence[0].extraction = {
@@ -236,8 +438,6 @@ function clone(src: Record<string, unknown> = base): any {
     "evidence.0.originalSnippet",
   );
 }
-
-// Evidence model — synthesized with originalSnippet OK (positive coverage).
 {
   const ok = clone();
   ok.evidence[0].extraction = {
@@ -257,8 +457,6 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    Synthesized evidence with originalSnippet");
   }
 }
-
-// Evidence model — synthesized with qualityHints.notes (no originalSnippet) OK (positive coverage).
 {
   const ok = clone();
   ok.evidence[0].extraction = {
@@ -279,8 +477,6 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    Synthesized evidence with qualityHints.notes");
   }
 }
-
-// Evidence model — duplicate (sourceDocumentId, locator) without isDuplicateOf marker rejected.
 {
   const bad = clone();
   const dup = JSON.parse(JSON.stringify(bad.evidence[0]));
@@ -292,8 +488,6 @@ function clone(src: Record<string, unknown> = base): any {
     "evidence",
   );
 }
-
-// Evidence model — duplicate evidence marked with qualityHints.isDuplicateOf is allowed.
 {
   const ok = clone();
   const dup = JSON.parse(JSON.stringify(ok.evidence[0]));
@@ -311,8 +505,6 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    Duplicate evidence marked with isDuplicateOf");
   }
 }
-
-// Evidence model — qualityHints.isDuplicateOf pointing at unknown id rejected.
 {
   const bad = clone();
   bad.evidence[0].qualityHints = { isDuplicateOf: "ev_does_not_exist" };
@@ -322,8 +514,6 @@ function clone(src: Record<string, unknown> = base): any {
     "evidence.0.qualityHints.isDuplicateOf",
   );
 }
-
-// Evidence model — Locator discriminated union: anchor variant parses.
 {
   const ok = clone();
   ok.evidence[0].locator = { kind: "anchor", value: "p-paragraph-3" };
@@ -338,8 +528,6 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    Anchor locator");
   }
 }
-
-// Evidence model — Locator charRange with end < start rejected.
 {
   const bad = clone();
   bad.evidence[0].locator = { kind: "charRange", start: 200, end: 100 };
@@ -350,14 +538,15 @@ function clone(src: Record<string, unknown> = base): any {
   );
 }
 
-// SourceAttribution — url is not a valid URL shape.
+// ============================================================
+//   SourceAttribution checks — preserved from prior coverage
+// ============================================================
+
 {
   const bad = clone();
   bad.sourceAttributions[0].url = "not-a-url";
   expectFailWithPath("Attribution.url rejects non-URL", bad, "sourceAttributions.0.url");
 }
-
-// SourceAttribution — fetchedAt in the future is rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].fetchedAt = "2099-01-01T00:00:00Z";
@@ -367,8 +556,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.fetchedAt",
   );
 }
-
-// SourceAttribution — publishedAt > fetchedAt without trustRationale.
 {
   const bad = clone();
   bad.sourceAttributions[0].publishedAt = "2030-01-01T00:00:00Z";
@@ -379,8 +566,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.publishedAt",
   );
 }
-
-// SourceAttribution — publishedAt > fetchedAt WITH trustRationale parses (positive).
 {
   const ok = clone();
   ok.sourceAttributions[0].fetchedAt = "2026-05-20T09:00:00Z";
@@ -397,8 +582,6 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    Attribution publishedAt > fetchedAt with rationale");
   }
 }
-
-// SourceAttribution — authorHandle set to an email is rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].authorHandle = "person@example.com";
@@ -408,8 +591,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.authorHandle",
   );
 }
-
-// SourceAttribution — authorHandle set to a real-name shape is rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].authorHandle = "Jane Doe";
@@ -419,8 +600,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.authorHandle",
   );
 }
-
-// SourceAttribution — sourceType outside enum rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].sourceType = "not_a_type";
@@ -430,8 +609,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.sourceType",
   );
 }
-
-// SourceAttribution — trustTier outside enum rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].trustTier = "not_a_tier";
@@ -441,8 +618,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.trustTier",
   );
 }
-
-// SourceAttribution — trustTier "unknown" without trustRationale rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].trustTier = "unknown";
@@ -453,8 +628,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.trustRationale",
   );
 }
-
-// SourceAttribution — RedactionRecord with raw `value` key rejected (strict).
 {
   const bad = clone();
   bad.sourceAttributions[0].redactions = [
@@ -466,8 +639,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.redactions.0",
   );
 }
-
-// SourceAttribution — attribution.sourceDocumentId unknown rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].sourceDocumentId = "src_does_not_exist";
@@ -477,8 +648,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.sourceDocumentId",
   );
 }
-
-// SourceAttribution — two attributions for the same sourceDocumentId rejected (1:1).
 {
   const bad = clone();
   const dup = JSON.parse(JSON.stringify(bad.sourceAttributions[0]));
@@ -490,8 +659,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions",
   );
 }
-
-// SourceAttribution — canonicalUrl carrying a tracking param rejected.
 {
   const bad = clone();
   bad.sourceAttributions[0].canonicalUrl =
@@ -502,8 +669,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.canonicalUrl",
   );
 }
-
-// SourceAttribution — both url and accessedVia absent rejected.
 {
   const bad = clone();
   delete bad.sourceAttributions[0].url;
@@ -515,8 +680,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.url",
   );
 }
-
-// SourceAttribution — user-pasted excerpt (no url, accessedVia=user_paste) parses (positive).
 {
   const ok = clone();
   delete ok.sourceAttributions[0].url;
@@ -536,19 +699,15 @@ function clone(src: Record<string, unknown> = base): any {
     console.log("OK    User-pasted attribution (no URL, accessedVia=user_paste)");
   }
 }
-
-// SourceAttribution — outcome=ok with no attribution for a known source document is rejected.
 {
   const bad = clone();
   bad.sourceAttributions = bad.sourceAttributions.slice(1);
   expectFailWithPath(
-    "outcome=ok without attribution for every SourceDocument rejected",
+    "sufficient without attribution for every SourceDocument rejected",
     bad,
     "sourceAttributions",
   );
 }
-
-// SourceAttribution — metadata with >20 keys rejected.
 {
   const bad = clone();
   const big: Record<string, number> = {};
@@ -560,8 +719,6 @@ function clone(src: Record<string, unknown> = base): any {
     "sourceAttributions.0.metadata",
   );
 }
-
-// SourceAttribution — metadata with nested object rejected (primitives only).
 {
   const bad = clone();
   bad.sourceAttributions[0].metadata = { nested: { foo: "bar" } };
@@ -572,35 +729,18 @@ function clone(src: Record<string, unknown> = base): any {
   );
 }
 
-// DecisionCategory — fixture with unsupported category is rejected at the category path.
-{
-  const bad = load("result.invalid-category.json");
-  expectFailWithPath("result.invalid-category.json (banking) rejected", bad, "category");
-}
+// ============================================================
+//   Theme.maySuggest must be ThemeClaim, not InferenceClaim
+// ============================================================
 
-// DecisionCategory — every documented unsupported value is rejected.
-const UNSUPPORTED_CATEGORIES = [
-  "banking",
-  "healthcare",
-  "insurance",
-  "schools",
-  "consumer_products",
-  "legal_eligibility",
-  "creditworthiness",
-  "medical_suitability",
-  "financial_advice",
-];
-for (const cat of UNSUPPORTED_CATEGORIES) {
-  const bad = clone();
-  bad.category = cat;
-  expectFailWithPath(`category="${cat}" rejected`, bad, "category");
-}
-
-// DecisionCategory — missing category is rejected.
 {
   const bad = clone();
-  delete bad.category;
-  expectFailWithPath("missing category rejected", bad, "category");
+  bad.themes[0].maySuggest[0] = { description: "test", themeIds: ["theme_management"] };
+  expectFailWithPath(
+    "Theme.maySuggest rejects InferenceClaim-shaped entry (extra themeIds)",
+    bad,
+    "themes.0.maySuggest",
+  );
 }
 
 if (failures > 0) {

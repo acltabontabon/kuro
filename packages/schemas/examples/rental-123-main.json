@@ -8,7 +8,7 @@
   },
   "category": "rental_intelligence",
   "generatedAt": "2026-06-01T12:30:00Z",
-  "outcome": "ok",
+  "dataSufficiency": "sufficient",
   "summary": "Community reports describe 123 Main St as well located but slow on building maintenance, with noise that varies by unit orientation.",
   "sourceDocuments": [
     {
@@ -77,29 +77,61 @@
       "id": "ev_maint_1",
       "sourceDocumentId": "src_apartments_1",
       "snippet": "Maintenance tickets take 2-3 weeks even for active leaks.",
-      "locator": { "kind": "charRange", "start": 12, "end": 64 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 12,
+        "end": 64
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-25T08:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_maint_2",
       "sourceDocumentId": "src_yelp_1",
       "snippet": "Management drags out repairs. Three follow-ups for a broken radiator.",
-      "locator": { "kind": "charRange", "start": 0, "end": 70 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:15:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 0,
+        "end": 70
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-25T08:15:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_loc_1",
       "sourceDocumentId": "src_reddit_2",
       "snippet": "Half a block from the L train and walkable to everything.",
-      "locator": { "kind": "charRange", "start": 88, "end": 145 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:10:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 88,
+        "end": 145
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-25T08:10:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_noise_1",
       "sourceDocumentId": "src_apartments_1",
       "snippet": "Street noise is loud at night but the back-facing units are quiet.",
-      "locator": { "kind": "charRange", "start": 180, "end": 246 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 180,
+        "end": 246
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-25T08:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     }
   ],
   "signals": [
@@ -108,13 +140,23 @@
       "topic": "Maintenance",
       "sentiment": "negative",
       "claim": "Tenants describe slow response from building management on repairs.",
-      "evidenceIds": ["ev_maint_1", "ev_maint_2"],
+      "evidenceIds": [
+        "ev_maint_1",
+        "ev_maint_2"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "inputs": {
+          "clarity": 0.9,
+          "directnessOfSupport": 0.9
+        },
         "reasons": [
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly describe delays of weeks." }
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "Both excerpts directly describe delays of weeks."
+          }
         ]
       }
     },
@@ -123,14 +165,27 @@
       "topic": "Location",
       "sentiment": "positive",
       "claim": "Strong walkability and transit access reported.",
-      "evidenceIds": ["ev_loc_1"],
+      "evidenceIds": [
+        "ev_loc_1"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.85 },
+        "inputs": {
+          "clarity": 0.8,
+          "directnessOfSupport": 0.85
+        },
         "reasons": [
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "Excerpt directly names transit proximity." },
-          { "driver": "sourceCount", "effect": "lowers", "note": "Only one Evidence excerpt supports the Signal." }
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "Excerpt directly names transit proximity."
+          },
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Only one Evidence excerpt supports the Signal."
+          }
         ]
       }
     },
@@ -139,13 +194,22 @@
       "topic": "Noise",
       "sentiment": "mixed",
       "claim": "Noise varies materially by unit orientation.",
-      "evidenceIds": ["ev_noise_1"],
+      "evidenceIds": [
+        "ev_noise_1"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.5 },
+        "inputs": {
+          "clarity": 0.7,
+          "languageAmbiguity": 0.5
+        },
         "reasons": [
-          { "driver": "languageAmbiguity", "effect": "lowers", "note": "Excerpt qualifies the claim by unit orientation, which is partly subjective." }
+          {
+            "driver": "languageAmbiguity",
+            "effect": "lowers",
+            "note": "Excerpt qualifies the claim by unit orientation, which is partly subjective."
+          }
         ]
       }
     }
@@ -155,7 +219,9 @@
       "id": "theme_maintenance",
       "topic": "Maintenance",
       "sentiment": "negative",
-      "signalIds": ["sig_slow_repairs"],
+      "signalIds": [
+        "sig_slow_repairs"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "medium",
@@ -166,15 +232,27 @@
           "signalConsistency": 0.9
         },
         "reasons": [
-          { "driver": "signalConsistency", "effect": "raises", "note": "Both sources describe multi-week repair delays." },
-          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 sources backing the Theme." }
+          {
+            "driver": "signalConsistency",
+            "effect": "raises",
+            "note": "Both sources describe multi-week repair delays."
+          },
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Only 2 sources backing the Theme."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Building management has a pattern of slow turnaround on repairs across multiple tenants." }
+        {
+          "description": "Building management has a pattern of slow turnaround on repairs across multiple tenants."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert any specific repair request will be delayed." }
+        {
+          "description": "Does not assert any specific repair request will be delayed."
+        }
       ],
       "limitations": [
         "Two sources; both are general-audience review platforms, not a structured tenant survey."
@@ -184,7 +262,9 @@
       "id": "theme_location",
       "topic": "Location",
       "sentiment": "positive",
-      "signalIds": ["sig_walkable_location"],
+      "signalIds": [
+        "sig_walkable_location"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "medium",
@@ -195,15 +275,27 @@
           "signalConsistency": 0.9
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Single Signal backing the Theme." },
-          { "driver": "sourceFreshness", "effect": "raises", "note": "Underlying source is recent." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Single Signal backing the Theme."
+          },
+          {
+            "driver": "sourceFreshness",
+            "effect": "raises",
+            "note": "Underlying source is recent."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "The building is described as well-located relative to transit and walkable amenities." }
+        {
+          "description": "The building is described as well-located relative to transit and walkable amenities."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not characterize neighborhood safety or noise from this signal alone." }
+        {
+          "description": "Does not characterize neighborhood safety or noise from this signal alone."
+        }
       ],
       "limitations": [
         "Supported by a single source."
@@ -213,7 +305,9 @@
       "id": "theme_noise",
       "topic": "Noise",
       "sentiment": "mixed",
-      "signalIds": ["sig_noise_unit_dependent"],
+      "signalIds": [
+        "sig_noise_unit_dependent"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "low",
@@ -224,15 +318,27 @@
           "signalConsistency": 0.4
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Only a single piece of Evidence." },
-          { "driver": "sourceDiversity", "effect": "lowers", "note": "One platform, one excerpt." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Only a single piece of Evidence."
+          },
+          {
+            "driver": "sourceDiversity",
+            "effect": "lowers",
+            "note": "One platform, one excerpt."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Unit orientation may meaningfully change the noise experience for the same building." }
+        {
+          "description": "Unit orientation may meaningfully change the noise experience for the same building."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert any specific unit will or will not be noisy." }
+        {
+          "description": "Does not assert any specific unit will or will not be noisy."
+        }
       ],
       "limitations": [
         "Single piece of evidence; the front-vs-back distinction is not corroborated."
@@ -243,44 +349,65 @@
     "patterns": [
       {
         "description": "Maintenance responsiveness is the dominant negative thread; location is the dominant positive thread.",
-        "themeIds": ["theme_maintenance", "theme_location"]
+        "themeIds": [
+          "theme_maintenance",
+          "theme_location"
+        ]
       }
     ],
     "consensus": [
       {
         "description": "Reviewers consistently report slow maintenance response.",
-        "themeIds": ["theme_maintenance"]
+        "themeIds": [
+          "theme_maintenance"
+        ]
       }
     ],
     "disagreements": [
       {
         "description": "Noise impressions diverge depending on which unit a reviewer occupies.",
-        "themeIds": ["theme_noise"]
+        "themeIds": [
+          "theme_noise"
+        ]
       }
     ],
     "communitySentimentSummary": "Public discussion frames 123 Main St as well located but operationally slow on building maintenance, with noise that depends on unit.",
     "maySuggest": [
       {
         "description": "Reviewers commonly describe maintenance delays.",
-        "themeIds": ["theme_maintenance"]
+        "themeIds": [
+          "theme_maintenance"
+        ]
       },
       {
         "description": "Reviewers commonly describe the location favorably.",
-        "themeIds": ["theme_location"]
+        "themeIds": [
+          "theme_location"
+        ]
       }
     ],
     "mayNotSuggest": [
       {
         "description": "Does not assert any specific unit will have noise issues.",
-        "themeIds": ["theme_noise"]
+        "themeIds": [
+          "theme_noise"
+        ]
       },
       {
         "description": "Does not rank this building against other buildings.",
-        "themeIds": ["theme_maintenance", "theme_location", "theme_noise"]
+        "themeIds": [
+          "theme_maintenance",
+          "theme_location",
+          "theme_noise"
+        ]
       },
       {
         "description": "Does not recommend whether to sign a lease.",
-        "themeIds": ["theme_maintenance", "theme_location", "theme_noise"]
+        "themeIds": [
+          "theme_maintenance",
+          "theme_location",
+          "theme_noise"
+        ]
       }
     ],
     "limitations": [
@@ -291,17 +418,38 @@
   "sourceSummary": {
     "documentCount": 3,
     "platforms": [
-      { "platform": "apartments.com", "count": 1 },
-      { "platform": "reddit", "count": 1 },
-      { "platform": "yelp", "count": 1 }
+      {
+        "platform": "apartments.com",
+        "count": 1
+      },
+      {
+        "platform": "reddit",
+        "count": 1
+      },
+      {
+        "platform": "yelp",
+        "count": 1
+      }
     ],
     "sourceTypes": [
-      { "sourceType": "review_site", "count": 2 },
-      { "sourceType": "forum", "count": 1 }
+      {
+        "sourceType": "review_site",
+        "count": 2
+      },
+      {
+        "sourceType": "forum",
+        "count": 1
+      }
     ],
     "trustTiers": [
-      { "trustTier": "secondary", "count": 2 },
-      { "trustTier": "community", "count": 1 }
+      {
+        "trustTier": "secondary",
+        "count": 2
+      },
+      {
+        "trustTier": "community",
+        "count": 1
+      }
     ],
     "exclusions": [],
     "freshness": {
@@ -324,8 +472,16 @@
       "topicBreadth": 0.5
     },
     "reasons": [
-      { "driver": "topicBreadth", "effect": "neutral", "note": "Three Themes cover the expected axes for a rental, but only two are above low confidence." },
-      { "driver": "themeSupportAggregate", "effect": "lowers", "note": "Aggregate Theme support sits between low and medium." }
+      {
+        "driver": "topicBreadth",
+        "effect": "neutral",
+        "note": "Three Themes cover the expected axes for a rental, but only two are above low confidence."
+      },
+      {
+        "driver": "themeSupportAggregate",
+        "effect": "lowers",
+        "note": "Aggregate Theme support sits between low and medium."
+      }
     ]
   },
   "finalKuro": "From the available community discussion, 123 Main St may suggest a building with strong location and walkability and a pattern of slow maintenance response, with noise that may vary by unit orientation. It may not suggest how a specific unit, lease term, or repair request will play out, and it is not a recommendation to sign or decline a lease."

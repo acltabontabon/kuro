@@ -1,0 +1,56 @@
+{
+  "id": "result_nonames_employer_2026_06_05",
+  "subject": {
+    "id": "subject_nonames_employer",
+    "kind": "employer",
+    "displayName": "NoNames Industries",
+    "description": "A privately-held entity with no public discussion located by KURO."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-05T12:00:00Z",
+  "dataSufficiency": "insufficient",
+  "summary": "KURO located no public Source Documents that discuss NoNames Industries as an employer.",
+  "sourceDocuments": [],
+  "sourceAttributions": [],
+  "insufficientDataReason": {
+    "kind": "no_sources_found",
+    "explanation": "No Source Documents about NoNames Industries as an employer were located within the search window."
+  },
+  "suggestedNextSources": [
+    {
+      "sourceType": "Glassdoor reviews for NoNames Industries",
+      "rationale": "First-hand current-employee accounts would unblock any workplace theme."
+    },
+    {
+      "sourceType": "LinkedIn employee reflections tagged with the employer name",
+      "rationale": "Identified-author posts can establish basic culture and management signals."
+    },
+    {
+      "sourceType": "Local industry-association forum threads naming NoNames Industries",
+      "rationale": "Industry-specific community feedback can corroborate or contrast first-hand reports."
+    }
+  ],
+  "limitations": [
+    "No Source Documents were located; nothing about the employer can be inferred from public material at this time."
+  ],
+  "confidence": {
+    "level": "result",
+    "rating": "unknown",
+    "inputs": {
+      "sourceCount": 0,
+      "sourceDiversity": 0,
+      "sourceFreshness": 0,
+      "signalConsistency": 0,
+      "themeSupportAggregate": 0,
+      "topicBreadth": 0
+    },
+    "reasons": [
+      {
+        "driver": "sourceCount",
+        "effect": "lowers",
+        "note": "Zero Source Documents located; nothing to score against."
+      }
+    ]
+  },
+  "finalKuro": "KURO cannot form a meaningful community inference about NoNames Industries because no Source Documents were located."
+}

@@ -1,0 +1,220 @@
+{
+  "id": "result_thincorp_employer_2026_06_03",
+  "subject": {
+    "id": "subject_thincorp_employer",
+    "kind": "employer",
+    "displayName": "ThinCorp",
+    "description": "A small startup with limited but real public commentary, all focused on pay."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-03T11:00:00Z",
+  "dataSufficiency": "partial",
+  "summary": "Public discussion of ThinCorp covers compensation in some detail but does not touch management, culture, or work-life balance.",
+  "sourceDocuments": [
+    {
+      "id": "src_blind_thin_1",
+      "url": "https://www.teamblind.com/post/thincorp-pay-band-abc",
+      "platform": "blind",
+      "author": null,
+      "capturedAt": "2026-05-28T08:00:00Z",
+      "publishedAt": "2026-04-12T15:30:00Z"
+    },
+    {
+      "id": "src_blind_thin_2",
+      "url": "https://www.teamblind.com/post/thincorp-offer-2026",
+      "platform": "blind",
+      "author": null,
+      "capturedAt": "2026-05-28T08:05:00Z",
+      "publishedAt": "2026-05-01T14:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_blind_thin_1",
+      "sourceDocumentId": "src_blind_thin_1",
+      "sourceType": "forum",
+      "url": "https://www.teamblind.com/post/thincorp-pay-band-abc",
+      "publishedAt": "2026-04-12T15:30:00Z",
+      "fetchedAt": "2026-05-28T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community"
+    },
+    {
+      "id": "att_blind_thin_2",
+      "sourceDocumentId": "src_blind_thin_2",
+      "sourceType": "forum",
+      "url": "https://www.teamblind.com/post/thincorp-offer-2026",
+      "publishedAt": "2026-05-01T14:00:00Z",
+      "fetchedAt": "2026-05-28T08:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_thin_pay_1",
+      "sourceDocumentId": "src_blind_thin_1",
+      "snippet": "Pay band at ThinCorp is right at market for mid-level engineers.",
+      "locator": { "kind": "charRange", "start": 0, "end": 63 },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-28T08:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
+    },
+    {
+      "id": "ev_thin_pay_2",
+      "sourceDocumentId": "src_blind_thin_2",
+      "snippet": "Got an offer; base is competitive but no signing bonus.",
+      "locator": { "kind": "charRange", "start": 0, "end": 55 },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-28T08:05:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_thin_pay",
+      "topic": "Compensation",
+      "sentiment": "mixed",
+      "claim": "Base pay is reported as roughly at-market with no signing bonus.",
+      "evidenceIds": ["ev_thin_pay_1", "ev_thin_pay_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.7, "directnessOfSupport": 0.8 },
+        "reasons": [
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "Both excerpts speak directly to pay."
+          }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_thin_pay",
+      "topic": "Compensation",
+      "sentiment": "mixed",
+      "signalIds": ["sig_thin_pay"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": {
+          "sourceCount": 2,
+          "sourceDiversity": 0.2,
+          "sourceFreshness": 0.7,
+          "signalConsistency": 0.6
+        },
+        "reasons": [
+          {
+            "driver": "sourceDiversity",
+            "effect": "lowers",
+            "note": "Both Source Documents come from Blind."
+          }
+        ]
+      },
+      "maySuggest": [
+        {
+          "description": "Base compensation is described as at-market by recent commenters."
+        }
+      ],
+      "mayNotSuggest": [
+        {
+          "description": "Does not assert ThinCorp out-pays peers or matches signing bonuses."
+        }
+      ],
+      "limitations": [
+        "Single-platform coverage; cannot generalize beyond Blind commenters."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [],
+    "consensus": [
+      {
+        "description": "Commenters agree base pay is at-market.",
+        "themeIds": ["theme_thin_pay"]
+      }
+    ],
+    "disagreements": [],
+    "communitySentimentSummary": "Available discussion of ThinCorp speaks only to compensation; nothing about management, culture, or work-life balance is supported.",
+    "maySuggest": [
+      {
+        "description": "Base pay is described as at-market by recent commenters.",
+        "themeIds": ["theme_thin_pay"]
+      }
+    ],
+    "mayNotSuggest": [
+      {
+        "description": "Does not characterize ThinCorp's management, culture, or work-life balance.",
+        "themeIds": ["theme_thin_pay"]
+      }
+    ],
+    "limitations": [
+      "Coverage is restricted to compensation comments on a single platform.",
+      "No first-hand accounts speak to management, culture, attrition, or work-life balance."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 2,
+    "platforms": [{ "platform": "blind", "count": 2 }],
+    "sourceTypes": [{ "sourceType": "forum", "count": 2 }],
+    "trustTiers": [{ "trustTier": "community", "count": 2 }],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-04-12T15:30:00Z",
+      "newestPublishedAt": "2026-05-01T14:00:00Z"
+    },
+    "diversityNotes": [
+      "Single-platform coverage; only compensation topics observed."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "low",
+    "inputs": {
+      "sourceCount": 2,
+      "sourceDiversity": 0.2,
+      "sourceFreshness": 0.7,
+      "signalConsistency": 0.6,
+      "themeSupportAggregate": 0.3,
+      "topicBreadth": 0.15
+    },
+    "reasons": [
+      {
+        "driver": "topicBreadth",
+        "effect": "lowers",
+        "note": "Only one topic (compensation) is covered; other workplace dimensions are absent."
+      },
+      {
+        "driver": "sourceDiversity",
+        "effect": "lowers",
+        "note": "All sources come from a single platform."
+      }
+    ]
+  },
+  "finalKuro": "From the available material KURO may suggest only that ThinCorp's base compensation is described as at-market by recent commenters; it may not characterize management, culture, work-life balance, or whether the role is a fit.",
+  "evidenceGaps": [
+    {
+      "topic": "Management and leadership",
+      "note": "No first-hand commentary on managers, leadership stability, or decision-making."
+    },
+    {
+      "topic": "Culture and team dynamics",
+      "note": "No first-hand commentary on team norms, inclusion, or collaboration."
+    },
+    {
+      "topic": "Work-life balance",
+      "note": "No commentary on hours, on-call expectations, or PTO usage."
+    },
+    {
+      "topic": "Career growth and attrition",
+      "note": "No commentary on promotion, mentorship, or turnover."
+    }
+  ]
+}

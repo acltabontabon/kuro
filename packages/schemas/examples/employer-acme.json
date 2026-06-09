@@ -8,7 +8,7 @@
   },
   "category": "employment_intelligence",
   "generatedAt": "2026-06-01T12:00:00Z",
-  "outcome": "ok",
+  "dataSufficiency": "sufficient",
   "summary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance during launches.",
   "sourceDocuments": [
     {
@@ -51,7 +51,10 @@
       "fetchedAt": "2026-05-20T09:00:00Z",
       "accessedVia": "direct_fetch",
       "trustTier": "community",
-      "metadata": { "httpStatus": 200, "languageHint": "en" }
+      "metadata": {
+        "httpStatus": 200,
+        "languageHint": "en"
+      }
     },
     {
       "id": "att_glassdoor_1",
@@ -75,7 +78,11 @@
       "accessedVia": "direct_fetch",
       "trustTier": "community",
       "redactions": [
-        { "field": "authorHandle", "category": "private_id", "reason": "Blind handles are tied to verified employer identity." }
+        {
+          "field": "authorHandle",
+          "category": "private_id",
+          "reason": "Blind handles are tied to verified employer identity."
+        }
       ]
     }
   ],
@@ -84,37 +91,79 @@
       "id": "ev_mgmt_1",
       "sourceDocumentId": "src_reddit_1",
       "snippet": "Management changed three times in my first year and each reorg killed morale.",
-      "locator": { "kind": "charRange", "start": 120, "end": 199 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 120,
+        "end": 199
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-20T09:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_mgmt_2",
       "sourceDocumentId": "src_glassdoor_1",
       "snippet": "Constant leadership turnover. Hard to plan anything beyond a quarter.",
-      "locator": { "kind": "charRange", "start": 44, "end": 113 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:05:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 44,
+        "end": 113
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-20T09:05:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_pay_1",
       "sourceDocumentId": "src_blind_1",
       "snippet": "Comp is genuinely top of band for the level. They will match offers.",
-      "locator": { "kind": "charRange", "start": 10, "end": 78 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:10:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 10,
+        "end": 78
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-20T09:10:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     },
     {
       "id": "ev_pay_2",
       "sourceDocumentId": "src_glassdoor_1",
       "snippet": "Salary and bonus were the best part of the job.",
-      "locator": { "kind": "charRange", "start": 220, "end": 267 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:05:00Z", "extractor": "kuro-extractor@0.1.0" },
-      "qualityHints": { "sourceTrust": "medium" }
+      "locator": {
+        "kind": "charRange",
+        "start": 220,
+        "end": 267
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-20T09:05:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      },
+      "qualityHints": {
+        "sourceTrust": "medium"
+      }
     },
     {
       "id": "ev_wlb_1",
       "sourceDocumentId": "src_reddit_1",
       "snippet": "Flexible WFH but expect to be online late during launches.",
-      "locator": { "kind": "charRange", "start": 400, "end": 458 },
-      "extraction": { "method": "verbatim", "extractedAt": "2026-05-20T09:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+      "locator": {
+        "kind": "charRange",
+        "start": 400,
+        "end": 458
+      },
+      "extraction": {
+        "method": "verbatim",
+        "extractedAt": "2026-05-20T09:00:00Z",
+        "extractor": "kuro-extractor@0.1.0"
+      }
     }
   ],
   "signals": [
@@ -123,14 +172,28 @@
       "topic": "Management Stability",
       "sentiment": "negative",
       "claim": "Reviewers describe frequent leadership turnover disrupting work.",
-      "evidenceIds": ["ev_mgmt_1", "ev_mgmt_2"],
+      "evidenceIds": [
+        "ev_mgmt_1",
+        "ev_mgmt_2"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.85 },
+        "inputs": {
+          "clarity": 0.9,
+          "directnessOfSupport": 0.85
+        },
         "reasons": [
-          { "driver": "clarity", "effect": "raises", "note": "Both excerpts describe leadership turnover in plain, unhedged language." },
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "Reviewers state the claim directly rather than imply it." }
+          {
+            "driver": "clarity",
+            "effect": "raises",
+            "note": "Both excerpts describe leadership turnover in plain, unhedged language."
+          },
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "Reviewers state the claim directly rather than imply it."
+          }
         ]
       }
     },
@@ -139,13 +202,23 @@
       "topic": "Compensation",
       "sentiment": "positive",
       "claim": "Compensation is reported as competitive at the top of band.",
-      "evidenceIds": ["ev_pay_1", "ev_pay_2"],
+      "evidenceIds": [
+        "ev_pay_1",
+        "ev_pay_2"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "high",
-        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.9 },
+        "inputs": {
+          "clarity": 0.85,
+          "directnessOfSupport": 0.9
+        },
         "reasons": [
-          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts directly assert that pay is top-of-band." }
+          {
+            "driver": "directnessOfSupport",
+            "effect": "raises",
+            "note": "Both excerpts directly assert that pay is top-of-band."
+          }
         ]
       }
     },
@@ -154,13 +227,22 @@
       "topic": "Work-Life Balance",
       "sentiment": "mixed",
       "claim": "Flexible day-to-day, but expectation of late hours during launches.",
-      "evidenceIds": ["ev_wlb_1"],
+      "evidenceIds": [
+        "ev_wlb_1"
+      ],
       "confidence": {
         "level": "signal",
         "rating": "medium",
-        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.4 },
+        "inputs": {
+          "clarity": 0.7,
+          "languageAmbiguity": 0.4
+        },
         "reasons": [
-          { "driver": "languageAmbiguity", "effect": "lowers", "note": "Hedged phrasing about \"expect to be online\" leaves the obligation open to interpretation." }
+          {
+            "driver": "languageAmbiguity",
+            "effect": "lowers",
+            "note": "Hedged phrasing about \"expect to be online\" leaves the obligation open to interpretation."
+          }
         ]
       }
     }
@@ -170,7 +252,9 @@
       "id": "theme_management",
       "topic": "Management Stability",
       "sentiment": "negative",
-      "signalIds": ["sig_mgmt_turnover"],
+      "signalIds": [
+        "sig_mgmt_turnover"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "medium",
@@ -181,16 +265,30 @@
           "signalConsistency": 0.9
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Only 2 supporting Signals." },
-          { "driver": "signalConsistency", "effect": "raises", "note": "Both Signals describe the same pattern of turnover." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Only 2 supporting Signals."
+          },
+          {
+            "driver": "signalConsistency",
+            "effect": "raises",
+            "note": "Both Signals describe the same pattern of turnover."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Frequent leadership turnover has been a recurring lived experience for reviewers." }
+        {
+          "description": "Frequent leadership turnover has been a recurring lived experience for reviewers."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not predict whether Acme will reorganize again." },
-        { "description": "Does not claim current management is ineffective in absolute terms." }
+        {
+          "description": "Does not predict whether Acme will reorganize again."
+        },
+        {
+          "description": "Does not claim current management is ineffective in absolute terms."
+        }
       ],
       "limitations": [
         "Two sources, both retrospective; no current-quarter signal."
@@ -200,7 +298,9 @@
       "id": "theme_compensation",
       "topic": "Compensation",
       "sentiment": "positive",
-      "signalIds": ["sig_pay_topband"],
+      "signalIds": [
+        "sig_pay_topband"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "high",
@@ -211,16 +311,30 @@
           "signalConsistency": 0.95
         },
         "reasons": [
-          { "driver": "signalConsistency", "effect": "raises", "note": "Signals on both Blind and Glassdoor agree pay is top-of-band." },
-          { "driver": "sourceFreshness", "effect": "raises", "note": "Both sources are within the last 4 months." }
+          {
+            "driver": "signalConsistency",
+            "effect": "raises",
+            "note": "Signals on both Blind and Glassdoor agree pay is top-of-band."
+          },
+          {
+            "driver": "sourceFreshness",
+            "effect": "raises",
+            "note": "Both sources are within the last 4 months."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Reviewers consistently describe compensation as a strong point." }
+        {
+          "description": "Reviewers consistently describe compensation as a strong point."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert any specific salary band or offer outcome for a given role." },
-        { "description": "Does not claim Acme out-pays its peers in absolute terms." }
+        {
+          "description": "Does not assert any specific salary band or offer outcome for a given role."
+        },
+        {
+          "description": "Does not claim Acme out-pays its peers in absolute terms."
+        }
       ],
       "limitations": [
         "Both sources are platforms where above-average pay is over-represented."
@@ -230,7 +344,9 @@
       "id": "theme_wlb",
       "topic": "Work-Life Balance",
       "sentiment": "mixed",
-      "signalIds": ["sig_wlb_flex_but_crunch"],
+      "signalIds": [
+        "sig_wlb_flex_but_crunch"
+      ],
       "confidence": {
         "level": "theme",
         "rating": "low",
@@ -241,15 +357,27 @@
           "signalConsistency": 0.5
         },
         "reasons": [
-          { "driver": "sourceCount", "effect": "lowers", "note": "Only 1 supporting Signal." },
-          { "driver": "sourceDiversity", "effect": "lowers", "note": "Single Reddit thread; not generalizable." }
+          {
+            "driver": "sourceCount",
+            "effect": "lowers",
+            "note": "Only 1 supporting Signal."
+          },
+          {
+            "driver": "sourceDiversity",
+            "effect": "lowers",
+            "note": "Single Reddit thread; not generalizable."
+          }
         ]
       },
       "maySuggest": [
-        { "description": "Day-to-day flexibility coexists with launch-period crunch in at least some teams." }
+        {
+          "description": "Day-to-day flexibility coexists with launch-period crunch in at least some teams."
+        }
       ],
       "mayNotSuggest": [
-        { "description": "Does not assert that launch crunch applies to every team or every role." }
+        {
+          "description": "Does not assert that launch crunch applies to every team or every role."
+        }
       ],
       "limitations": [
         "Supported by a single source; not generalizable across the company."
@@ -260,44 +388,65 @@
     "patterns": [
       {
         "description": "Compensation is consistently praised across platforms; management stability is consistently criticized.",
-        "themeIds": ["theme_compensation", "theme_management"]
+        "themeIds": [
+          "theme_compensation",
+          "theme_management"
+        ]
       }
     ],
     "consensus": [
       {
         "description": "Reviewers agree that pay is competitive.",
-        "themeIds": ["theme_compensation"]
+        "themeIds": [
+          "theme_compensation"
+        ]
       }
     ],
     "disagreements": [
       {
         "description": "Accounts of work-life balance vary between flexibility and launch-period crunch.",
-        "themeIds": ["theme_wlb"]
+        "themeIds": [
+          "theme_wlb"
+        ]
       }
     ],
     "communitySentimentSummary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance.",
     "maySuggest": [
       {
         "description": "Reviewers repeatedly flag management turnover as disruptive.",
-        "themeIds": ["theme_management"]
+        "themeIds": [
+          "theme_management"
+        ]
       },
       {
         "description": "Reviewers describe compensation as a strong point.",
-        "themeIds": ["theme_compensation"]
+        "themeIds": [
+          "theme_compensation"
+        ]
       }
     ],
     "mayNotSuggest": [
       {
         "description": "Does not predict whether Acme will reorganize again.",
-        "themeIds": ["theme_management"]
+        "themeIds": [
+          "theme_management"
+        ]
       },
       {
         "description": "Does not claim Acme is a better or worse employer than its peers.",
-        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+        "themeIds": [
+          "theme_compensation",
+          "theme_management",
+          "theme_wlb"
+        ]
       },
       {
         "description": "Does not recommend whether to accept or decline an offer.",
-        "themeIds": ["theme_compensation", "theme_management", "theme_wlb"]
+        "themeIds": [
+          "theme_compensation",
+          "theme_management",
+          "theme_wlb"
+        ]
       }
     ],
     "limitations": [
@@ -308,17 +457,38 @@
   "sourceSummary": {
     "documentCount": 3,
     "platforms": [
-      { "platform": "reddit", "count": 1 },
-      { "platform": "glassdoor", "count": 1 },
-      { "platform": "blind", "count": 1 }
+      {
+        "platform": "reddit",
+        "count": 1
+      },
+      {
+        "platform": "glassdoor",
+        "count": 1
+      },
+      {
+        "platform": "blind",
+        "count": 1
+      }
     ],
     "sourceTypes": [
-      { "sourceType": "forum", "count": 2 },
-      { "sourceType": "review_site", "count": 1 }
+      {
+        "sourceType": "forum",
+        "count": 2
+      },
+      {
+        "sourceType": "review_site",
+        "count": 1
+      }
     ],
     "trustTiers": [
-      { "trustTier": "community", "count": 2 },
-      { "trustTier": "secondary", "count": 1 }
+      {
+        "trustTier": "community",
+        "count": 2
+      },
+      {
+        "trustTier": "secondary",
+        "count": 1
+      }
     ],
     "exclusions": [],
     "freshness": {
@@ -341,8 +511,16 @@
       "topicBreadth": 0.5
     },
     "reasons": [
-      { "driver": "topicBreadth", "effect": "lowers", "note": "Three Themes is enough breadth, but only two are above low confidence." },
-      { "driver": "themeSupportAggregate", "effect": "neutral", "note": "Theme confidences split across high, medium, and low." }
+      {
+        "driver": "topicBreadth",
+        "effect": "lowers",
+        "note": "Three Themes is enough breadth, but only two are above low confidence."
+      },
+      {
+        "driver": "themeSupportAggregate",
+        "effect": "neutral",
+        "note": "Theme confidences split across high, medium, and low."
+      }
     ]
   },
   "finalKuro": "From the available community discussion, Acme may suggest a pattern of competitive pay alongside recurring concerns about leadership stability and uneven work-life balance during launches. It may not suggest how those patterns would apply to any specific role, team, or future quarter, and it is not a recommendation to accept or decline an offer."
