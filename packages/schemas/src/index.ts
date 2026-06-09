@@ -1,6 +1,7 @@
 export * from "./primitives.js";
 export * from "./subject.js";
 export * from "./sourceDocument.js";
+export * from "./sourceAttribution.js";
 export * from "./evidence.js";
 export * from "./confidence.js";
 export * from "./signal.js";

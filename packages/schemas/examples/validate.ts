@@ -348,6 +348,228 @@ function clone(src: Record<string, unknown> = base): any {
   );
 }
 
+// SourceAttribution — url is not a valid URL shape.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].url = "not-a-url";
+  expectFailWithPath("Attribution.url rejects non-URL", bad, "sourceAttributions.0.url");
+}
+
+// SourceAttribution — fetchedAt in the future is rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].fetchedAt = "2099-01-01T00:00:00Z";
+  expectFailWithPath(
+    "Attribution.fetchedAt in future rejected",
+    bad,
+    "sourceAttributions.0.fetchedAt",
+  );
+}
+
+// SourceAttribution — publishedAt > fetchedAt without trustRationale.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].publishedAt = "2030-01-01T00:00:00Z";
+  delete bad.sourceAttributions[0].trustRationale;
+  expectFailWithPath(
+    "Attribution publishedAt > fetchedAt without rationale rejected",
+    bad,
+    "sourceAttributions.0.publishedAt",
+  );
+}
+
+// SourceAttribution — publishedAt > fetchedAt WITH trustRationale parses (positive).
+{
+  const ok = clone();
+  ok.sourceAttributions[0].fetchedAt = "2026-05-20T09:00:00Z";
+  ok.sourceAttributions[0].publishedAt = "2026-05-20T09:00:01Z";
+  ok.sourceAttributions[0].trustRationale = "Source edit timestamp drifted by a few seconds after fetch.";
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  Attribution publishedAt > fetchedAt with rationale should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    Attribution publishedAt > fetchedAt with rationale");
+  }
+}
+
+// SourceAttribution — authorHandle set to an email is rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].authorHandle = "person@example.com";
+  expectFailWithPath(
+    "Attribution.authorHandle rejects email shape",
+    bad,
+    "sourceAttributions.0.authorHandle",
+  );
+}
+
+// SourceAttribution — authorHandle set to a real-name shape is rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].authorHandle = "Jane Doe";
+  expectFailWithPath(
+    "Attribution.authorHandle rejects real-name shape",
+    bad,
+    "sourceAttributions.0.authorHandle",
+  );
+}
+
+// SourceAttribution — sourceType outside enum rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].sourceType = "not_a_type";
+  expectFailWithPath(
+    "Attribution.sourceType outside enum rejected",
+    bad,
+    "sourceAttributions.0.sourceType",
+  );
+}
+
+// SourceAttribution — trustTier outside enum rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].trustTier = "not_a_tier";
+  expectFailWithPath(
+    "Attribution.trustTier outside enum rejected",
+    bad,
+    "sourceAttributions.0.trustTier",
+  );
+}
+
+// SourceAttribution — trustTier "unknown" without trustRationale rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].trustTier = "unknown";
+  delete bad.sourceAttributions[0].trustRationale;
+  expectFailWithPath(
+    'Attribution.trustTier "unknown" without rationale rejected',
+    bad,
+    "sourceAttributions.0.trustRationale",
+  );
+}
+
+// SourceAttribution — RedactionRecord with raw `value` key rejected (strict).
+{
+  const bad = clone();
+  bad.sourceAttributions[0].redactions = [
+    { field: "authorHandle", category: "email", value: "person@example.com" },
+  ];
+  expectFailWithPath(
+    "RedactionRecord with raw value key rejected",
+    bad,
+    "sourceAttributions.0.redactions.0",
+  );
+}
+
+// SourceAttribution — attribution.sourceDocumentId unknown rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].sourceDocumentId = "src_does_not_exist";
+  expectFailWithPath(
+    "Attribution.sourceDocumentId pointing at unknown document rejected",
+    bad,
+    "sourceAttributions.0.sourceDocumentId",
+  );
+}
+
+// SourceAttribution — two attributions for the same sourceDocumentId rejected (1:1).
+{
+  const bad = clone();
+  const dup = JSON.parse(JSON.stringify(bad.sourceAttributions[0]));
+  dup.id = "att_dup";
+  bad.sourceAttributions.push(dup);
+  expectFailWithPath(
+    "Two attributions for same sourceDocumentId rejected (1:1)",
+    bad,
+    "sourceAttributions",
+  );
+}
+
+// SourceAttribution — canonicalUrl carrying a tracking param rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions[0].canonicalUrl =
+    "https://www.reddit.com/r/jobs/comments/abc123/two_years_at_acme?utm_source=newsletter";
+  expectFailWithPath(
+    "Attribution.canonicalUrl with utm_source rejected",
+    bad,
+    "sourceAttributions.0.canonicalUrl",
+  );
+}
+
+// SourceAttribution — both url and accessedVia absent rejected.
+{
+  const bad = clone();
+  delete bad.sourceAttributions[0].url;
+  delete bad.sourceAttributions[0].canonicalUrl;
+  delete bad.sourceAttributions[0].accessedVia;
+  expectFailWithPath(
+    "Attribution with neither url nor accessedVia rejected",
+    bad,
+    "sourceAttributions.0.url",
+  );
+}
+
+// SourceAttribution — user-pasted excerpt (no url, accessedVia=user_paste) parses (positive).
+{
+  const ok = clone();
+  delete ok.sourceAttributions[0].url;
+  delete ok.sourceAttributions[0].canonicalUrl;
+  delete ok.sourceAttributions[0].authorHandle;
+  ok.sourceAttributions[0].accessedVia = "user_paste";
+  ok.sourceAttributions[0].sourceType = "other";
+  ok.sourceAttributions[0].trustTier = "low_context";
+  const r = KuroResult.safeParse(ok);
+  if (!r.success) {
+    failures++;
+    console.error("FAIL  User-pasted attribution should parse, got:");
+    for (const issue of r.error.issues) {
+      console.error(`  - ${issue.path.join(".")}: ${issue.message}`);
+    }
+  } else {
+    console.log("OK    User-pasted attribution (no URL, accessedVia=user_paste)");
+  }
+}
+
+// SourceAttribution — outcome=ok with no attribution for a known source document is rejected.
+{
+  const bad = clone();
+  bad.sourceAttributions = bad.sourceAttributions.slice(1);
+  expectFailWithPath(
+    "outcome=ok without attribution for every SourceDocument rejected",
+    bad,
+    "sourceAttributions",
+  );
+}
+
+// SourceAttribution — metadata with >20 keys rejected.
+{
+  const bad = clone();
+  const big: Record<string, number> = {};
+  for (let i = 0; i < 21; i++) big[`k${i}`] = i;
+  bad.sourceAttributions[0].metadata = big;
+  expectFailWithPath(
+    "Attribution.metadata with >20 keys rejected",
+    bad,
+    "sourceAttributions.0.metadata",
+  );
+}
+
+// SourceAttribution — metadata with nested object rejected (primitives only).
+{
+  const bad = clone();
+  bad.sourceAttributions[0].metadata = { nested: { foo: "bar" } };
+  expectFailWithPath(
+    "Attribution.metadata with nested object rejected",
+    bad,
+    "sourceAttributions.0.metadata",
+  );
+}
+
 if (failures > 0) {
   console.error(`\n${failures} check(s) failed.`);
   process.exit(1);

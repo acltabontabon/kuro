@@ -37,6 +37,47 @@
       "publishedAt": "2026-04-01T15:30:00Z"
     }
   ],
+  "sourceAttributions": [
+    {
+      "id": "att_reddit_1",
+      "sourceDocumentId": "src_reddit_1",
+      "sourceType": "forum",
+      "url": "https://www.reddit.com/r/jobs/comments/abc123/two_years_at_acme",
+      "canonicalUrl": "https://www.reddit.com/r/jobs/comments/abc123/two_years_at_acme",
+      "title": "Two years at Acme - honest review",
+      "authorHandle": "throwaway_acme_42",
+      "publishedAt": "2025-11-04T18:22:00Z",
+      "fetchedAt": "2026-05-20T09:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community",
+      "metadata": { "httpStatus": 200, "languageHint": "en" }
+    },
+    {
+      "id": "att_glassdoor_1",
+      "sourceDocumentId": "src_glassdoor_1",
+      "sourceType": "review_site",
+      "url": "https://www.glassdoor.com/Reviews/acme-corp-RVW9001.htm",
+      "canonicalUrl": "https://www.glassdoor.com/Reviews/acme-corp-RVW9001.htm",
+      "title": "Acme Corp Reviews",
+      "publishedAt": "2026-02-12T00:00:00Z",
+      "fetchedAt": "2026-05-20T09:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_blind_1",
+      "sourceDocumentId": "src_blind_1",
+      "sourceType": "forum",
+      "url": "https://www.teamblind.com/post/acme-pay-review-xyz",
+      "publishedAt": "2026-04-01T15:30:00Z",
+      "fetchedAt": "2026-05-20T09:10:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community",
+      "redactions": [
+        { "field": "authorHandle", "category": "private_id", "reason": "Blind handles are tied to verified employer identity." }
+      ]
+    }
+  ],
   "evidence": [
     {
       "id": "ev_mgmt_1",
@@ -269,6 +310,14 @@
       { "platform": "reddit", "count": 1 },
       { "platform": "glassdoor", "count": 1 },
       { "platform": "blind", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "forum", "count": 2 },
+      { "sourceType": "review_site", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "community", "count": 2 },
+      { "trustTier": "secondary", "count": 1 }
     ],
     "exclusions": [],
     "freshness": {

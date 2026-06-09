@@ -16,6 +16,13 @@
     { "id": "src_tripadvisor_a", "url": "https://www.tripadvisor.com/Restaurant_Review-kuro-cafe", "platform": "tripadvisor", "author": null, "capturedAt": "2026-05-25T08:03:00Z", "publishedAt": "2026-05-10T00:00:00Z" },
     { "id": "src_reddit_a", "url": "https://www.reddit.com/r/foodscene/comments/abc/kuro-cafe-review", "platform": "reddit", "author": "local_foodie_22", "capturedAt": "2026-05-25T08:04:00Z", "publishedAt": "2026-05-18T00:00:00Z" }
   ],
+  "sourceAttributions": [
+    { "id": "att_yelp_a", "sourceDocumentId": "src_yelp_a", "sourceType": "review_site", "url": "https://www.yelp.com/biz/kuro-cafe-1", "publishedAt": "2026-03-12T00:00:00Z", "fetchedAt": "2026-05-25T08:00:00Z", "accessedVia": "direct_fetch", "trustTier": "secondary" },
+    { "id": "att_google_a", "sourceDocumentId": "src_google_a", "sourceType": "review_site", "url": "https://www.google.com/maps/place/kuro-cafe/reviews-a", "publishedAt": "2026-04-02T00:00:00Z", "fetchedAt": "2026-05-25T08:01:00Z", "accessedVia": "direct_fetch", "trustTier": "secondary" },
+    { "id": "att_google_b", "sourceDocumentId": "src_google_b", "sourceType": "review_site", "url": "https://www.google.com/maps/place/kuro-cafe/reviews-b", "publishedAt": "2026-04-30T00:00:00Z", "fetchedAt": "2026-05-25T08:02:00Z", "accessedVia": "direct_fetch", "trustTier": "secondary" },
+    { "id": "att_tripadvisor_a", "sourceDocumentId": "src_tripadvisor_a", "sourceType": "review_site", "url": "https://www.tripadvisor.com/Restaurant_Review-kuro-cafe", "publishedAt": "2026-05-10T00:00:00Z", "fetchedAt": "2026-05-25T08:03:00Z", "accessedVia": "direct_fetch", "trustTier": "secondary" },
+    { "id": "att_reddit_a", "sourceDocumentId": "src_reddit_a", "sourceType": "forum", "url": "https://www.reddit.com/r/foodscene/comments/abc/kuro-cafe-review", "authorHandle": "local_foodie_22", "publishedAt": "2026-05-18T00:00:00Z", "fetchedAt": "2026-05-25T08:04:00Z", "accessedVia": "direct_fetch", "trustTier": "community" }
+  ],
   "evidence": [
     { "id": "ev_food_pos_1", "sourceDocumentId": "src_yelp_a", "snippet": "The breakfast burrito is the best I've had in the neighborhood.", "locator": { "kind": "charRange", "start": 10, "end": 75 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:00:00Z", "extractor": "kuro-extractor@0.1.0" } },
     { "id": "ev_food_pos_2", "sourceDocumentId": "src_google_a", "snippet": "Solid menu, especially the toasts and the seasonal salads.", "locator": { "kind": "charRange", "start": 0, "end": 60 }, "extraction": { "method": "verbatim", "extractedAt": "2026-05-25T08:01:00Z", "extractor": "kuro-extractor@0.1.0" } },
@@ -252,6 +259,14 @@
       { "platform": "google", "count": 2 },
       { "platform": "tripadvisor", "count": 1 },
       { "platform": "reddit", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 4 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 4 },
+      { "trustTier": "community", "count": 1 }
     ],
     "exclusions": [],
     "freshness": {

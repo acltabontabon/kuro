@@ -2,6 +2,7 @@ import { z } from "zod";
 import { Id, IsoDateTime } from "./primitives.js";
 import { Subject } from "./subject.js";
 import { SourceDocument } from "./sourceDocument.js";
+import { SourceAttribution } from "./sourceAttribution.js";
 import { Evidence } from "./evidence.js";
 import { Signal } from "./signal.js";
 import { Theme } from "./theme.js";
@@ -19,6 +20,7 @@ export const KuroResult = z.object({
   outcome: ResultOutcome,
   summary: z.string().min(1),
   sourceDocuments: z.array(SourceDocument),
+  sourceAttributions: z.array(SourceAttribution),
   evidence: z.array(Evidence),
   signals: z.array(Signal),
   themes: z.array(Theme),
@@ -27,7 +29,7 @@ export const KuroResult = z.object({
   confidence: ResultConfidence,
   finalKuro: z.string().min(1),
 }).superRefine((r, ctx) => {
-  const reportDupes = (key: "sourceDocuments" | "evidence" | "signals" | "themes") => {
+  const reportDupes = (key: "sourceDocuments" | "sourceAttributions" | "evidence" | "signals" | "themes") => {
     const seen = new Map<string, number>();
     (r[key] as { id: string }[]).forEach((item, i) => {
       const prior = seen.get(item.id);
@@ -43,6 +45,7 @@ export const KuroResult = z.object({
     });
   };
   reportDupes("sourceDocuments");
+  reportDupes("sourceAttributions");
   reportDupes("evidence");
   reportDupes("signals");
   reportDupes("themes");
@@ -59,6 +62,28 @@ export const KuroResult = z.object({
         path: ["evidence", i, "sourceDocumentId"],
         message: `Evidence ${e.id} references unknown sourceDocumentId ${e.sourceDocumentId}`,
       });
+    }
+  });
+
+  const attributionBySource = new Map<string, number>();
+  r.sourceAttributions.forEach((a, i) => {
+    if (!sourceIds.has(a.sourceDocumentId)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sourceAttributions", i, "sourceDocumentId"],
+        message: `SourceAttribution ${a.id} references unknown sourceDocumentId ${a.sourceDocumentId}`,
+      });
+      return;
+    }
+    const prior = attributionBySource.get(a.sourceDocumentId);
+    if (prior !== undefined) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sourceAttributions", i, "sourceDocumentId"],
+        message: `sourceDocumentId ${a.sourceDocumentId} already attributed by sourceAttributions[${prior}]; attribution is 1:1 per Source Document.`,
+      });
+    } else {
+      attributionBySource.set(a.sourceDocumentId, i);
     }
   });
 
@@ -167,6 +192,15 @@ export const KuroResult = z.object({
           code: z.ZodIssueCode.custom,
           path: [key],
           message: `outcome "ok" requires at least one ${key} entry`,
+        });
+      }
+    });
+    r.sourceDocuments.forEach((s, i) => {
+      if (!attributionBySource.has(s.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["sourceAttributions"],
+          message: `outcome "ok" requires a SourceAttribution for sourceDocuments[${i}] (id=${s.id})`,
         });
       }
     });
