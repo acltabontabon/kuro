@@ -6,6 +6,7 @@
     "displayName": "Acme Corp",
     "description": "Acme Corp as an employer"
   },
+  "category": "employment_intelligence",
   "generatedAt": "2026-06-01T12:00:00Z",
   "outcome": "ok",
   "summary": "Public discussion describes Acme as a well-paying employer with persistent concerns about leadership turnover and uneven work-life balance during launches.",

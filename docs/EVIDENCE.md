@@ -2,6 +2,8 @@
 
 This document is the rulebook for KURO's Evidence layer. The conceptual definition lives in [GLOSSARY.md §Evidence](./GLOSSARY.md#evidence); this file pins the traceability rules, locator kinds, quality hints, and edge-case handling that the schema and the extraction pipeline must agree on.
 
+Evidence requirements apply in full regardless of [Decision Category](./DECISION_CATEGORIES.md). Category bounds scope; it does not relax citation, traceability, or quality rules.
+
 ## 1. Definition
 
 > **Evidence** is a traceable, addressable extract from a single Source Document that *could* be used to support one or more Signals. It is raw or minimally-normalized material plus the provenance needed to locate it again in the original source. Evidence does **not** carry interpretation, stance, sentiment, or conclusions.

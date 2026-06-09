@@ -2,6 +2,8 @@
 
 This document is the rulebook for KURO's Source Attribution layer. The conceptual definition lives in [GLOSSARY.md §Source Attribution](./GLOSSARY.md#source-attribution); this file pins the field semantics, enums, validation rules, and the attribution ↔ Evidence ↔ Confidence boundary that the schema and ingestion paths must agree on.
 
+Source Attribution requirements apply in full regardless of [Decision Category](./DECISION_CATEGORIES.md). Category bounds scope; it does not relax attribution, trust-tier, or redaction rules.
+
 ## 1. Definition
 
 > **Source Attribution** is a structured record describing the origin of a Source Document: its type, location, collection context, and a coarse reliability hint. It is metadata about provenance — not a claim of truth, not an excerpt, not a confidence value.

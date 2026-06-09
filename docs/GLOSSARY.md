@@ -221,6 +221,8 @@ This distinction is central to KURO's philosophy and is enforced at the model le
 
 **Definition.** The final, user-facing output for a single KURO query about a Subject. A coherent presentation of what the community is saying about that Subject.
 
+Every Result declares a **Decision Category** that bounds its scope and interpretation. MVP supports only `Employment Intelligence` and `Rental Intelligence`; see [DECISION_CATEGORIES.md](./DECISION_CATEGORIES.md).
+
 A KURO Result is composed of **two parts**: the set of Themes, and the KURO Inference derived from those Themes. A Result is not just a list of Themes - it is Themes plus the informed perspective synthesized over them.
 
 **Conceptual requirements.**
@@ -248,6 +250,39 @@ A KURO Result is composed of **two parts**: the set of Themes, and the KURO Infe
 Insufficient data is a successful Result, not a transport error. The request succeeded; the analytical outcome is "not enough to say."
 
 **Relationship to neighbors.** The Result is the terminal node. It is what KURO shows the user.
+
+---
+
+### Decision Category
+
+**Definition.** The supported scope KURO operates in for a given Result. Every Result declares exactly one Decision Category, which tells downstream consumers what kind of subject the Result is about and how the Result should be interpreted.
+
+Decision Category controls **scope and interpretation**. It is not an outcome, not a confidence score, and not a truth claim. It does not bypass Evidence, Confidence, or Source Attribution requirements.
+
+**MVP categories.** KURO MVP supports exactly two categories:
+
+- **Employment Intelligence** — see below.
+- **Rental Intelligence** — see below.
+
+All other domains (banking, healthcare, insurance, schools / education admissions, consumer products, legal eligibility, creditworthiness, medical suitability, financial advice) are out of MVP scope and are rejected by the schema. Adding a category is a deliberate design action, not a configuration change. See [DECISION_CATEGORIES.md](./DECISION_CATEGORIES.md) for the full list, covers / does-not-cover details, language guardrails, and edge cases.
+
+**Category is set by the producer / caller / pipeline.** It is not inferred from documents. One Result has exactly one category.
+
+---
+
+### Employment Intelligence
+
+**Definition.** The Decision Category covering cautious, evidence-backed signals about employers, workplaces, and work experiences, drawn from public/community feedback. Topics in scope include employer reputation, workplace culture, compensation sentiment, management sentiment, work-life balance, hiring/interview experience, attrition/retention signals, and career growth sentiment.
+
+**Not for hiring decisions.** Employment Intelligence does not decide whether to hire a specific person, does not support employment background checks, and does not make protected-class inferences. It does not give legal employment advice or salary guarantees. See [DECISION_CATEGORIES.md](./DECISION_CATEGORIES.md).
+
+---
+
+### Rental Intelligence
+
+**Definition.** The Decision Category covering cautious, evidence-backed signals about landlords, property managers, buildings, properties, neighborhoods, and rental experiences, drawn from public/community feedback. Topics in scope include landlord/property-manager reputation, building/property sentiment, maintenance responsiveness, safety/noise/cleanliness sentiment, neighborhood/community feedback, rental experience patterns, and tenant experience themes.
+
+**Not for tenant screening.** Rental Intelligence does not decide whether to approve a tenant, does not support tenant screening or credit checks, and does not make protected-class inferences. It does not give legal housing advice. See [DECISION_CATEGORIES.md](./DECISION_CATEGORIES.md).
 
 ---
 

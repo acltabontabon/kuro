@@ -9,6 +9,7 @@ import { Theme } from "./theme.js";
 import { KuroInference } from "./inference.js";
 import { ResultConfidence } from "./confidence.js";
 import { SourceSummary } from "./sourceSummary.js";
+import { DecisionCategory } from "./decisionCategory.js";
 
 export const ResultOutcome = z.enum(["ok", "insufficient_data"]);
 export type ResultOutcome = z.infer<typeof ResultOutcome>;
@@ -16,6 +17,7 @@ export type ResultOutcome = z.infer<typeof ResultOutcome>;
 export const KuroResult = z.object({
   id: Id,
   subject: Subject,
+  category: DecisionCategory,
   generatedAt: IsoDateTime,
   outcome: ResultOutcome,
   summary: z.string().min(1),

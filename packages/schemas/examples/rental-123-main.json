@@ -6,6 +6,7 @@
     "displayName": "123 Main St, Apt 4B",
     "description": "123 Main St, Apt 4B as a rental"
   },
+  "category": "rental_intelligence",
   "generatedAt": "2026-06-01T12:30:00Z",
   "outcome": "ok",
   "summary": "Community reports describe 123 Main St as well located but slow on building maintenance, with noise that varies by unit orientation.",
