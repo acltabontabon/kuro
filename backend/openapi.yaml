@@ -1,0 +1,236 @@
+openapi: 3.1.0
+info:
+  title: KURO Request API
+  version: 0.1.0
+  description: >
+    REST surface for submitting KURO requests, attaching sources, and reading
+    results and their evidence chain (#13). Response bodies serialize to the
+    @kuro/schemas wire shape.
+
+    MVP scope note: synthesis/extraction (WS4/5/6/7) is not implemented yet, so a
+    *supported* request stays CREATED and produces no result this milestone — only
+    the structured `unsupported_category` refusal is fully produced. `GET
+    /requests/{id}/result` therefore returns 409 until a result is current.
+servers:
+  - url: /api
+
+paths:
+  /requests:
+    post:
+      summary: Submit a KURO request
+      description: >
+        If `category` is one of the supported categories the request is created
+        in CREATED and the summary is returned (201). If `category` is out of
+        scope, the product's structured refusal is returned as a 200
+        `unsupported_category` result — NOT a 400.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateRequest" }
+      responses:
+        "201":
+          description: Supported request created.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RequestSummary" }
+        "200":
+          description: Out-of-scope category — structured refusal result.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/UnsupportedCategoryResult" }
+        "400":
+          description: Invalid body.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+    get:
+      summary: List request history
+      parameters:
+        - { name: limit, in: query, schema: { type: integer, default: 20 } }
+        - { name: offset, in: query, schema: { type: integer, default: 0 } }
+      responses:
+        "200":
+          description: A page of request summaries, newest first.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/RequestSummary" }
+
+  /requests/{id}:
+    get:
+      summary: Get a request and its current status
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The request summary.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/RequestSummary" }
+        "404":
+          description: No such request.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+
+  /requests/{id}/sources:
+    post:
+      summary: Attach a source (by URL or pasted text) to a request
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AddSource" }
+      responses:
+        "201": { description: Source staged on the request. }
+        "400":
+          description: Must provide exactly one of url/text.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+        "404":
+          description: No such request.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+
+  /requests/{id}/result:
+    get:
+      summary: Get the current result of a request
+      description: >
+        Returns the current `KuroResult` once one exists. This milestone only the
+        `unsupported_category` variant is produced; the sufficient/partial/
+        insufficient variants are documented in @kuro/schemas but not yet produced
+        by the backend, so a supported request returns 409 here.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The current result.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/KuroResult" }
+        "409":
+          description: No current result yet (request not READY).
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+
+  /requests/{id}/evidence:
+    get:
+      summary: Get the evidence chain of a request's current result
+      description: >
+        Evidence linked to its redacted source attribution. An
+        `unsupported_category` result has no evidence, so this returns `200 []`.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The evidence chain (empty for a refusal).
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/EvidenceView" }
+        "409":
+          description: No current result yet.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+
+components:
+  schemas:
+    DecisionCategory:
+      type: string
+      enum: [employment_intelligence, rental_intelligence]
+
+    Subject:
+      type: object
+      required: [kind, displayName]
+      properties:
+        id: { type: string }
+        kind:
+          type: string
+          enum: [employer, rental, product, service, location, role, other]
+        displayName: { type: string }
+        description: { type: string }
+
+    CreateRequest:
+      type: object
+      required: [category, subject]
+      properties:
+        category:
+          type: string
+          description: A raw category string; an out-of-scope value yields a refusal result.
+        subject: { $ref: "#/components/schemas/Subject" }
+
+    AddSource:
+      type: object
+      description: Exactly one of url/text must be present.
+      properties:
+        url: { type: string }
+        text: { type: string }
+
+    RequestSummary:
+      type: object
+      description: Backend-native request view. category/subject* are absent for a refusal request.
+      required: [id, status, createdAt]
+      properties:
+        id: { type: string }
+        status:
+          type: string
+          enum: [CREATED, COLLECTING, EXTRACTING, SYNTHESIZING, READY, FAILED]
+        category: { $ref: "#/components/schemas/DecisionCategory" }
+        subjectId: { type: string }
+        subjectDisplayName: { type: string }
+        createdAt: { type: string, format: date-time }
+
+    UnsupportedCategoryResult:
+      type: object
+      description: The product's structured refusal (mirrors @kuro/schemas KuroResult unsupported_category variant).
+      required: [id, subject, generatedAt, dataSufficiency, requestedCategory, supportedCategories, refusalMessage]
+      properties:
+        id: { type: string }
+        subject: { $ref: "#/components/schemas/Subject" }
+        generatedAt: { type: string, format: date-time }
+        dataSufficiency: { type: string, enum: [unsupported_category] }
+        requestedCategory: { type: string }
+        supportedCategories:
+          type: array
+          items: { $ref: "#/components/schemas/DecisionCategory" }
+        refusalMessage: { type: string }
+        limitations:
+          type: array
+          items: { type: string }
+
+    KuroResult:
+      description: >
+        The @kuro/schemas KuroResult discriminated union on dataSufficiency. This
+        milestone only the unsupported_category variant is produced; the other
+        variants exist in @kuro/schemas but are not yet emitted by the backend.
+      oneOf:
+        - $ref: "#/components/schemas/UnsupportedCategoryResult"
+
+    EvidenceView:
+      type: object
+      description: A piece of evidence paired with its redacted source attribution.
+      required: [evidence]
+      properties:
+        evidence:
+          type: object
+          description: An @kuro/schemas Evidence object (see packages/schemas/src/evidence.ts).
+        source:
+          type: object
+          nullable: true
+          description: The @kuro/schemas SourceAttribution (redacted) for the evidence's document.
+
+    ErrorEnvelope:
+      type: object
+      required: [code, message]
+      properties:
+        code: { type: string }
+        message: { type: string }

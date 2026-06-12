@@ -1,5 +1,6 @@
 package com.acltabontabon.kuro.persistence;
 
+import com.acltabontabon.kuro.domain.DecisionCategory;
 import com.acltabontabon.kuro.domain.RequestStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -9,4 +10,6 @@ import jakarta.persistence.Table;
 class KuroRequestEntity extends BaseEntity {
 
     RequestStatus status;
+    DecisionCategory category;
+    String subjectId;
 }
