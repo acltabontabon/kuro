@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
-import { KuroResult } from "../src/index.js";
+import { KuroResult, lintKuroResultWording } from "../src/index.js";
 
 // @ts-ignore
 const here = dirname(fileURLToPath(import.meta.url));
@@ -16,7 +16,21 @@ const POSITIVE_EXAMPLES = [
   "result.invalid-category.json",
   "result.employment.json",
   "result.rental.json",
+  // Trust & transparency fixtures (issue #8)
+  "employment-strong.json",
+  "employment-mixed.json",
+  "rental-limited.json",
+  "insufficient-refusal.json",
+  "unsupported-category.json",
+  "forbidden-wording.json",
 ];
+
+// KURO-authored prose that must stay clean against the wording lint. The
+// forbidden-wording fixture is intentionally excluded — it is the negative
+// case checked separately below.
+const WORDING_CLEAN_EXAMPLES = POSITIVE_EXAMPLES.filter(
+  (n) => n !== "forbidden-wording.json",
+);
 
 let failures = 0;
 
@@ -741,6 +755,55 @@ for (const cat of UNSUPPORTED_CATEGORIES) {
     bad,
     "themes.0.maySuggest",
   );
+}
+
+// ============================================================
+//   Trust & transparency — user-facing wording lint (issue #8)
+// ============================================================
+
+// Every positive fixture's KURO-authored prose must be clean.
+for (const name of WORDING_CLEAN_EXAMPLES) {
+  const data = load(name);
+  const findings = lintKuroResultWording(data as Parameters<typeof lintKuroResultWording>[0]);
+  if (findings.length > 0) {
+    failures++;
+    console.error(`FAIL  ${name}: forbidden user-facing wording found:`);
+    for (const f of findings) {
+      console.error(`  - ${f.path}: [${f.category}] "${f.match}" (${f.rule})`);
+    }
+  } else {
+    console.log(`OK    ${name} (wording clean)`);
+  }
+}
+
+// The negative fixture must trip the lint across multiple layers.
+{
+  const data = load("forbidden-wording.json");
+  const findings = lintKuroResultWording(data as Parameters<typeof lintKuroResultWording>[0]);
+  const parsed = KuroResult.safeParse(data);
+  if (!parsed.success) {
+    failures++;
+    console.error("FAIL  forbidden-wording.json: expected to parse structurally (lint, not schema, is the gate)");
+  } else if (findings.length === 0) {
+    failures++;
+    console.error("FAIL  forbidden-wording.json: expected wording-lint findings, got none");
+  } else {
+    const haveVerdict = findings.some((f) => f.category === "verdict");
+    const haveDirective = findings.some((f) => f.category === "directive");
+    const inSummary = findings.some((f) => f.path === "summary");
+    const inFinalKuro = findings.some((f) => f.path === "finalKuro");
+    if (haveVerdict && haveDirective && inSummary && inFinalKuro) {
+      console.log(
+        `OK    forbidden-wording.json (parses, but wording lint flags ${findings.length} issues incl. summary + finalKuro, verdict + directive)`,
+      );
+    } else {
+      failures++;
+      console.error(
+        "FAIL  forbidden-wording.json: lint hits did not cover the expected spread " +
+          `(verdict=${haveVerdict}, directive=${haveDirective}, summary=${inSummary}, finalKuro=${inFinalKuro})`,
+      );
+    }
+  }
 }
 
 if (failures > 0) {

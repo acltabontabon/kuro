@@ -1,0 +1,14 @@
+{
+  "id": "result_healthcare_refusal_2026_06_11",
+  "subject": {
+    "id": "subject_healthcare_query",
+    "kind": "other",
+    "displayName": "Cedar Valley Family Clinic",
+    "description": "User requested community-perspective intelligence about a healthcare provider."
+  },
+  "generatedAt": "2026-06-11T16:00:00Z",
+  "dataSufficiency": "unsupported_category",
+  "requestedCategory": "healthcare",
+  "supportedCategories": ["employment_intelligence", "rental_intelligence"],
+  "refusalMessage": "KURO does not evaluate healthcare providers. KURO's MVP scope is limited to employment_intelligence and rental_intelligence. This is a scope decision, not an assessment of the clinic: KURO did not gather or interpret any community feedback for this subject, and nothing here should be read as a view on the clinic's quality."
+}

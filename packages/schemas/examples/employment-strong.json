@@ -1,0 +1,313 @@
+{
+  "id": "result_northwind_employer_2026_06_10",
+  "subject": {
+    "id": "subject_northwind_employer",
+    "kind": "employer",
+    "displayName": "Northwind Trading Co.",
+    "description": "Mid-size logistics employer with broad, recent, multi-platform public discussion."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-10T09:00:00Z",
+  "dataSufficiency": "sufficient",
+  "summary": "Based on the evidence reviewed across three platforms, recent first-hand accounts of Northwind converge on competitive pay and a structured onboarding, while management quality appears to vary by team.",
+  "sourceDocuments": [
+    {
+      "id": "src_gd_nw_1",
+      "url": "https://www.glassdoor.com/Reviews/northwind-trading-RVW55501.htm",
+      "platform": "glassdoor",
+      "author": null,
+      "capturedAt": "2026-06-08T08:00:00Z",
+      "publishedAt": "2026-05-02T00:00:00Z",
+      "contentHash": "sha256:aa11bb22"
+    },
+    {
+      "id": "src_reddit_nw_1",
+      "url": "https://www.reddit.com/r/logistics/comments/nw123/year_at_northwind",
+      "platform": "reddit",
+      "author": "warehouse_lead_88",
+      "capturedAt": "2026-06-08T08:05:00Z",
+      "publishedAt": "2026-04-18T17:40:00Z",
+      "contentHash": "sha256:cc33dd44"
+    },
+    {
+      "id": "src_indeed_nw_1",
+      "url": "https://www.indeed.com/cmp/Northwind-Trading/reviews/onboarding-was-solid",
+      "platform": "indeed",
+      "author": null,
+      "capturedAt": "2026-06-08T08:10:00Z",
+      "publishedAt": "2026-05-20T12:00:00Z",
+      "contentHash": "sha256:ee55ff66"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_gd_nw_1",
+      "sourceDocumentId": "src_gd_nw_1",
+      "sourceType": "review_site",
+      "url": "https://www.glassdoor.com/Reviews/northwind-trading-RVW55501.htm",
+      "canonicalUrl": "https://www.glassdoor.com/Reviews/northwind-trading-RVW55501.htm",
+      "title": "Northwind Trading Co. Reviews",
+      "publishedAt": "2026-05-02T00:00:00Z",
+      "fetchedAt": "2026-06-08T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary",
+      "trustRationale": "Established review platform with moderated, identity-gated employee reviews."
+    },
+    {
+      "id": "att_reddit_nw_1",
+      "sourceDocumentId": "src_reddit_nw_1",
+      "sourceType": "forum",
+      "url": "https://www.reddit.com/r/logistics/comments/nw123/year_at_northwind",
+      "canonicalUrl": "https://www.reddit.com/r/logistics/comments/nw123/year_at_northwind",
+      "title": "A year working at Northwind - first-hand",
+      "authorHandle": "warehouse_lead_88",
+      "publishedAt": "2026-04-18T17:40:00Z",
+      "fetchedAt": "2026-06-08T08:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community",
+      "metadata": { "firstHand": true, "languageHint": "en" }
+    },
+    {
+      "id": "att_indeed_nw_1",
+      "sourceDocumentId": "src_indeed_nw_1",
+      "sourceType": "review_site",
+      "url": "https://www.indeed.com/cmp/Northwind-Trading/reviews/onboarding-was-solid",
+      "canonicalUrl": "https://www.indeed.com/cmp/Northwind-Trading/reviews/onboarding-was-solid",
+      "title": "Onboarding was solid",
+      "publishedAt": "2026-05-20T12:00:00Z",
+      "fetchedAt": "2026-06-08T08:10:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_nw_pay_1",
+      "sourceDocumentId": "src_gd_nw_1",
+      "snippet": "Pay is genuinely competitive for the region and raises actually happened on schedule.",
+      "locator": { "kind": "charRange", "start": 10, "end": 94 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-08T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_nw_pay_2",
+      "sourceDocumentId": "src_reddit_nw_1",
+      "snippet": "Comp was the main reason I stayed - above what other warehouses around here pay.",
+      "locator": { "kind": "charRange", "start": 0, "end": 79 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-08T08:05:00Z", "extractor": "kuro-extractor@0.1.0" },
+      "qualityHints": { "sourceTrust": "high", "notes": "First-hand, names a specific tenure." }
+    },
+    {
+      "id": "ev_nw_mgmt_1",
+      "sourceDocumentId": "src_reddit_nw_1",
+      "snippet": "My shift lead was great, but I heard nights ran very differently under a different supervisor.",
+      "locator": { "kind": "charRange", "start": 120, "end": 213 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-08T08:05:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_nw_mgmt_2",
+      "sourceDocumentId": "src_gd_nw_1",
+      "snippet": "Management quality is a coin flip depending on which team you land on.",
+      "locator": { "kind": "charRange", "start": 130, "end": 199 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-08T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_nw_onboard_1",
+      "sourceDocumentId": "src_indeed_nw_1",
+      "snippet": "Onboarding was structured - two weeks of paired shifts before going solo.",
+      "locator": { "kind": "charRange", "start": 0, "end": 72 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-08T08:10:00Z", "extractor": "kuro-extractor@0.1.0" }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_nw_pay",
+      "topic": "Compensation",
+      "sentiment": "positive",
+      "claim": "Reviewers describe pay as competitive for the region with on-schedule raises.",
+      "evidenceIds": ["ev_nw_pay_1", "ev_nw_pay_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "high",
+        "inputs": { "clarity": 0.9, "directnessOfSupport": 0.9 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts assert competitive pay directly." },
+          { "driver": "clarity", "effect": "raises", "note": "Plain, unhedged language in both accounts." }
+        ]
+      }
+    },
+    {
+      "id": "sig_nw_mgmt",
+      "topic": "Management Quality",
+      "sentiment": "mixed",
+      "claim": "Accounts describe management quality as varying significantly by team or shift.",
+      "evidenceIds": ["ev_nw_mgmt_1", "ev_nw_mgmt_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.7, "languageAmbiguity": 0.4 },
+        "reasons": [
+          { "driver": "languageAmbiguity", "effect": "lowers", "note": "Second-hand phrasing (\"I heard\") about other shifts limits directness." }
+        ]
+      }
+    },
+    {
+      "id": "sig_nw_onboard",
+      "topic": "Onboarding",
+      "sentiment": "positive",
+      "claim": "A reviewer describes onboarding as structured with paired shifts.",
+      "evidenceIds": ["ev_nw_onboard_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.8, "directnessOfSupport": 0.8 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Describes a concrete onboarding structure first-hand." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_nw_compensation",
+      "topic": "Compensation",
+      "sentiment": "positive",
+      "signalIds": ["sig_nw_pay"],
+      "confidence": {
+        "level": "theme",
+        "rating": "high",
+        "inputs": { "sourceCount": 2, "sourceDiversity": 0.8, "sourceFreshness": 0.9, "signalConsistency": 0.95 },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Glassdoor and a first-hand Reddit account agree pay is competitive." },
+          { "driver": "sourceDiversity", "effect": "raises", "note": "Two independent platforms support the same claim." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Recent reviewers consistently describe compensation as a strong point." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert any specific salary figure or offer outcome for a given role." }
+      ],
+      "limitations": [
+        "Both accounts are within one region; pay claims may not generalize to other locations."
+      ]
+    },
+    {
+      "id": "theme_nw_management",
+      "topic": "Management Quality",
+      "sentiment": "mixed",
+      "signalIds": ["sig_nw_mgmt"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": { "sourceCount": 2, "sourceDiversity": 0.7, "sourceFreshness": 0.85, "signalConsistency": 0.8 },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both sources independently describe management as team-dependent." },
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only two supporting accounts." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Management experience appears to depend heavily on the specific team or shift." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not claim any named manager or shift is good or bad." }
+      ],
+      "limitations": [
+        "One account is second-hand about other shifts; coverage of individual teams is uneven."
+      ]
+    },
+    {
+      "id": "theme_nw_onboarding",
+      "topic": "Onboarding",
+      "sentiment": "positive",
+      "signalIds": ["sig_nw_onboard"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": { "sourceCount": 1, "sourceDiversity": 0.5, "sourceFreshness": 0.9, "signalConsistency": 0.7 },
+        "reasons": [
+          { "driver": "sourceFreshness", "effect": "raises", "note": "The onboarding account is recent (within ~3 weeks)." },
+          { "driver": "sourceCount", "effect": "lowers", "note": "Supported by a single review." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "At least one recent hire describes onboarding as structured and supportive." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert onboarding is consistent across all roles or locations." }
+      ],
+      "limitations": [
+        "Single source; not generalizable across the company."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [
+      {
+        "description": "Pay and onboarding draw consistent praise; management is the dimension where accounts diverge.",
+        "themeIds": ["theme_nw_compensation", "theme_nw_onboarding", "theme_nw_management"]
+      }
+    ],
+    "consensus": [
+      { "description": "Recent reviewers agree compensation is competitive for the region.", "themeIds": ["theme_nw_compensation"] }
+    ],
+    "disagreements": [
+      { "description": "Management experience is described as team-dependent rather than uniform.", "themeIds": ["theme_nw_management"] }
+    ],
+    "communitySentimentSummary": "Across three recent platforms, accounts converge on competitive pay and structured onboarding, while management quality appears to vary by team.",
+    "maySuggest": [
+      { "description": "The available evidence may suggest competitive regional pay is a recurring theme.", "themeIds": ["theme_nw_compensation"] },
+      { "description": "The available evidence may suggest onboarding is structured for at least some recent hires.", "themeIds": ["theme_nw_onboarding"] }
+    ],
+    "mayNotSuggest": [
+      { "description": "Does not characterize any specific manager, team, or shift.", "themeIds": ["theme_nw_management"] },
+      { "description": "Does not indicate whether to accept or decline a role at Northwind.", "themeIds": ["theme_nw_compensation", "theme_nw_management", "theme_nw_onboarding"] }
+    ],
+    "limitations": [
+      "Coverage is concentrated in one region; claims may not generalize across locations.",
+      "Management coverage rests partly on a second-hand account of other shifts."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 3,
+    "platforms": [
+      { "platform": "glassdoor", "count": 1 },
+      { "platform": "reddit", "count": 1 },
+      { "platform": "indeed", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 2 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 2 },
+      { "trustTier": "community", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-04-18T17:40:00Z",
+      "newestPublishedAt": "2026-05-20T12:00:00Z"
+    },
+    "diversityNotes": [
+      "Three distinct platforms, two source types, all within the last ~8 weeks.",
+      "Includes one first-hand forum account alongside two moderated review-site sources."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "high",
+    "inputs": {
+      "sourceCount": 3,
+      "sourceDiversity": 0.8,
+      "sourceFreshness": 0.9,
+      "signalConsistency": 0.85,
+      "themeSupportAggregate": 0.8,
+      "topicBreadth": 0.7
+    },
+    "reasons": [
+      { "driver": "sourceFreshness", "effect": "raises", "note": "All three sources are within the last two months." },
+      { "driver": "themeSupportAggregate", "effect": "raises", "note": "All three themes are supported at medium or high confidence." },
+      { "driver": "sourceDiversity", "effect": "raises", "note": "Three platforms and a first-hand/second-hand mix." }
+    ]
+  },
+  "finalKuro": "Based on the evidence reviewed, KURO may suggest that recent accounts of Northwind converge on competitive regional pay and structured onboarding, with management experience appearing to depend on the specific team. The available evidence does not support a conclusion about any named manager, and this is not a recommendation about whether to take a role there."
+}

@@ -198,3 +198,4 @@ No `url`. The non-URL origin is recorded with `accessedVia: user_paste`. The `re
 - Evidence layer and the "no Evidence, no Signal" rule: [EVIDENCE.md](./EVIDENCE.md).
 - Confidence model that consumes Evidence strength, separate from attribution: [CONFIDENCE.md](./CONFIDENCE.md).
 - Schema: [`packages/schemas/src/sourceAttribution.ts`](../packages/schemas/src/sourceAttribution.ts) and the attribution-related validation rules in [`packages/schemas/src/result.ts`](../packages/schemas/src/result.ts).
+- Trust posture this layer serves: [TRUST_AND_TRANSPARENCY.md](./TRUST_AND_TRANSPARENCY.md). Principle 10 — "KURO is transparent about source quality" — is realized here (trust tier, source type, accessed-via, recency, redactions) and aggregated into the result-level `sourceSummary`. **Trust tier is a reliability hint, not a truth probability.**

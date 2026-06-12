@@ -126,3 +126,4 @@ Avoid definitive claims about specific people or named entities beyond what [Evi
 - [CONFIDENCE.md](./CONFIDENCE.md) — how Result, Theme, and Signal confidence work within any category.
 - [EVIDENCE.md](./EVIDENCE.md) — the Evidence requirements that apply regardless of category.
 - [SOURCE_ATTRIBUTION.md](./SOURCE_ATTRIBUTION.md) — the attribution requirements that apply regardless of category.
+- [TRUST_AND_TRANSPARENCY.md](./TRUST_AND_TRANSPARENCY.md) — Principle 9, "KURO is transparent about scope": unsupported categories are refused as scope issues via the `unsupported_category` result, never forced into generic inference.

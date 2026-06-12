@@ -1,0 +1,250 @@
+{
+  "id": "result_initech_employer_2026_06_11",
+  "subject": {
+    "id": "subject_initech_employer",
+    "kind": "employer",
+    "displayName": "Initech",
+    "description": "Employer whose public feedback openly conflicts on culture and work-life balance."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-11T10:00:00Z",
+  "dataSufficiency": "sufficient",
+  "summary": "Based on the evidence reviewed, accounts of Initech conflict sharply on culture and work-life balance, with recent reviews disagreeing about whether a 2025 reorg helped or hurt.",
+  "sourceDocuments": [
+    {
+      "id": "src_gd_in_1",
+      "url": "https://www.glassdoor.com/Reviews/initech-RVW77001.htm",
+      "platform": "glassdoor",
+      "author": null,
+      "capturedAt": "2026-06-09T08:00:00Z",
+      "publishedAt": "2026-03-10T00:00:00Z",
+      "contentHash": "sha256:1a2b3c4d"
+    },
+    {
+      "id": "src_gd_in_2",
+      "url": "https://www.glassdoor.com/Reviews/initech-RVW77002.htm",
+      "platform": "glassdoor",
+      "author": null,
+      "capturedAt": "2026-06-09T08:02:00Z",
+      "publishedAt": "2026-04-22T00:00:00Z",
+      "contentHash": "sha256:5e6f7a8b"
+    },
+    {
+      "id": "src_blind_in_1",
+      "url": "https://www.teamblind.com/post/initech-reorg-thoughts",
+      "platform": "blind",
+      "author": null,
+      "capturedAt": "2026-06-09T08:05:00Z",
+      "publishedAt": "2026-05-15T11:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_gd_in_1",
+      "sourceDocumentId": "src_gd_in_1",
+      "sourceType": "review_site",
+      "url": "https://www.glassdoor.com/Reviews/initech-RVW77001.htm",
+      "title": "Great team, tough quarters",
+      "publishedAt": "2026-03-10T00:00:00Z",
+      "fetchedAt": "2026-06-09T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_gd_in_2",
+      "sourceDocumentId": "src_gd_in_2",
+      "sourceType": "review_site",
+      "url": "https://www.glassdoor.com/Reviews/initech-RVW77002.htm",
+      "title": "Reorg made things worse",
+      "publishedAt": "2026-04-22T00:00:00Z",
+      "fetchedAt": "2026-06-09T08:02:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_blind_in_1",
+      "sourceDocumentId": "src_blind_in_1",
+      "sourceType": "forum",
+      "url": "https://www.teamblind.com/post/initech-reorg-thoughts",
+      "title": "Initech reorg - mixed bag",
+      "publishedAt": "2026-05-15T11:00:00Z",
+      "fetchedAt": "2026-06-09T08:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_in_culture_pos",
+      "sourceDocumentId": "src_gd_in_1",
+      "snippet": "The immediate team is supportive and genuinely collaborative day to day.",
+      "locator": { "kind": "charRange", "start": 0, "end": 71 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_in_culture_neg",
+      "sourceDocumentId": "src_gd_in_2",
+      "snippet": "After the reorg the culture turned political and siloed almost overnight.",
+      "locator": { "kind": "charRange", "start": 0, "end": 72 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T08:02:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_in_wlb_pos",
+      "sourceDocumentId": "src_gd_in_1",
+      "snippet": "Outside of crunch weeks the hours were very reasonable.",
+      "locator": { "kind": "charRange", "start": 90, "end": 145 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_in_wlb_neg",
+      "sourceDocumentId": "src_blind_in_1",
+      "snippet": "Since the reorg it has been crunch every single week with no end in sight.",
+      "locator": { "kind": "charRange", "start": 0, "end": 73 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T08:05:00Z", "extractor": "kuro-extractor@0.1.0" }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_in_culture",
+      "topic": "Culture",
+      "sentiment": "mixed",
+      "claim": "Accounts conflict on culture: supportive at the team level, political after a reorg.",
+      "evidenceIds": ["ev_in_culture_pos", "ev_in_culture_neg"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.75, "languageAmbiguity": 0.4 },
+        "reasons": [
+          { "driver": "clarity", "effect": "raises", "note": "Each excerpt is clear on its own; they simply disagree." }
+        ]
+      }
+    },
+    {
+      "id": "sig_in_wlb",
+      "topic": "Work-Life Balance",
+      "sentiment": "mixed",
+      "claim": "Accounts conflict on work-life balance, splitting around a 2025 reorg.",
+      "evidenceIds": ["ev_in_wlb_pos", "ev_in_wlb_neg"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.7, "directnessOfSupport": 0.75 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts speak directly to hours." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_in_culture",
+      "topic": "Culture",
+      "sentiment": "mixed",
+      "signalIds": ["sig_in_culture"],
+      "confidence": {
+        "level": "theme",
+        "rating": "medium",
+        "inputs": { "sourceCount": 2, "sourceDiversity": 0.5, "sourceFreshness": 0.8, "signalConsistency": 0.3 },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "lowers", "note": "The two accounts directly contradict each other on culture." },
+          { "driver": "sourceFreshness", "effect": "raises", "note": "Both reviews are within the last three months." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Experience of culture appears to differ before and after a reorg." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not establish whether the culture is good or bad overall." }
+      ],
+      "limitations": [
+        "Both culture accounts come from the same review platform; the split may reflect different teams or timing."
+      ]
+    },
+    {
+      "id": "theme_in_wlb",
+      "topic": "Work-Life Balance",
+      "sentiment": "mixed",
+      "signalIds": ["sig_in_wlb"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": { "sourceCount": 2, "sourceDiversity": 0.6, "sourceFreshness": 0.85, "signalConsistency": 0.25 },
+        "reasons": [
+          { "driver": "signalConsistency", "effect": "lowers", "note": "Pre- and post-reorg accounts disagree sharply on hours." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Work-life balance accounts may diverge around the timing of a reorg." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not assert current hours for any specific team." }
+      ],
+      "limitations": [
+        "Only two accounts; the apparent split could be sampling rather than a real trend."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [
+      { "description": "A 2025 reorg recurs as the dividing line in conflicting accounts of culture and hours.", "themeIds": ["theme_in_culture", "theme_in_wlb"] }
+    ],
+    "consensus": [],
+    "disagreements": [
+      { "description": "Accounts disagree on whether culture is supportive or political.", "themeIds": ["theme_in_culture"] },
+      { "description": "Accounts disagree on whether hours are reasonable or unrelenting.", "themeIds": ["theme_in_wlb"] }
+    ],
+    "communitySentimentSummary": "Public discussion of Initech is openly split, with pre- and post-reorg accounts disagreeing on both culture and work-life balance.",
+    "maySuggest": [
+      { "description": "The available evidence may suggest experiences diverge around a recent reorg.", "themeIds": ["theme_in_culture", "theme_in_wlb"] }
+    ],
+    "mayNotSuggest": [
+      { "description": "The available evidence does not support a single characterization of Initech's culture or hours.", "themeIds": ["theme_in_culture", "theme_in_wlb"] },
+      { "description": "Does not indicate what a prospective candidate should do.", "themeIds": ["theme_in_culture", "theme_in_wlb"] }
+    ],
+    "limitations": [
+      "Conflicting accounts cannot be reconciled from the available evidence; the divergence is itself the finding.",
+      "Small sample (three documents) limits how far the reorg pattern can be generalized."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 3,
+    "platforms": [
+      { "platform": "glassdoor", "count": 2 },
+      { "platform": "blind", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 2 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 2 },
+      { "trustTier": "community", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-03-10T00:00:00Z",
+      "newestPublishedAt": "2026-05-15T11:00:00Z"
+    },
+    "diversityNotes": [
+      "Two of three documents share a single platform; the conflicting signal is not an artifact of one source.",
+      "Accounts cluster on either side of a reported 2025 reorg."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "medium",
+    "inputs": {
+      "sourceCount": 3,
+      "sourceDiversity": 0.55,
+      "sourceFreshness": 0.85,
+      "signalConsistency": 0.3,
+      "themeSupportAggregate": 0.45,
+      "topicBreadth": 0.4
+    },
+    "reasons": [
+      { "driver": "signalConsistency", "effect": "lowers", "note": "Accounts openly conflict on both covered topics." },
+      { "driver": "sourceFreshness", "effect": "raises", "note": "All sources are recent, so the disagreement is current, not stale." }
+    ]
+  },
+  "finalKuro": "Based on the evidence reviewed, KURO may suggest that experiences of Initech's culture and work-life balance diverge around a recent reorg. The available evidence does not support a single conclusion either way, and this is not a recommendation about whether to join."
+}

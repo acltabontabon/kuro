@@ -1,0 +1,123 @@
+{
+  "id": "result_vortex_employer_2026_06_11",
+  "subject": {
+    "id": "subject_vortex_employer",
+    "kind": "employer",
+    "displayName": "Vortex Studios",
+    "description": "A very small studio with almost no public, first-hand commentary."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-11T15:30:00Z",
+  "dataSufficiency": "insufficient",
+  "summary": "KURO located a couple of public mentions of Vortex Studios, but neither carried first-hand experience that could be used as evidence, so KURO does not draw a conclusion.",
+  "sourceDocuments": [
+    {
+      "id": "src_news_vortex_1",
+      "url": "https://example-gamenews.test/vortex-studios-funding-round",
+      "platform": "news",
+      "author": null,
+      "capturedAt": "2026-06-09T11:00:00Z",
+      "publishedAt": "2026-02-01T00:00:00Z"
+    },
+    {
+      "id": "src_dir_vortex_1",
+      "url": "https://example-studio-directory.test/studios/vortex",
+      "platform": "directory",
+      "author": null,
+      "capturedAt": "2026-06-09T11:05:00Z",
+      "publishedAt": null
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_news_vortex_1",
+      "sourceDocumentId": "src_news_vortex_1",
+      "sourceType": "news",
+      "url": "https://example-gamenews.test/vortex-studios-funding-round",
+      "title": "Vortex Studios closes seed round",
+      "publishedAt": "2026-02-01T00:00:00Z",
+      "fetchedAt": "2026-06-09T11:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_dir_vortex_1",
+      "sourceDocumentId": "src_dir_vortex_1",
+      "sourceType": "company_site",
+      "url": "https://example-studio-directory.test/studios/vortex",
+      "fetchedAt": "2026-06-09T11:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "unknown",
+      "trustRationale": "Unsigned directory listing; provenance cannot be classified."
+    }
+  ],
+  "sourceSummary": {
+    "documentCount": 2,
+    "platforms": [
+      { "platform": "news", "count": 1 },
+      { "platform": "directory", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "news", "count": 1 },
+      { "sourceType": "company_site", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 1 },
+      { "trustTier": "unknown", "count": 1 }
+    ],
+    "exclusions": [
+      { "reason": "no first-hand experience", "count": 2 }
+    ],
+    "freshness": null,
+    "diversityNotes": [
+      "Neither document is experiential; no employee or candidate accounts were found."
+    ]
+  },
+  "sourceCoverage": [
+    {
+      "sourceDocumentId": "src_news_vortex_1",
+      "assessment": "not_about_subject",
+      "note": "Funding-round announcement; no first-hand workplace experience."
+    },
+    {
+      "sourceDocumentId": "src_dir_vortex_1",
+      "assessment": "not_about_subject",
+      "note": "Generic directory entry; no first-hand experience."
+    }
+  ],
+  "insufficientDataReason": {
+    "kind": "no_usable_evidence",
+    "explanation": "Two documents were located, but neither carried first-hand experience usable as Evidence, so KURO cannot support an inference."
+  },
+  "suggestedNextSources": [
+    {
+      "sourceType": "Glassdoor or Indeed employee reviews for Vortex Studios",
+      "rationale": "First-hand current- or former-employee accounts would unblock a workplace theme."
+    },
+    {
+      "sourceType": "Reddit threads in game-development communities referencing Vortex Studios",
+      "rationale": "Practitioner discussion would provide first-hand experience the current sources lack."
+    }
+  ],
+  "limitations": [
+    "Only two documents were located; one is a funding announcement and the other a directory listing.",
+    "No reviews, forum threads, or first-hand accounts were available within the search window."
+  ],
+  "confidence": {
+    "level": "result",
+    "rating": "unknown",
+    "inputs": {
+      "sourceCount": 2,
+      "sourceDiversity": 0.2,
+      "sourceFreshness": 0.2,
+      "signalConsistency": 0,
+      "themeSupportAggregate": 0,
+      "topicBreadth": 0
+    },
+    "reasons": [
+      { "driver": "sourceCount", "effect": "lowers", "note": "0 usable Source Documents after filtering for first-hand experience." },
+      { "driver": "topicBreadth", "effect": "lowers", "note": "No topic could be supported by any usable evidence." }
+    ]
+  },
+  "finalKuro": "KURO cannot support a meaningful inference about Vortex Studios from the available evidence: the only documents located were a funding announcement and a directory listing, neither of which carries first-hand experience. KURO is not drawing a conclusion here."
+}

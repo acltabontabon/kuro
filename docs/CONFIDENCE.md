@@ -157,3 +157,4 @@ The public-API workstream owns the response-shape test that proves `inputs` and 
 ## 11. Cross-links
 
 - Source Attribution (the separate provenance layer that records *where* a Source Document came from): [SOURCE_ATTRIBUTION.md](./SOURCE_ATTRIBUTION.md). Confidence describes strength of support across read evidence; attribution describes the surface that evidence was lifted from. **Trust tier is a reliability hint, never a truth probability**, and it must not be conflated with a confidence band.
+- Trust posture this model serves: [TRUST_AND_TRANSPARENCY.md](./TRUST_AND_TRANSPARENCY.md). Principles 5 and 7 govern confidence — it must always be visible and explained (`reasons` is required), and it is **strength-of-support for an interpretation, not probability of truth**. The high-confidence breadth cap is the structural guard against confident-but-shallow output.
