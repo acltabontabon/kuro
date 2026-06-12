@@ -28,6 +28,12 @@ __pycache__/
 .venv/
 venv/
 
+# Local SQLite databases
+*.db
+*.db-shm
+*.db-wal
+data/
+
 # Misc
 .cache/
 tmp/

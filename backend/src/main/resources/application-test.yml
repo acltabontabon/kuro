@@ -1,0 +1,4 @@
+spring:
+  datasource:
+    # Throwaway database; wiped by `mvn clean`.
+    url: jdbc:sqlite:target/kuro-test.db
