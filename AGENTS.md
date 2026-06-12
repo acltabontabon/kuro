@@ -31,6 +31,8 @@ This philosophy is codified as a binding product contract in [docs/TRUST_AND_TRA
 
 Requires JDK 25 (`export JAVA_HOME=$(/usr/libexec/java_home -v 25)`; enforced by Maven Enforcer). Build/test with `mvn verify`, run with `mvn spring-boot:run` from `backend/`. Package boundaries (`api`/`domain`/`persistence`/`ai`/`extraction`, each documented in its `package-info.java`) are enforced by an ArchUnit test: `domain` stays framework-free. Flyway owns the schema (`ddl-auto=validate`) — every new entity lands with a matching migration, written in SQLite/PostgreSQL-portable SQL only. SQLite does not enforce foreign keys by default: datasource URLs must keep `?foreign_keys=true`. See [backend/README.md](backend/README.md).
 
+The `domain` package transcribes `@kuro/schemas`: every enum implements `WireEnum` and carries the schema's exact string literal (`EnumSchemaDriftTest` pins the member sets — update both when the schema changes). Persistence entities use raw-id FK fields (no JPA associations) and store enums via auto-applied wire-string converters; `KuroResultPersistence` is the only public entry point for saving/loading result graphs. JSON serialization in the backend uses Jackson 3 (`tools.jackson` packages, not `com.fasterxml`).
+
 ## Status
 
 Early-stage. The backend is a skeleton only (no entities or endpoints yet) — the current focus is validating the core concept and UX around employment and rental intelligence.
