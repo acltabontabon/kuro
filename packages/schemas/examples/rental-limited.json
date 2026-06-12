@@ -1,0 +1,182 @@
+{
+  "id": "result_88maple_rental_2026_06_11",
+  "subject": {
+    "id": "subject_88maple_rental",
+    "kind": "rental",
+    "displayName": "88 Maple Court",
+    "description": "Small rental building with only a handful of recent public mentions, all about maintenance."
+  },
+  "category": "rental_intelligence",
+  "generatedAt": "2026-06-11T14:00:00Z",
+  "dataSufficiency": "partial",
+  "summary": "The available feedback on 88 Maple Court speaks only to maintenance responsiveness and comes from a narrow set of recent sources; nothing addresses safety, noise, or management communication.",
+  "sourceDocuments": [
+    {
+      "id": "src_apt_maple_1",
+      "url": "https://www.apartmentratings.com/88-maple-court/review-9981",
+      "platform": "apartmentratings",
+      "author": null,
+      "capturedAt": "2026-06-09T09:00:00Z",
+      "publishedAt": "2026-05-10T00:00:00Z"
+    },
+    {
+      "id": "src_reddit_maple_1",
+      "url": "https://www.reddit.com/r/apartments/comments/mc88/maple_court_maintenance",
+      "platform": "reddit",
+      "author": "tenant_3b",
+      "capturedAt": "2026-06-09T09:05:00Z",
+      "publishedAt": "2026-05-25T19:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_apt_maple_1",
+      "sourceDocumentId": "src_apt_maple_1",
+      "sourceType": "review_site",
+      "url": "https://www.apartmentratings.com/88-maple-court/review-9981",
+      "title": "Maintenance is slow",
+      "publishedAt": "2026-05-10T00:00:00Z",
+      "fetchedAt": "2026-06-09T09:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    },
+    {
+      "id": "att_reddit_maple_1",
+      "sourceDocumentId": "src_reddit_maple_1",
+      "sourceType": "forum",
+      "url": "https://www.reddit.com/r/apartments/comments/mc88/maple_court_maintenance",
+      "title": "Maple Court maintenance experience",
+      "authorHandle": "tenant_3b",
+      "publishedAt": "2026-05-25T19:00:00Z",
+      "fetchedAt": "2026-06-09T09:05:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "community",
+      "metadata": { "firstHand": true }
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_maple_maint_1",
+      "sourceDocumentId": "src_apt_maple_1",
+      "snippet": "Maintenance requests sat for over a week before anyone came by.",
+      "locator": { "kind": "charRange", "start": 0, "end": 62 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T09:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    },
+    {
+      "id": "ev_maple_maint_2",
+      "sourceDocumentId": "src_reddit_maple_1",
+      "snippet": "My heat took ten days to get fixed in February, which was rough.",
+      "locator": { "kind": "charRange", "start": 0, "end": 63 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T09:05:00Z", "extractor": "kuro-extractor@0.1.0" },
+      "qualityHints": { "sourceTrust": "medium", "notes": "First-hand, dated, specific." }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_maple_maint",
+      "topic": "Maintenance Responsiveness",
+      "sentiment": "negative",
+      "claim": "Two recent accounts describe multi-day delays on maintenance requests.",
+      "evidenceIds": ["ev_maple_maint_1", "ev_maple_maint_2"],
+      "confidence": {
+        "level": "signal",
+        "rating": "medium",
+        "inputs": { "clarity": 0.85, "directnessOfSupport": 0.85 },
+        "reasons": [
+          { "driver": "directnessOfSupport", "effect": "raises", "note": "Both excerpts cite concrete delays in days." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_maple_maint",
+      "topic": "Maintenance Responsiveness",
+      "sentiment": "negative",
+      "signalIds": ["sig_maple_maint"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": { "sourceCount": 2, "sourceDiversity": 0.5, "sourceFreshness": 0.85, "signalConsistency": 0.8 },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only two accounts, both about maintenance." },
+          { "driver": "signalConsistency", "effect": "raises", "note": "Both describe the same pattern of delay." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "Two recent first-hand-style accounts describe slow maintenance responses." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not establish a building-wide or current maintenance standard." }
+      ],
+      "limitations": [
+        "Two sources only; both describe maintenance and nothing else about the building."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [],
+    "consensus": [
+      { "description": "Both accounts report slow maintenance turnaround.", "themeIds": ["theme_maple_maint"] }
+    ],
+    "disagreements": [],
+    "communitySentimentSummary": "The narrow available feedback on 88 Maple Court is limited to maintenance responsiveness, where two recent accounts describe multi-day delays.",
+    "maySuggest": [
+      { "description": "The available evidence may suggest recurring concern about maintenance responsiveness.", "themeIds": ["theme_maple_maint"] }
+    ],
+    "mayNotSuggest": [
+      { "description": "The available evidence does not support any conclusion about safety, noise, or management communication.", "themeIds": ["theme_maple_maint"] }
+    ],
+    "limitations": [
+      "Only two sources were available, both about maintenance.",
+      "No evidence addresses safety, noise, pests, or management communication.",
+      "Source diversity is narrow; the pattern could shift with more accounts."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 2,
+    "platforms": [
+      { "platform": "apartmentratings", "count": 1 },
+      { "platform": "reddit", "count": 1 }
+    ],
+    "sourceTypes": [
+      { "sourceType": "review_site", "count": 1 },
+      { "sourceType": "forum", "count": 1 }
+    ],
+    "trustTiers": [
+      { "trustTier": "secondary", "count": 1 },
+      { "trustTier": "community", "count": 1 }
+    ],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-05-10T00:00:00Z",
+      "newestPublishedAt": "2026-05-25T19:00:00Z"
+    },
+    "diversityNotes": [
+      "Two platforms but a single topic; coverage is shallow.",
+      "No coverage of safety, noise, or management communication."
+    ]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "low",
+    "inputs": {
+      "sourceCount": 2,
+      "sourceDiversity": 0.4,
+      "sourceFreshness": 0.85,
+      "signalConsistency": 0.8,
+      "themeSupportAggregate": 0.3,
+      "topicBreadth": 0.15
+    },
+    "reasons": [
+      { "driver": "topicBreadth", "effect": "lowers", "note": "Only one topic (maintenance) is covered." },
+      { "driver": "sourceCount", "effect": "lowers", "note": "Just two documents in total." }
+    ]
+  },
+  "finalKuro": "Based on the evidence reviewed, KURO may suggest recurring concern about maintenance responsiveness at 88 Maple Court, but the source coverage is narrow. The available evidence does not support any conclusion about safety, noise, or management, and this is not a judgement about the building overall.",
+  "evidenceGaps": [
+    { "topic": "Safety and security", "note": "No accounts mention break-ins, lighting, locks, or neighborhood safety." },
+    { "topic": "Noise and neighbors", "note": "No accounts address noise, neighbors, or quiet hours." },
+    { "topic": "Management communication", "note": "No accounts describe how management communicates or handles disputes." }
+  ]
+}

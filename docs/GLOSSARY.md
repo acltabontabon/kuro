@@ -21,6 +21,8 @@ Specifically:
 
 If a future addition to the model would require KURO to claim objective truth, verify a fact, predict an outcome, rank subjects against one another, or recommend a decision on behalf of the user, that addition does not belong in the model.
 
+This philosophy is codified as a first-class product contract — the ten trust and transparency principles, the user-facing wording rules, and the enforcement map — in [TRUST_AND_TRANSPARENCY.md](./TRUST_AND_TRANSPARENCY.md). Where this glossary defines the vocabulary, that document defines what KURO may and must not *say* about it.
+
 ## 3. Concept Hierarchy
 
 ```

@@ -250,3 +250,10 @@ This document does not specify:
 - Any Decision Category beyond MVP (`employment_intelligence`, `rental_intelligence`).
 - End-user UI/UX copy. Surfaces must honor the wording guidance in §8 but choose their own concrete phrasing per surface.
 - Pipeline-side handling of retries or backoff when sources are temporarily unavailable; that is a fetch-layer concern.
+
+## 12. Cross-links
+
+- Trust posture these states serve: [TRUST_AND_TRANSPARENCY.md](./TRUST_AND_TRANSPARENCY.md). Principles 6 and 9 — exposing uncertainty and being transparent about scope — make `insufficient` and `unsupported_category` first-class result states rather than disclaimers. An insufficient result must refuse to conclude; an unsupported category is a scope refusal that carries no evidence-shaped fields.
+- Confidence caps that apply to these states: [CONFIDENCE.md](./CONFIDENCE.md).
+- Supported scope and the `unsupported_category` refusal: [DECISION_CATEGORIES.md](./DECISION_CATEGORIES.md).
+- Schema and the `dataSufficiency` discriminator: [`packages/schemas/src/result.ts`](../packages/schemas/src/result.ts).

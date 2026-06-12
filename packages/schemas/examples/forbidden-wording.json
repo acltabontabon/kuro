@@ -1,0 +1,128 @@
+{
+  "id": "result_globex_forbidden_2026_06_11",
+  "subject": {
+    "id": "subject_globex_employer",
+    "kind": "employer",
+    "displayName": "Globex Corp",
+    "description": "NEGATIVE FIXTURE: structurally valid, but its KURO-authored prose deliberately violates the trust-and-transparency wording rules. Used to prove the wording lint catches verdict-like and directive language. Must never be used as a model of acceptable output."
+  },
+  "category": "employment_intelligence",
+  "generatedAt": "2026-06-11T17:00:00Z",
+  "dataSufficiency": "sufficient",
+  "summary": "This is a toxic workplace and you should avoid this company.",
+  "sourceDocuments": [
+    {
+      "id": "src_gx_1",
+      "url": "https://www.glassdoor.com/Reviews/globex-RVW9999.htm",
+      "platform": "glassdoor",
+      "author": null,
+      "capturedAt": "2026-06-09T08:00:00Z",
+      "publishedAt": "2026-05-01T00:00:00Z"
+    }
+  ],
+  "sourceAttributions": [
+    {
+      "id": "att_gx_1",
+      "sourceDocumentId": "src_gx_1",
+      "sourceType": "review_site",
+      "url": "https://www.glassdoor.com/Reviews/globex-RVW9999.htm",
+      "title": "Globex Corp Reviews",
+      "publishedAt": "2026-05-01T00:00:00Z",
+      "fetchedAt": "2026-06-09T08:00:00Z",
+      "accessedVia": "direct_fetch",
+      "trustTier": "secondary"
+    }
+  ],
+  "evidence": [
+    {
+      "id": "ev_gx_1",
+      "sourceDocumentId": "src_gx_1",
+      "snippet": "Management changed direction constantly and morale was low.",
+      "locator": { "kind": "charRange", "start": 0, "end": 58 },
+      "extraction": { "method": "verbatim", "extractedAt": "2026-06-09T08:00:00Z", "extractor": "kuro-extractor@0.1.0" }
+    }
+  ],
+  "signals": [
+    {
+      "id": "sig_gx_mgmt",
+      "topic": "Management",
+      "sentiment": "negative",
+      "claim": "Management is abusive.",
+      "evidenceIds": ["ev_gx_1"],
+      "confidence": {
+        "level": "signal",
+        "rating": "low",
+        "inputs": { "clarity": 0.5 },
+        "reasons": [
+          { "driver": "clarity", "effect": "lowers", "note": "Single account, vague." }
+        ]
+      }
+    }
+  ],
+  "themes": [
+    {
+      "id": "theme_gx_mgmt",
+      "topic": "Management",
+      "sentiment": "negative",
+      "signalIds": ["sig_gx_mgmt"],
+      "confidence": {
+        "level": "theme",
+        "rating": "low",
+        "inputs": { "sourceCount": 1, "sourceDiversity": 0.2, "sourceFreshness": 0.8, "signalConsistency": 0.5 },
+        "reasons": [
+          { "driver": "sourceCount", "effect": "lowers", "note": "Only one supporting account." }
+        ]
+      },
+      "maySuggest": [
+        { "description": "This proves Globex is a bad employer." }
+      ],
+      "mayNotSuggest": [
+        { "description": "Does not matter; you should not work there." }
+      ],
+      "limitations": [
+        "Single source."
+      ]
+    }
+  ],
+  "inference": {
+    "patterns": [],
+    "consensus": [],
+    "disagreements": [],
+    "communitySentimentSummary": "Globex is unsafe; recommended that you do not work there.",
+    "maySuggest": [
+      { "description": "This proves the company is a bad employer.", "themeIds": ["theme_gx_mgmt"] }
+    ],
+    "mayNotSuggest": [],
+    "limitations": [
+      "Single source."
+    ]
+  },
+  "sourceSummary": {
+    "documentCount": 1,
+    "platforms": [{ "platform": "glassdoor", "count": 1 }],
+    "sourceTypes": [{ "sourceType": "review_site", "count": 1 }],
+    "trustTiers": [{ "trustTier": "secondary", "count": 1 }],
+    "exclusions": [],
+    "freshness": {
+      "oldestPublishedAt": "2026-05-01T00:00:00Z",
+      "newestPublishedAt": "2026-05-01T00:00:00Z"
+    },
+    "diversityNotes": ["Single source."]
+  },
+  "confidence": {
+    "level": "result",
+    "rating": "low",
+    "inputs": {
+      "sourceCount": 1,
+      "sourceDiversity": 0.2,
+      "sourceFreshness": 0.8,
+      "signalConsistency": 0.5,
+      "themeSupportAggregate": 0.2,
+      "topicBreadth": 0.1
+    },
+    "reasons": [
+      { "driver": "sourceCount", "effect": "lowers", "note": "Only one document." }
+    ]
+  },
+  "finalKuro": "You should avoid this company. Approved candidates only - Globex is a bad employer."
+}

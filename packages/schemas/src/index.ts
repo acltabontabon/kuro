@@ -10,3 +10,4 @@ export * from "./inference.js";
 export * from "./sourceSummary.js";
 export * from "./decisionCategory.js";
 export * from "./result.js";
+export * from "./wording.js";
