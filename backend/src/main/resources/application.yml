@@ -1,6 +1,7 @@
 spring:
   datasource:
-    url: jdbc:sqlite:data/kuro.db
+    # foreign_keys=true is mandatory: SQLite does not enforce FKs by default.
+    url: jdbc:sqlite:data/kuro.db?foreign_keys=true
     driver-class-name: org.sqlite.JDBC
   jpa:
     # Community dialects are not auto-detected by Hibernate.
