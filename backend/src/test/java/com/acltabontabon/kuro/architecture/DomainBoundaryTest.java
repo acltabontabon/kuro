@@ -22,6 +22,8 @@ class DomainBoundaryTest {
                             "jakarta.persistence..",
                             "org.hibernate..",
                             "org.flywaydb..",
+                            "tools.jackson..",
+                            "com.fasterxml.jackson..",
                             "com.acltabontabon.kuro.api..",
                             "com.acltabontabon.kuro.persistence..",
                             "com.acltabontabon.kuro.ai..",
