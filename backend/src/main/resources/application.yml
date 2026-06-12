@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:data/kuro.db
+    driver-class-name: org.sqlite.JDBC
+  jpa:
+    # Community dialects are not auto-detected by Hibernate.
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+    hibernate:
+      ddl-auto: validate # Flyway owns the schema
+  flyway:
+    enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
