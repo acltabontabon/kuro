@@ -29,7 +29,7 @@ This philosophy is codified as a binding product contract in [docs/TRUST_AND_TRA
 
 ### Backend
 
-Requires JDK 25 (`export JAVA_HOME=$(/usr/libexec/java_home -v 25)`; enforced by Maven Enforcer). Build/test with `mvn verify`, run with `mvn spring-boot:run` from `backend/`. Package boundaries (`api`/`domain`/`persistence`/`ai`/`extraction`, each documented in its `package-info.java`) are enforced by an ArchUnit test: `domain` stays framework-free. Flyway owns the schema (`ddl-auto=validate`) — every new entity lands with a matching migration. See [backend/README.md](backend/README.md).
+Requires JDK 25 (`export JAVA_HOME=$(/usr/libexec/java_home -v 25)`; enforced by Maven Enforcer). Build/test with `mvn verify`, run with `mvn spring-boot:run` from `backend/`. Package boundaries (`api`/`domain`/`persistence`/`ai`/`extraction`, each documented in its `package-info.java`) are enforced by an ArchUnit test: `domain` stays framework-free. Flyway owns the schema (`ddl-auto=validate`) — every new entity lands with a matching migration, written in SQLite/PostgreSQL-portable SQL only. SQLite does not enforce foreign keys by default: datasource URLs must keep `?foreign_keys=true`. See [backend/README.md](backend/README.md).
 
 ## Status
 
