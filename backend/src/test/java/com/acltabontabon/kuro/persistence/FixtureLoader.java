@@ -21,7 +21,7 @@ import tools.jackson.databind.module.SimpleModule;
  * (Locator by "kind", KuroResult by "dataSufficiency") and JSON-only
  * literals like confidence "level", which have no domain counterpart.
  */
-final class FixtureLoader {
+public final class FixtureLoader {
 
     private static final JsonMapper MAPPER = KuroJson.mapper().rebuild()
             .addModule(new SimpleModule("kuro-test-unions")
@@ -35,7 +35,7 @@ final class FixtureLoader {
     private FixtureLoader() {
     }
 
-    static KuroResult load(Path path) throws IOException {
+    public static KuroResult load(Path path) throws IOException {
         String json = Files.readString(path);
         var status = WireEnum.fromWire(DataSufficiency.class, MAPPER.readValue(json, Probe.class).dataSufficiency());
         Class<? extends KuroResult> type = switch (status) {

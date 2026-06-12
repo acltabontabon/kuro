@@ -7,6 +7,7 @@ import static java.util.stream.Collectors.toList;
 import com.acltabontabon.kuro.domain.Evidence;
 import com.acltabontabon.kuro.domain.KuroInference;
 import com.acltabontabon.kuro.domain.KuroResult;
+import com.acltabontabon.kuro.domain.ResultAlreadyPersistedException;
 import com.acltabontabon.kuro.domain.Signal;
 import com.acltabontabon.kuro.domain.SourceAttribution;
 import com.acltabontabon.kuro.domain.SourceDocument;
@@ -69,6 +70,9 @@ public class KuroResultPersistence {
 
     @Transactional
     public String save(KuroResult result, String requestId, int version, boolean current) {
+        if (results.existsById(result.id())) {
+            throw new ResultAlreadyPersistedException(result.id());
+        }
         if (!subjects.existsById(result.subject().id())) {
             subjects.save(KuroResultMapper.toEntity(result.subject()));
         }
@@ -94,6 +98,35 @@ public class KuroResultPersistence {
     @Transactional(readOnly = true)
     public Optional<KuroResult> load(String resultId) {
         return results.findById(resultId).map(this::toDomain);
+    }
+
+    /**
+     * Persists {@code result} as the next version of {@code requestId} and makes
+     * it current. The prior current row's is_current flag is flipped to false —
+     * the only mutation ever applied to an existing result row (#15). The result
+     * content itself is insert-only and immutable.
+     *
+     * <p>Concurrency: the next version is read-then-written, so two simultaneous
+     * re-runs can compute the same version. The DB UNIQUE (request_id, version)
+     * and partial-unique ux_kuro_result_current make the losing insert fail
+     * cleanly; the api maps that to 409.
+     */
+    @Transactional
+    public String saveNewVersion(KuroResult result, String requestId) {
+        int next = results.findMaxVersion(requestId).orElse(0) + 1;
+        results.findByRequestIdAndIsCurrentTrue(requestId).ifPresent(prior -> {
+            prior.isCurrent = false;
+            // Flush the flip before the new row's insert: Hibernate orders inserts
+            // ahead of updates, which would momentarily put two is_current=1 rows
+            // past ux_kuro_result_current.
+            results.saveAndFlush(prior);
+        });
+        return save(result, requestId, next, true);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<KuroResult> loadCurrent(String requestId) {
+        return results.findByRequestIdAndIsCurrentTrue(requestId).map(this::toDomain);
     }
 
     private void saveEvidenceChain(String resultId, List<SourceDocument> docs, List<SourceAttribution> atts,
