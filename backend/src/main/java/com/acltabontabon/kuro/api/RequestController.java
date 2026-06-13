@@ -79,6 +79,13 @@ class RequestController {
         return chain.<ResponseEntity<Object>>map(ResponseEntity::ok).orElseGet(() -> notReady(id));
     }
 
+    @GetMapping("/{id}/provenance")
+    ResponseEntity<Object> provenance(@PathVariable String id) {
+        return queries.getProvenance(id)
+                .<ResponseEntity<Object>>map(ResponseEntity::ok)
+                .orElseGet(() -> notReady(id));
+    }
+
     private static Subject toSubject(SubjectDto dto) {
         SubjectKind kind = WireEnum.fromWire(SubjectKind.class, dto.kind());
         return new Subject(dto.id(), kind, dto.displayName(), dto.description());

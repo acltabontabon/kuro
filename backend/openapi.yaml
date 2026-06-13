@@ -142,6 +142,28 @@ paths:
             application/json:
               schema: { $ref: "#/components/schemas/ErrorEnvelope" }
 
+  /requests/{id}/provenance:
+    get:
+      summary: Get the full provenance of a request's current result version
+      description: >
+        Audit/traceability surface (#16): the structural chain (signals →
+        evidence → redacted source attributions) plus the AI runs that produced
+        the result version. An `unsupported_category` result carries none, so the
+        signals/evidence/attributions/aiRuns arrays are empty.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200":
+          description: The provenance of the current result version.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Provenance" }
+        "409":
+          description: No current result yet.
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/ErrorEnvelope" }
+
 components:
   schemas:
     DecisionCategory:
@@ -227,6 +249,49 @@ components:
           type: object
           nullable: true
           description: The @kuro/schemas SourceAttribution (redacted) for the evidence's document.
+
+    AiRun:
+      type: object
+      description: >
+        One AI model invocation that contributed to the result version (#16).
+        The prompt *version* is recorded, never the raw prompt text (PII posture).
+      required: [phase, modelId, promptVersion, startedAt]
+      properties:
+        phase: { type: string, enum: [extraction, synthesis] }
+        modelId: { type: string }
+        promptVersion: { type: string }
+        inputTokens: { type: integer, nullable: true }
+        outputTokens: { type: integer, nullable: true }
+        startedAt: { type: string, format: date-time }
+        finishedAt: { type: string, format: date-time, nullable: true }
+
+    Provenance:
+      type: object
+      description: >
+        The reconstructable provenance of one result version: the structural
+        chain plus the AI audit records. Arrays are empty for a refusal.
+      required: [resultId, version, signals, evidence, attributions, aiRuns]
+      properties:
+        resultId: { type: string }
+        version: { type: integer }
+        signals:
+          type: array
+          items:
+            type: object
+            description: An @kuro/schemas Signal object (carries its evidenceIds).
+        evidence:
+          type: array
+          items:
+            type: object
+            description: An @kuro/schemas Evidence object.
+        attributions:
+          type: array
+          items:
+            type: object
+            description: The redacted @kuro/schemas SourceAttribution for each cited document.
+        aiRuns:
+          type: array
+          items: { $ref: "#/components/schemas/AiRun" }
 
     ErrorEnvelope:
       type: object

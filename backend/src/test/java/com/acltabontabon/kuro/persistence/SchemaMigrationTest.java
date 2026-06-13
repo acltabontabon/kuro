@@ -64,21 +64,59 @@ class SchemaMigrationTest {
     }
 
     @Test
+    void aiRunForeignKeyToResultIsEnforced() throws SQLException {
+        try (Connection conn = dataSource.getConnection();
+             Statement stmt = conn.createStatement()) {
+            assertThatThrownBy(() -> stmt.executeUpdate("""
+                    INSERT INTO ai_run (id, request_id, result_id, phase, model_id,
+                        prompt_version, started_at, created_at)
+                    VALUES ('run-orphan', 'no-such-request', 'no-such-result', 'extraction',
+                        'claude', 'v1', '2026-06-12T00:00:00Z', '2026-06-12T00:00:00Z')"""))
+                    .isInstanceOf(SQLException.class)
+                    .hasMessageContaining("FOREIGN KEY");
+        }
+    }
+
+    @Test
+    void aiRunPhaseCheckRejectsUnknownPhase() throws SQLException {
+        try (Connection conn = dataSource.getConnection()) {
+            conn.setAutoCommit(false);
+            try (Statement stmt = conn.createStatement()) {
+                seedResult(stmt);
+                assertThatThrownBy(() -> stmt.executeUpdate("""
+                        INSERT INTO ai_run (id, request_id, result_id, phase, model_id,
+                            prompt_version, started_at, created_at)
+                        VALUES ('run-bad', 'req-1', 'res-1', 'daydreaming',
+                            'claude', 'v1', '2026-06-12T00:00:00Z', '2026-06-12T00:00:00Z')"""))
+                        .isInstanceOf(SQLException.class)
+                        .hasMessageContaining("CHECK");
+            } finally {
+                conn.rollback();
+            }
+        }
+    }
+
+    /** Minimal subject → request → result chain so ai_run/attribution FKs resolve. */
+    private static void seedResult(Statement stmt) throws SQLException {
+        stmt.executeUpdate("""
+                INSERT INTO subject (id, kind, display_name, created_at)
+                VALUES ('sub-1', 'employer', 'Acme', '2026-06-12T00:00:00Z')""");
+        stmt.executeUpdate("""
+                INSERT INTO kuro_request (id, status, created_at)
+                VALUES ('req-1', 'READY', '2026-06-12T00:00:00Z')""");
+        stmt.executeUpdate("""
+                INSERT INTO kuro_result (id, request_id, version, subject_id,
+                    data_sufficiency, generated_at, created_at)
+                VALUES ('res-1', 'req-1', 1, 'sub-1',
+                    'insufficient', '2026-06-12T00:00:00Z', '2026-06-12T00:00:00Z')""");
+    }
+
+    @Test
     void attributionIsUniquePerSourceDocument() throws SQLException {
         try (Connection conn = dataSource.getConnection()) {
             conn.setAutoCommit(false);
             try (Statement stmt = conn.createStatement()) {
-                stmt.executeUpdate("""
-                        INSERT INTO subject (id, kind, display_name, created_at)
-                        VALUES ('sub-1', 'employer', 'Acme', '2026-06-12T00:00:00Z')""");
-                stmt.executeUpdate("""
-                        INSERT INTO kuro_request (id, status, created_at)
-                        VALUES ('req-1', 'READY', '2026-06-12T00:00:00Z')""");
-                stmt.executeUpdate("""
-                        INSERT INTO kuro_result (id, request_id, version, subject_id,
-                            data_sufficiency, generated_at, created_at)
-                        VALUES ('res-1', 'req-1', 1, 'sub-1',
-                            'insufficient', '2026-06-12T00:00:00Z', '2026-06-12T00:00:00Z')""");
+                seedResult(stmt);
                 stmt.executeUpdate("""
                         INSERT INTO source_document (id, result_id, url, platform,
                             captured_at, created_at)
