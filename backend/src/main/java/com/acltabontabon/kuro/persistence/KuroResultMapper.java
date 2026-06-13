@@ -1,5 +1,6 @@
 package com.acltabontabon.kuro.persistence;
 
+import com.acltabontabon.kuro.domain.AiRun;
 import com.acltabontabon.kuro.domain.ConfidenceReason;
 import com.acltabontabon.kuro.domain.DecisionCategory;
 import com.acltabontabon.kuro.domain.Evidence;
@@ -341,6 +342,13 @@ final class KuroResultMapper {
                         e.confidenceInputDirectnessOfSupport),
                 KuroJson.read(e.confidenceReasonsJson, REASONS));
         return new Signal(e.id, e.topic, e.sentiment, e.claim, evidenceIds, confidence);
+    }
+
+    // ---- ai runs (#16)
+
+    static AiRun toDomain(AiRunEntity e) {
+        return new AiRun(e.phase, e.modelId, e.promptVersion, e.inputTokens, e.outputTokens,
+                ts(e.startedAt), ts(e.finishedAt));
     }
 
     // ---- themes

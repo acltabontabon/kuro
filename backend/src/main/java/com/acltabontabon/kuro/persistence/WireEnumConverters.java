@@ -1,6 +1,7 @@
 package com.acltabontabon.kuro.persistence;
 
 import com.acltabontabon.kuro.domain.AccessedVia;
+import com.acltabontabon.kuro.domain.AiPhase;
 import com.acltabontabon.kuro.domain.DataSufficiency;
 import com.acltabontabon.kuro.domain.DecisionCategory;
 import com.acltabontabon.kuro.domain.ExtractionMethod;
@@ -159,6 +160,13 @@ final class WireEnumConverters {
     static class SourceCoverageAssessmentConverter extends Base<SourceCoverageAssessment> {
         SourceCoverageAssessmentConverter() {
             super(SourceCoverageAssessment.class);
+        }
+    }
+
+    @Converter(autoApply = true)
+    static class AiPhaseConverter extends Base<AiPhase> {
+        AiPhaseConverter() {
+            super(AiPhase.class);
         }
     }
 

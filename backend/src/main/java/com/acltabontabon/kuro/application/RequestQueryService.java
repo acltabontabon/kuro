@@ -1,11 +1,13 @@
 package com.acltabontabon.kuro.application;
 
 import com.acltabontabon.kuro.domain.KuroResult;
+import com.acltabontabon.kuro.domain.Provenance;
 import com.acltabontabon.kuro.domain.RequestSummary;
 import com.acltabontabon.kuro.domain.SourceAttribution;
 import com.acltabontabon.kuro.persistence.KuroResultPersistence;
 import com.acltabontabon.kuro.persistence.RequestPersistence;
 import com.acltabontabon.kuro.persistence.ResultEvidenceReadStore;
+import com.acltabontabon.kuro.persistence.TraceabilityReadStore;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -23,12 +25,14 @@ public class RequestQueryService {
     private final RequestPersistence requests;
     private final KuroResultPersistence results;
     private final ResultEvidenceReadStore evidence;
+    private final TraceabilityReadStore traceability;
 
     RequestQueryService(RequestPersistence requests, KuroResultPersistence results,
-            ResultEvidenceReadStore evidence) {
+            ResultEvidenceReadStore evidence, TraceabilityReadStore traceability) {
         this.requests = requests;
         this.results = results;
         this.evidence = evidence;
+        this.traceability = traceability;
     }
 
     public Optional<RequestSummary> getRequest(String requestId) {
@@ -58,5 +62,14 @@ public class RequestQueryService {
                     .map(item -> new EvidenceView(item, bySource.get(item.sourceDocumentId())))
                     .toList();
         });
+    }
+
+    /**
+     * Full provenance of the current result version (#16), or empty when none is
+     * ready yet (api 409): signals → evidence → redacted attributions, plus the
+     * AI runs that produced it.
+     */
+    public Optional<Provenance> getProvenance(String requestId) {
+        return traceability.provenanceForCurrent(requestId);
     }
 }
